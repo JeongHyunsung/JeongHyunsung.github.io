@@ -1,9 +1,9 @@
 version: "3"
 services: 
   db:
+    container_name: postgres-database
     image: postgres # postgres 이미지 사용
     restart: always # 
-    container_name: postgres
     ports:
       - "5432:5432"
     environment: 
@@ -14,6 +14,7 @@ services:
       - ./data/postgres/:/var/lib/postgresql/data
 
   server:
+    container_name: express-server
     build:
       context: ./Server/
     command: npm run start
@@ -26,6 +27,7 @@ services:
       - db
 
   client:
+    container_name: client
     build:
       context: ./Client/
     command: npm start
@@ -37,6 +39,6 @@ services:
     depends_on:
       - db
       - server
-
+      
 
     

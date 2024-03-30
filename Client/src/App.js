@@ -55,7 +55,7 @@ function Content({gs, sgs}){
 function Cont0(){
   const [data, setData] = useState("")
   useEffect(()=>{
-    axios.get('/api/hello').then(res => setData(res.data))
+    axios.get('/api/hello').then(res => setData(res.data)).catch((error)=>{console.log(error)})
   })
 
   return(
