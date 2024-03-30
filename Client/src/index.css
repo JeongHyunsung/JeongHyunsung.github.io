@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Anek+Devanagari:wdth,wght@75..125,100..800&display=swap');
+
+html{
+  font-family: "Anek Devanagari", sans-serif;
+  font-size: min(20px, max(12px, 2vw));
+  font-weight: 400;
+  color: white;
+}
+    
