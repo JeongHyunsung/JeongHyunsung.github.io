@@ -14,7 +14,7 @@ CREATE TABLE posts(
     user_id INT REFERENCES users(uid),
     author VARCHAR REFERENCES users(username),
     date_created TIMESTAMP,
-    like_user_id = INT[] DEFAULT ARRAY[]::INT[],
+    like_user_id INT[] DEFAULT ARRAY[]::INT[],
     likes INT DEFAULT 0
 );
 

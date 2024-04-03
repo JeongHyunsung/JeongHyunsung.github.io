@@ -1,7 +1,7 @@
 version: "3"
 services: 
   db:
-    container_name: postgres-database
+    container_name: postgres
     image: postgres # postgres 이미지 사용
     restart: always # 
     ports:
@@ -12,6 +12,7 @@ services:
       POSTGRES_DB: postgres
     volumes:
       - ./data/postgres/:/var/lib/postgresql/data
+
 
   server:
     container_name: express-server
@@ -39,6 +40,6 @@ services:
     depends_on:
       - db
       - server
-      
+
 
     
