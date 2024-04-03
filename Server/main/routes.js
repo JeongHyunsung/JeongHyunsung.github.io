@@ -1,11 +1,9 @@
 var express = require('express')
 var router = express.Router()
+var pool = require("./db")
 
-router.get('/api/hello', (req, res) =>{
-    res.json('hello world')
-    console.log(req.originalUrl)
-    console.log(req.baseUrl)
-    console.log(req.path)
+router.get('/api/hello', (req, res, next) =>{
+    res.json("HELLO")
 })
 
 module.exports = router

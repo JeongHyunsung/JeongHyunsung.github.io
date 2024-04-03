@@ -18,7 +18,7 @@ services:
     container_name: express-server
     build:
       context: ./Server/
-    command: npm run start
+    command: npm run dev
     ports: 
       - "5000:5000"
     volumes: 
