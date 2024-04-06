@@ -3,7 +3,7 @@ services:
   db:
     container_name: postgres
     image: postgres # postgres 이미지 사용
-    restart: always # 
+    restart: always 
     ports:
       - "5432:5432"
     environment: 

@@ -2,3 +2,5 @@ https://www.freecodecamp.org/news/a-beginners-guide-to-docker-how-to-create-a-cl
 
 
 https://blog.outsider.ne.kr/1509
+
+container 접속 : docker exec -it postgres /bin/bash

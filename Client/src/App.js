@@ -54,8 +54,12 @@ function Content({gs, sgs}){
 
 function Cont0(){
   const [data, setData] = useState("")
+  const [data2, setData2] = useState("")
   useEffect(()=>{
-    axios.get('/api/hello').then(res => setData(res.data)).catch((error)=>{console.log(error)})
+    axios.get('/api/1').then(res => setData(res.data)).catch((error)=>{console.log(error)})
+  })
+  useEffect(()=>{
+    axios.get('/api/2').then(res => setData2(res.data)).catch((error)=>{console.log(error)})
   })
 
   return(
@@ -69,6 +73,7 @@ function Cont0(){
       <p>So I try to <span className="pk">Learn various things</span> and <span className="pk">Apply them to world</span></p>
       <div className="recent-works">
         <h1>{data}</h1>
+        <h2>{data2}</h2>
       </div>
     </div>
   )
