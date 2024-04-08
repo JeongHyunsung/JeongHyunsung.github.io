@@ -4,8 +4,7 @@ var pool = require("./db")
 
 
 router.get('/api/1', (req, res, next) =>{
-    console.log()
-    pool.query(`SELECT * FROM users`, 
+    pool.query(`SELECT NOW()`, 
             (q_err, q_res) => {
                 console.log(q_res)
                 console.log(q_err)
