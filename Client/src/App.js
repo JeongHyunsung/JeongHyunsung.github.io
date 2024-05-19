@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Home from './hooks/page'
+import ContextState from './context_state_config'
 
 import auth0 from 'auth0-js'
 
@@ -8,7 +8,7 @@ import auth0 from 'auth0-js'
 const App = () => {
     return(
       <div>
-        <Home/>
+        <ContextState/>
       </div>
     )
 }
