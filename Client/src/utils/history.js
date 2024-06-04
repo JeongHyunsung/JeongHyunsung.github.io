@@ -1,3 +1,3 @@
-import { createBriwserHistory } from 'history'
+import { createBrowserHistory } from 'history'
 
-export default createBriwserHistory()
+export default createBrowserHistory()

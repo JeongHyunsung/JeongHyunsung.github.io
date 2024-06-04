@@ -53,7 +53,7 @@
 1. idea 
 - use Token instead of cookies in Session-based authentication
 
-# 2024.05.19
+# 2024.05.19,21
 
 ## Goal 
 - website authentication 코드 분석(https://github.com/iqbal125/react-hooks-blog-fullstack)
@@ -78,4 +78,18 @@ var webAuth = new auth0.WebAuth({
 })
 ```
 
-### Login : 
+# 2024.05.27 
+
+## Goal 
+- auth0 학습 
+- https://developer.auth0.com/resources/code-samples/api/express/basic-authorization
+- https://manage.auth0.com/dashboard/us/dev-fe08mjqzeio0l00y/applications/SnWTdCeqXyGxwbaW5WRzJHRPZVS8xF9X/quickstart
+
+## Auth0 - react tutorial
+1. Auth0 dashboard 에서 app을 만들고 setting 을 완료한다. 
+2. Domain, clientID 를 가져와 사용한다.
+3. @auth0/auth0-react 라이브러리 설치
+
+### Problem: 
+
+

@@ -7,7 +7,7 @@ export const initialState = {
 }
 
 
-export const FormReducer = (state, action) => {
+export const FormReducer = (state = initialState, action) => {
     switch(action.type) {
       case ACTION_TYPES.USER_INPUT_CHANGE:
         return {
