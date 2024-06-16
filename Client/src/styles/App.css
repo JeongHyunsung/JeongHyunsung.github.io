@@ -1,29 +1,120 @@
 
 :root{
-  --col-pp:#29172F;
-  --col-pk:#D7AAFB;
-  --col-lp:#FFF0F5;
+  --col-ddb:#0B0C10;
+  --col-db:#1F2833;
+  --col-gr:#C5C6C7;
+  --col-lb:#66FCF1;
+  --col-mb:#45A29E;
   --col-wh:#FFFFFF;
-  --col-h1:#ab44ff;
 
 }
 
-h1{
-  font-size: 3.5rem;
-  font-weight: 600;
-}
-
-.grad{
-  background: linear-gradient(90deg, var(--col-pk), var(--col-lp));
+/* Color section */
+.c-grad{
+  background: linear-gradient(90deg, var(--col-lb), var(--col-wh));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
-.pk{
-  color: var(--col-pk);
+.c-ddb{
+  color: var(--col-ddb);
+}
+.c-db{
+  color: var(--col-db);
+}
+.c-gr{
+  color: var(--col-gr);
+}
+.c-lb{
+  color: var(--col-lb);
+}
+.c-mb{
+  color: var(--col-mb);
+}
+.c-wh{
+  color: var(--col-);
+}
+.c-bddb{
+  background-color: var(--col-ddb);
+}
+.c-bdb{
+  background-color: var(--col-db);
+}
+.c-bgr{
+  background-color: var(--col-gr);
+}
+.c-blb{
+  background-color: var(--col-lb);
+}
+.c-bmb{
+  background-color: var(--col-mb);
+}
+.c-bwh{
+  background-color: var(--col-wh);
 }
 
+/* Width section */
+.w-100{
+  width: 100%;
+}
+.w-95{
+  width: 95%;
+}
+.w-80{
+  width: 80%;
+}
+hr{
+  height: 1px;
+}
+
+/* Corner section */
+.r-smooth-05{
+  border-radius: 0.5rem;
+}
+
+/* Text section */
+.t-bb{
+  font-size: 2rem;
+}
+.t-spacing{
+  letter-spacing: 0.2rem;
+}
+.t-light{
+  font-weight: 400;
+}
+.t-heavy{
+  font-weight: 700;
+}
+
+/* Display section */
+.d-flex-r{
+  display: flex;
+  flex-direction: row;
+}
+.d-flex-c{
+  display: flex;
+  flex-direction: column;
+}
+
+.d-ac{
+  align-items: center;
+}
+.d-jsa{
+  justify-content: space-around;
+}
+.d-jc{
+  justify-content: center;
+}
+
+/* position-section */
+.p-abs{
+  position: absolute;
+}
+
+/* Curser section */
+.cur-pt{
+  cursor: pointer;
+}
 
 /* size, position -> color -> display -> etc */
 *{
@@ -32,48 +123,33 @@ h1{
 }
 
 .App{
-  width: 100%;
   height: 100vh;
-  background-color: var(--col-pp);
-  display: flex;
-  flex-direction: column;
   overflow-y: scroll;
+  min-width: 400px;
 }
 
 .Head{
   box-sizing: border-box;
-  padding-left: 2rem;
-  padding-right: 3rem;
-  width: 100%;
-  height: 90px;
-  background-color: var(--col-wh);
-  display: flex;
+  padding-left: 30px;
+  padding-right: 45px;
+  min-height: 80px;
   align-items: center;
-  
 }
 
 .Head .button{
-  display: flex;
   align-items: center;
   cursor: pointer;
 }
 
 .Head .icon{
-  width: 2rem;
-  height: 2rem;
-  margin-right: 1rem;
-}
-
-.Head .title{
-  font-size: 1.3rem;
-  font-weight: 300;
-  color: var(--col-pp);
+  width: 32px;
+  height: 32px;
+  margin-right: 16px;
 }
 
 .global-nav{
   width: max(200px, 28%);
   margin-left: auto;
-  display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 1.1rem;
@@ -82,6 +158,10 @@ h1{
 
 .global-nav p{
   transition: top 0.1s cubic-bezier(0, 0.4, 0.6, 1);
+}
+
+a{
+  text-decoration: none;
 }
 
 .navigation-button{
@@ -93,35 +173,60 @@ h1{
 
 .navigation-button .underline{
   height: 2px;
-  background-color: var(--col-h1);
   border-radius: 1px;
 }
 
 
-
-/*Content General*/
-.Content{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-/*Home content Cont0 */
-.Cont0{
-  display: flex;
-  flex-direction: column;
+/*Home content*/
+.Home{
   justify-content: center;
   align-items: center;
   animation: blur 2s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
-.Cont0 .Intro{
-  display: flex;
+.Home .Intro{
   align-items: center;
-  gap: 1.5rem;
-  margin-top: 4rem;
-  margin-bottom: 1.5rem;
+  gap: 24px;
+  margin-top: 64px;
+  margin-bottom: 24px;
+}
+
+.recent-works{
+  width: 100%;
+  height: auto;
+  margin-top: 32px;
+  align-items: center;
+  gap: 32px;
+}
+
+.container-card{
+  height: auto;
+  justify-content: space-between;
+  align-items: top;
+}
+
+.column-card{
+  width: 30%;
+  height: 100%;
+  gap: 16px;
+}
+
+.card{
+  transition: transform 0.3s cubic-bezier(0, 0.4, 0.6, 1);
+}
+
+.Foot{
+  margin-top: 100px;
+  min-height: 128px;
+}
+
+.Foot .icon{
+  width: 24px;
+  height: 24px;
+}
+
+.Foot .icons{
+  gap: 40px;
 }
 
 
@@ -138,6 +243,14 @@ h1{
 
 
 /* Animation */
+@keyframes highlight-up{
+  from{translate:none;}
+  to{translate:translateY(-5px);}
+}
+@keyframes highlight-down{
+  from{translate:translateY(-5px);}
+  to{translate:none;}
+}
 @keyframes wider{
   from{width: 0%;}
   to{width: 100%;}

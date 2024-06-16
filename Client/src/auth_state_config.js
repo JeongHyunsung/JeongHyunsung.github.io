@@ -1,6 +1,6 @@
 import React from 'react';
 import { Auth0Provider } from '@auth0/auth0-react';
-import Routes from './routes'
+import RoutePage from './routes'
 
 function AuthState(){
     return(
@@ -12,7 +12,7 @@ function AuthState(){
                     redirect_uri: "https://localhost:3000/"
                 }}
             >
-                <Routes/>
+                <RoutePage/>
             </Auth0Provider>
         </div>
     )

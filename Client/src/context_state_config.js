@@ -46,12 +46,12 @@ function ContextState(props){
           useContextChangeState: stateFormReducer.user_textChange,
           useContextSubmitState: stateFormReducer.user_textSubmit,
           postsState: statePostsReducer.posts,
-          gs: stateGlobalReducer.global_state,
+          env: stateGlobalReducer.global_state,
           useContextSubmit: (event) => handleFormSubmit(event),
           useContextChange: (event) => handleFormChange(event),
           handleAddPosts: (posts) => handleSetPosts(posts),
           handleRemovePosts: () => handleRemovePosts(),
-          sgs: (gs) => handleSetGlobalState(gs)
+          senv: (gs) => handleSetGlobalState(gs)
         }}>
         <AuthState/>
       </Context.Provider>
