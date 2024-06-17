@@ -28,6 +28,50 @@ INSERT INTO "posts"("pid", "title", "content", "upload_date", "image_location", 
 INSERT INTO "posts"("pid", "title", "content", "upload_date", "image_location", "is_blog") VALUES(4, 'sample_title4', 'sample_content4', now()::timestamp, '/images/sample_image.jpg', '\000');
 INSERT INTO "posts"("pid", "title", "content", "upload_date", "image_location", "is_blog") VALUES(5, 'sample_title5', 'sample_content5', now()::timestamp, '/images/sample_image.jpg', '\000');
 INSERT INTO "posts"("pid", "title", "content", "upload_date", "image_location", "is_blog") VALUES(6, 'sample_title6', 'sample_content6', now()::timestamp, '/images/sample_image.jpg', '\000');
+INSERT INTO "posts"("pid", "title", "content", "upload_date", "image_location", "is_blog") VALUES(7, 'sample_title7', '
+---
+
+# h1 Heading 8-)
+## h2 Heading
+### h3 Heading
+#### h4 Heading
+##### h5 Heading
+###### h6 Heading
+
+
+## Horizontal Rules
+
+___
+
+---
+
+***
+
+
+## Typographic replacements
+
+Enable typographer option to see result.
+
+(c) (C) (r) (R) (tm) (TM) (p) (P) +-
+
+test.. test... test..... test?..... test!....
+
+!!!!!! ???? ,,  -- ---
+
+"Smartypants, double quotes" and ''single quotes''
+
+
+## Emphasis
+
+**This is bold text**
+
+__This is bold text__
+
+*This is italic text*
+
+_This is italic text_
+', now()::timestamp, '/images/sample_image.jpg', '\000');
+
 
 
 UPDATE "posts" SET "image_location" = '/images/sample_data' WHERE "pid" = 1;

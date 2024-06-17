@@ -42,38 +42,71 @@ function Home(){
 
   const num_columns = isMobile?1:(isPc?3:2)
   const wdh = ((102-(num_columns * 2))/num_columns).toString() + "%"
+  const topClassName = isMobile?"w-80 d-flex-c d-ac":"w-80 d-flex-r d-ac d-jsb"
 
   const columns = Array.from({length: num_columns}, () => 0)
 
   const [dbPost, setDbPost] = useState([])
-  const myfunc = ()=>{
-    console.log("onfunc")
-    console.log(dbPost)
-    return 1
+  const [isOver, setIsOver] = useState(false)
+  const [effectBall, setEffectBall] = useState({x:0, y:0})
+  const am_1 = "bigger 0.3s cubic-bezier(0, 0.4, 0.6, 1) forwards"
+
+  const handleOver = (e)=>{
+    if(isOver){return}
+    setIsOver(true)
+    const X = e.clientX
+    const Y = e.clientY
+    const circleElement = document.querySelector('.contact-button');
+    const circleRect = circleElement.getBoundingClientRect();
+    const relativeX = X - circleRect.left;
+    const relativeY = Y - circleRect.top;
+    setEffectBall({x:relativeX, y:relativeY})
   }
+  const handleLeave = (e)=>{
+    setIsOver(false)
+  }
+
   useEffect(() => {
     console.log('yyyy')
-      axios.get('/api/get/post', {params: {post_id: -1}})
-        .then(res => {
-          let newData = res.data.rows.map(row=>({
-            pid: row.pid,
-            title: row.title,
-            content: row.content,
-            upload_date: row.upload_date,
-            image_location: row.image_location,
-            is_blog: row.is_blog
-          }))
-          setDbPost(newData)
-        }).catch((err) => console.log(err) )}, [])
+    axios.get('/api/get/post', {params: {post_id: -1}})
+      .then(res => {
+        let newData = res.data.rows.map(row=>({
+          pid: row.pid,
+          title: row.title,
+          content: row.content,
+          upload_date: row.upload_date,
+          image_location: row.image_location,
+          is_blog: row.is_blog
+        }))
+        setDbPost(newData)
+      }).catch((err) => console.log(err) )}, [])
 
   return(
     <div className="Home d-flex-c">
-      <div className="Intro d-flex-r">
-        <h1 className= "c-wh"></h1>
+      <div className={topClassName}>
+        <div className="Intro d-flex-c w-50 d-al d-jc">
+          <h1>Hello, I'm Hyunsung Jeong</h1>
+          <p>I am a student majoring in electronic engineering</p>
+          <p>with interests in <span className="c-lb">App/Web Development</span>,</p>
+          <p><span className="c-lb">deep learning</span>, and <span className="c-lb">electronic circuits</span>. </p>
+        </div>
+        <Link className="contact-button c-wh" 
+              to="/contact"
+              onMouseOver={handleOver}
+              onMouseLeave={handleLeave}
+              style={{border:(isOver)?"3px solid var(--col-mb)":"3px solid var(--col-wh)"}}>
+          <img className="icon" src="/email.svg" alt=""/>
+          {isOver && 
+            <div 
+              className="effect-ball c-bmb"
+              style={{left:effectBall.x, top:effectBall.y,
+                      animation:(isOver)?am_1:"none"}}></div>}
+        </Link>
       </div>
+      
       <div className="recent-works d-flex-c text-spc">
         <hr className="c-bgr w-80"></hr>
-        <h2 className="t-spacing c-wh t-bb t-light">Recent Works</h2>
+        <h2 className="t-spacing c-wh t-bb t-light">Recent Posts</h2>
         <div className="container-card d-flex-r w-80">
           {columns.map((_, i)=>{
             return (<div key={i} className="column-card d-flex-c" style={{width: wdh}}>

@@ -76,6 +76,9 @@ hr{
 .t-bb{
   font-size: 2rem;
 }
+.t-s{
+  font-size: 0.9rem;
+}
 .t-spacing{
   letter-spacing: 0.2rem;
 }
@@ -95,16 +98,29 @@ hr{
   display: flex;
   flex-direction: column;
 }
+.d-flex-wrap{
+  flex-wrap: wrap;
+}
 
 .d-ac{
   align-items: center;
 }
+.d-al{
+  align-items: flex-start;
+}
+.d-asth{
+  align-items: stretch;
+}
 .d-jsa{
   justify-content: space-around;
+}
+.d-jsb{
+  justify-content: space-between;
 }
 .d-jc{
   justify-content: center;
 }
+
 
 /* position-section */
 .p-abs{
@@ -185,10 +201,44 @@ a{
 }
 
 .Home .Intro{
-  align-items: center;
-  gap: 24px;
   margin-top: 64px;
   margin-bottom: 24px;
+  margin-right: 40px;
+}
+
+.contact-button{
+  position: relative;
+  height: 100px;
+  width: 100px;
+  margin-top: 40px;
+  margin-right: 16px;
+  border-radius: 50%;
+  border: 3px solid var(--col-wh);
+  overflow: hidden;
+}
+
+.contact-button > *{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.effect-ball{
+  width: 1px;
+  height: 1px;
+  border-radius: 50%;
+  z-index: 1;
+}
+.effect-ball.focus{
+  width: 220px;
+  height: 220px;
+}
+
+.contact-button .icon{
+  height: 30px;
+  width: 30px;
 }
 
 .recent-works{
@@ -218,6 +268,7 @@ a{
 .Foot{
   margin-top: 100px;
   min-height: 128px;
+  gap: 10px;
 }
 
 .Foot .icon{
@@ -226,8 +277,10 @@ a{
 }
 
 .Foot .icons{
-  gap: 40px;
+  gap: 50px;
 }
+
+
 
 
 
@@ -250,6 +303,14 @@ a{
 @keyframes highlight-down{
   from{translate:translateY(-5px);}
   to{translate:none;}
+}
+@keyframes bigger{
+  from{width:0px; height:0px;}
+  to{width:220px; height:220px;}
+}
+@keyframes smaller{
+  from{width:220px; height:220px;}
+  to{width:0px; height:0px;}
 }
 @keyframes wider{
   from{width: 0%;}

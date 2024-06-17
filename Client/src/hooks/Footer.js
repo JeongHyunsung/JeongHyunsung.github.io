@@ -21,7 +21,7 @@ function Footer(){
   
 
   return(
-    <div className="Foot w-100 d-ac d-jsa d-flex-c c-bdb c-wh">
+    <div className="Foot w-100 d-ac d-jc d-flex-c c-bdb c-wh">
       <div className="icons w-100 d-flex-r d-ac d-jc">
         <a href="https://github.com/JeongHyunsung" target="_blank" rel="noopener noreferrer">
           <img className="icon" src="/github.svg" alt=""/>
@@ -33,7 +33,9 @@ function Footer(){
           <img className="icon" src="/codeforces.svg" alt=""/>
         </a>
       </div>
-      
+      <div className = "d-flex-c d-ac d-jsa">
+        <p className = "t-s">gogo7mm7@gmail.com</p>
+      </div>
     </div>
   )
 }

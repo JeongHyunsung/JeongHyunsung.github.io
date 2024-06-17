@@ -153,7 +153,7 @@ var webAuth = new auth0.WebAuth({
 
 2. 여러 포스트를 카드 형태로 보여주는 Home element 에서는 필요한 정보만 받아와 card 속에 렌더링 해주어야 함.
 
-# 2024.06.12
+# 2024.06.12, 6.17
 
 ## Goal 
 - 기능 구현 계속하기
@@ -228,6 +228,14 @@ app.get('/blog/:postId', (req, res) => {
 Handlebars 템플릿에서는 기본적으로 HTML 이스케이프를 수행하므로, 안전하게 데이터를 HTML로 렌더링할 수 있습니다.
 
 이러한 방법들을 통해 dangerouslySetInnerHTML을 회피하고, 안전하게 사용자 입력을 HTML로 렌더링할 수 있습니다. 선택한 방법은 사용하는 프레임워크나 라이브러리, 보안 요구 사항 등에 따라 달라질 수 있습니다.
+
+- 본문 저장은 marked 와 같은 markdown 라이브러리를 이용할 것.
+import marked from 'marked';
+
+const markdownText = '# Hello, Markdown!';
+const htmlText = marked(markdownText);
+
+
 
 
 
