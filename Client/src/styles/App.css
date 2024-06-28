@@ -63,6 +63,9 @@
 .w-80{
   width: 80%;
 }
+.w-6px{
+  width: calc(100% - 20px);
+}
 hr{
   height: 1px;
 }
@@ -263,6 +266,12 @@ a{
 
 .card{
   transition: transform 0.3s cubic-bezier(0, 0.4, 0.6, 1);
+  gap: 10px;
+}
+
+.card-content{
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .Foot{

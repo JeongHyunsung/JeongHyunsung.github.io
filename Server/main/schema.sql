@@ -76,6 +76,41 @@ _This is italic text_
 
 UPDATE "posts" SET "image_location" = '/images/sample_data' WHERE "pid" = 1;
 
+UPDATE "posts" SET "content" = '**This is bold text**
+
+__This is bold text__
+
+*This is italic text*' WHERE "pid" = 2;
+
+UPDATE "posts" SET "content" = 'Enable typographer option to see result.
+
+(c) (C) (r) (R) (tm) (TM) (p) (P) +-
+
+test.. test... test..... test?..... test!....
+
+!!!!!! ???? ,,  -- ---
+
+"Smartypants, double quotes" and ''single quotes''' WHERE "pid" = 5;
+
+UPDATE "posts" SET "content" = '
+# h1 Heading 8-)
+## h2 Heading
+### h3 Heading
+#### h4 Heading
+##### h5 Heading
+###### h6 Heading
+
+
+## Horizontal Rules
+
+___
+
+---
+
+***' WHERE "pid" = 6;
+
+
+
 router.get('/api/get/post', (req, res, next) => {
   const post_id = req.query.post_id
 
