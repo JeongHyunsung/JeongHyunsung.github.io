@@ -44,7 +44,7 @@ function Home(){
 
   const num_columns = isMobile?1:(isPc?3:2)
   const wdh = ((102-(num_columns * 2))/num_columns).toString() + "%"
-  const topClassName = isMobile?"w-80 d-flex-c d-ac":"w-80 d-flex-r d-ac d-jsb"
+  const topClassName = isMobile?"w-100 d-flex-c d-ac":"w-100 d-flex-r d-ac d-jsb"
 
   const columns = Array.from({length: num_columns}, () => 0)
 
@@ -86,7 +86,7 @@ function Home(){
   return(
     <div className="Home d-flex-c">
       <div className={topClassName}>
-        <div className="Intro d-flex-c w-50 d-al d-jc">
+        <div className="Intro d-flex-c d-al d-jc">
           <h1>Hello, I'm Hyunsung Jeong</h1>
           <p>I am a student majoring in electronic engineering</p>
           <p>with interests in <span className="c-lb">App/Web Development</span>,</p>
@@ -107,15 +107,15 @@ function Home(){
       </div>
       
       <div className="recent-works d-flex-c text-spc">
-        <hr className="c-bgr w-80"></hr>
+        <hr className="c-bgr"></hr>
         <h2 className="t-spacing c-wh t-bb t-light">Recent Posts</h2>
-        <div className="container-card d-flex-r w-80">
+        <div className="container-card d-flex-r">
           {columns.map((_, i)=>{
             return (<div key={i} className="column-card d-flex-c" style={{width: wdh}}>
               {dbPost.filter((_, j)=>{
                 if(j % num_columns == i) return true
                 else return false
-              }).map((data, k)=>{return (<Card key={data.pid} pid={data.pid} title={data.title} content={data.content} imloc={data.image_location} rto={0.8}/>)})}
+              }).map((data, k)=>{return (<Card key={data.pid} pid={data.pid} title={data.title} content={data.content} imloc={data.image_location}/>)})}
             </div>)
           })}
         </div>

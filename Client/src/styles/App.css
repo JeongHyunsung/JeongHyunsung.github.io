@@ -6,7 +6,6 @@
   --col-lb:#66FCF1;
   --col-mb:#45A29E;
   --col-wh:#FFFFFF;
-
 }
 
 /* Color section */
@@ -287,6 +286,10 @@ a{
 
 .Foot .icons{
   gap: 50px;
+}
+
+.post{
+  gap: 10px;
 }
 
 

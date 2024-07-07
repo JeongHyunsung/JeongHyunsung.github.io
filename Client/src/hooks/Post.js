@@ -41,15 +41,16 @@ function Post() {
   }, []);
 
   return (
-    <div className="d-flex-r d-ac d-jc">
+    <div>
       {post.fetched &&
-        <div className="w-80 d-flex-c">
+        <div className="post d-flex-c">
           <hr className="c-bgr w-100"></hr>
           <h1>{post.title}</h1>
-          <hr className="c-bgr w-100"></hr>
+          <p>{post.upload_date.substring(0, 10)}</p>
           <img src={post.image_location} alt="Post Image" />
+          <hr className="c-bgr w-100"></hr>
           {post.htmlcontent}
-          <p>{post.upload_date}</p>
+          
         </div>
       }
     </div>

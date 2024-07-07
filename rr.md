@@ -5,6 +5,7 @@
 - 카드형태로 보여주는데, tag 분류 기능 및 검색 기능 추가적으로 필요.
 3. Post (20)
 - title content image 디자인 및 content markdown 확장 설치 필요. tag 보여주기 기능 필요.
+- 포스트 작성하는거 먼저 해야할듯 
 4. Project (0)
 - 가시성있는 디자인 필요. 하나 하나를 돋보이게 하기.
 
