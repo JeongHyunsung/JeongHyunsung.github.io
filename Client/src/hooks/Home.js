@@ -9,29 +9,7 @@ import { useAuth0 } from "@auth0/auth0-react"
 
 import { useMediaQuery } from "react-responsive"
 
-function Card({pid, title, content, imloc, rto}){
-  const [isover, setIsover] = useState(false)
-  const am_1 = "highlight-up"
-  const am_2 = "highlight-down"
-  
-  return(
-    <Link
-      to = {"/post/"+pid}
-      className="card w-100 d-flex-c d-ac p-rel r-smooth-05 c-bwh c-ddb cur-pt" 
-      style={{animation: (isover)?am_1:am_2,
-              transform: (isover)?"translateY(-5px)":"none",
-      }}
-      onMouseOver={()=>{setIsover(true)}}
-      onMouseLeave={()=>{setIsover(false)}}>
-      <div className= "card-content w-6px d-flex-c d-ac">
-        <img className = "w-100 r-smooth-05" src={imloc}/>
-        <h1>{title}</h1>
-        <p>{content}</p>
-      </div>
-      
-    </Link>
-  )
-}
+import Card from "./elements/Card"
 
 function Home(){
   console.log("Rendered")
@@ -107,7 +85,7 @@ function Home(){
       </div>
       
       <div className="recent-works d-flex-c text-spc">
-        <hr className="c-bgr"></hr>
+        <hr className="c-bgr w-100"></hr>
         <h2 className="t-spacing c-wh t-bb t-light">Recent Posts</h2>
         <div className="container-card d-flex-r">
           {columns.map((_, i)=>{

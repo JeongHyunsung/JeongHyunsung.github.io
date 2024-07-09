@@ -235,7 +235,14 @@ import marked from 'marked';
 const markdownText = '# Hello, Markdown!';
 const htmlText = marked(markdownText);
 
+# 2024.07.07
 
+## Goal : 포스트 작성 기능 추가.
+## react-markdown editor 이용.
+## 구조 
+-제목, 컨텐츠를 작성할수 있는 editor 2개
+-해당 에디터에서 onChange 이벤트 발생시 usecontextchange 실행.
+-해당 에디터가 포함된 form 에서 onSubmit 이벤트 발생시 useContextSubmit실행.
 
 
 

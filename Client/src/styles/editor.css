@@ -1,0 +1,58 @@
+:root{
+    --col-ddb:#0B0C10;
+    --col-db:#1F2833;
+    --col-gr:#C5C6C7;
+    --col-lb:#66FCF1;
+    --col-mb:#45A29E;
+    --col-wh:#FFFFFF;
+}
+
+.title-input{
+    height: 2rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding: 1rem;
+    border-radius: 0.3rem;
+}
+
+.input-placeholder{
+    font-weight: 500;
+}
+
+.rc-md-editor.editor{
+    width: 100%;
+    min-height: 500px;
+    border: 5px solid var(--col-db);
+    border-radius: 0.3rem;
+    background-color: var(--col-ddb);
+}
+  
+.rc-md-editor.editor .rc-md-navigation{
+    background-color: var(--col-db);
+}
+  
+.rc-md-editor.editor .rc-md-navigation .button-wrap .button{
+    color: var(--col-wh)
+}
+.rc-md-editor.editor .rc-md-navigation .button-wrap .button:hover{
+    color: var(--col-mb)
+}
+
+.editor .custom-html-style {
+    color: var(--col-wh);
+}
+
+.editor-submit-button{
+    width: 8rem;
+    height: 2rem;
+    align-self: flex-end;
+    background-color: var(--col-wh);
+    border-radius: 1rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--col-db);
+}
+
+.editor-submit-button:hover{
+    color: var(--col-mb);
+}

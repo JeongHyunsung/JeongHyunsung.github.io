@@ -62,6 +62,9 @@
 .w-80{
   width: 80%;
 }
+.w-50{
+  width: 50%;
+}
 .w-6px{
   width: calc(100% - 20px);
 }
@@ -75,6 +78,9 @@ hr{
 }
 
 /* Text section */
+.t-bbb{
+  font-size: 3rem;
+}
 .t-bb{
   font-size: 2rem;
 }
@@ -86,6 +92,9 @@ hr{
 }
 .t-light{
   font-weight: 400;
+}
+.t-reg{
+  font-weight: 500;
 }
 .t-heavy{
   font-weight: 700;
@@ -290,6 +299,15 @@ a{
 
 .post{
   gap: 10px;
+}
+
+.addpost-button{
+  width: 2rem;
+  height: 2rem;
+}
+
+.editor-container{
+  gap: 2rem;
 }
 
 

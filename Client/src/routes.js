@@ -9,6 +9,7 @@ import Footer from './hooks/Footer'
 import Home from './hooks/Home'
 import Post from './hooks/Post'
 import Blog from './hooks/Blog'
+import AddPost from './hooks/AddPost'
 
 
 function RoutePage(){
@@ -23,6 +24,7 @@ function RoutePage(){
                         <Route exact path="/" element={<Home/>}/>
                         <Route path="/post/:pid" element={<Post/>}/>
                         <Route path="/blog" element={<Blog/>}/>
+                        <Route path="/addpost" element={<AddPost/>}/>
                     </Routes>
                     </div>
                     <Footer/>
