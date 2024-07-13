@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { BrowserRouter , Route, Routes, Redirect } from 'react-router-dom'
-import history from './utils/history'
+
 
 import Context from './utils/context'
 
@@ -10,7 +10,9 @@ import Home from './hooks/Home'
 import Post from './hooks/Post'
 import Blog from './hooks/Blog'
 import AddPost from './hooks/AddPost'
+import EditPost from './hooks/EditPost'
 
+import history from './utils/history'
 
 function RoutePage(){
     const context = useContext(Context)
@@ -25,6 +27,7 @@ function RoutePage(){
                         <Route path="/post/:pid" element={<Post/>}/>
                         <Route path="/blog" element={<Blog/>}/>
                         <Route path="/addpost" element={<AddPost/>}/>
+                        <Route path="/editpost/:pid" element={<EditPost/>}/>
                     </Routes>
                     </div>
                     <Footer/>

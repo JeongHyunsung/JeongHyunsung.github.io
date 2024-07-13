@@ -132,6 +132,13 @@ hr{
   justify-content: center;
 }
 
+/* Gap */
+.g-2r{
+  gap: 2rem;
+}
+.g-1r{
+  gap: 1rem;
+}
 
 /* position-section */
 .p-abs{
@@ -246,6 +253,10 @@ a{
   width: 220px;
   height: 220px;
 }
+.editor-container{
+  gap: 2rem;
+}
+
 
 .contact-button .icon{
   height: 30px;
@@ -306,8 +317,10 @@ a{
   height: 2rem;
 }
 
-.editor-container{
-  gap: 2rem;
+.post-button{
+  width: 5rem;
+  height: 1.4rem;
+  border-radius: 0.7rem;
 }
 
 

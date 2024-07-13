@@ -1,4 +1,5 @@
 import '../styles/App.css';
+
 import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios'
 
@@ -10,6 +11,7 @@ import { useAuth0 } from "@auth0/auth0-react"
 import { useMediaQuery } from "react-responsive"
 
 import Card from "./elements/Card"
+
 
 function Blog(){
     const isMobile = useMediaQuery({

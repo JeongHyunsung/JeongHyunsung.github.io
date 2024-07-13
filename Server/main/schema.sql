@@ -8,27 +8,18 @@ CREATE TABLE "posts" (
 );
 
 CREATE TABLE "tags" (
-  "tid" integer PRIMARY KEY,
+  "tid" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   "tag_name" text
 );
 
 CREATE TABLE "post_tag" (
-  "tid" integer,
-  "pid" integer
+  "tid" integer REFERENCES posts(pid),
+  "pid" integer REFERENCES tags(pid)
+  PRIMARY KEY(tid, pid)
 );
 
-ALTER TABLE "post_tag" ADD FOREIGN KEY ("tid") REFERENCES "tags" ("tid");
-
-ALTER TABLE "post_tag" ADD FOREIGN KEY ("pid") REFERENCES "posts" ("pid");
-
-
-INSERT INTO "posts"("pid", "title", "content", "upload_date", "image_location", "is_blog") VALUES(1, 'sample_title1', 'sample_content1', now()::timestamp, '/images/sample_image.jpg', '\000');
-INSERT INTO "posts"("pid", "title", "content", "upload_date", "image_location", "is_blog") VALUES(2, 'sample_title2', 'sample_content2', now()::timestamp, '/images/sample_image.jpg', '\000');
-INSERT INTO "posts"("pid", "title", "content", "upload_date", "image_location", "is_blog") VALUES(3, 'sample_title3', 'sample_content3', now()::timestamp, '/images/sample_image.jpg', '\000');
-INSERT INTO "posts"("pid", "title", "content", "upload_date", "image_location", "is_blog") VALUES(4, 'sample_title4', 'sample_content4', now()::timestamp, '/images/sample_image.jpg', '\000');
-INSERT INTO "posts"("pid", "title", "content", "upload_date", "image_location", "is_blog") VALUES(5, 'sample_title5', 'sample_content5', now()::timestamp, '/images/sample_image.jpg', '\000');
 INSERT INTO "posts"("title", "content", "upload_date", "image_location", "is_blog") VALUES('sample_title', 'sample_content', now()::timestamp, '/images/sample_image.jpg', '\000');
-DELETE FROM "posts";
+
 
 
 
