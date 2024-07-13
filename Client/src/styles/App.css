@@ -87,6 +87,9 @@ hr{
 .t-s{
   font-size: 0.9rem;
 }
+.t-ss{
+  font-size: 0.6rem;
+}
 .t-spacing{
   letter-spacing: 0.2rem;
 }
@@ -323,6 +326,9 @@ a{
   border-radius: 0.7rem;
 }
 
+.posteditor{
+  margin-top: 4rem;
+}
 
 
 

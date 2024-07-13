@@ -15,6 +15,16 @@
     border-radius: 0.3rem;
 }
 
+.rptimg-input{
+    height: 2rem;
+    width: 5rem;
+}
+
+.tags-input{
+    height: 1rem;
+    padding: 1rem;
+}
+
 .input-placeholder{
     font-weight: 500;
 }

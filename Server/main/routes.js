@@ -38,10 +38,10 @@ router.get('/get/post', (req, res, next) => {
     }
 })
 
-router.post('/post/posttodb', (req, res, next)=>{
-  const {title, content} = req.body
-  pool.query('INSERT INTO "posts"("title", "content", "upload_date", "image_location", "is_blog") VALUES($1, $2, now()::timestamp, \'/images/sample_image.jpg\', \'\\000\');',
-    [ title, content ], 
+router.post('/post/addpost', (req, res, next)=>{
+  const {title, content, imgurl} = req.body
+  pool.query('INSERT INTO "posts"("title", "content", "upload_date", "image_location", "is_blog") VALUES($1, $2, now()::timestamp, $3, \'\\000\');',
+    [ title, content, imgurl ], 
     (q_err, q_res) => {
       if (q_err) return next(q_err);
       res.json(req.rows);
@@ -50,9 +50,9 @@ router.post('/post/posttodb', (req, res, next)=>{
 })
 
 router.post('/post/editpost', (req, res, next)=>{
-  const {title, content, pid} = req.body
-  pool.query('UPDATE "posts" SET "title" = $1, "content" = $2, "upload_date" = now()::timestamp WHERE pid = $3;',
-    [ title, content, pid ], 
+  const {title, content, imgurl, pid} = req.body
+  pool.query('UPDATE "posts" SET "title" = $1, "content" = $2, "image_location" = $3 WHERE pid = $4;',
+    [ title, content, imgurl, pid ], 
     (q_err, q_res) => {
       if (q_err) return next(q_err);
       res.json(req.rows);
