@@ -25,7 +25,7 @@ function Card({pid, title, content, imloc, rto}){
         onMouseLeave={()=>{setIsover(false)}}>
         <div className= "card-content w-6px d-flex-c g-05r d-ac">
           <img className = "w-100 r-smooth-05" src={imloc}/>
-          <h1>{title}</h1>
+          <h1 className = "t-heavy">{title}</h1>
         </div>
         
       </Link>

@@ -13,20 +13,27 @@ import history from '../utils/history'
 
 function AddPost(){
     const navigate = useNavigate();
+    /* tags 이용하여 tags-posts 테이블 업데이트 POST" */
+    const handleSubmit = async (data, tags)=>{
+        try{
+            console.log(data)
+            const res = await axios.post('/api/post/addpost', data);
 
-    const handleSubmit = (data, tags)=>{
-        axios.post('/api/post/addpost', data)
-            .then(response =>{
-                console.log(response);
-                setTimeout(() => navigate('/'), 700)
-            })
-            .catch((err) => console.log(err))
+            await Promise.all(tags.map((value)=>{
+                axios.post('/api/post/posttagrel', {pid: res.data.pid, tid: value})
+            }))
+            navigate('/blog')
+        }
+        catch(error){
+            console.log(error)
+        }
     }
     return(
         <PostEditor
             initialTitle=""
             initialContent=""
             initialRptimgUrl=""
+            initialTags={[]}
             onSubmit={handleSubmit}
         />
     )

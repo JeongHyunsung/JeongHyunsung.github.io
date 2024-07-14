@@ -32,14 +32,14 @@ function Post() {
     navigate('/editpost/'+post.pid)
   }
 
-  const handleDelete = ()=>{
-    axios.delete('/api/delete/post/'+params.pid)
-      .then(response =>{
-      console.log(response);
-      setTimeout(() => navigate('/blog'), 700)
-  })
-  .catch((err) => console.log(err))
-    navigate('/blog')
+  const handleDelete = async ()=>{
+    try{
+      await axios.delete('/api/delete/post/'+params.pid)
+      navigate('/blog')
+    }
+    catch(error){
+      console.log(error)
+    }
   }
 
   useEffect(() => {

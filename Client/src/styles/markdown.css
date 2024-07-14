@@ -1,4 +1,18 @@
+.markdown{
+    display: flex;
+    flex-direction: column;
+}
+
 .markdown img{
     width: 100%;
     height: auto;
+}
+
+.markdown pre{
+    width: 90%;
+    align-self: center;
+    background-color: #1F2833;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 1rem;
 }

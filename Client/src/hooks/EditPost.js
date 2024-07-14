@@ -15,30 +15,41 @@ import PostEditor from './elements/PostEditor';
 function EditPost(){
     const navigate = useNavigate()
     const params = useParams()
-    const [post, setPost] = useState({title:"", content:"", imgurl:""})
+    const [post, setPost] = useState({title:"", content:"", imgurl:"", tags:[]})
 
     useEffect(()=>{
         const fetchData = async () => {
             try{
                 const res = await axios.get('/api/get/post', {params: {post_id: params.pid}})
-                setPost({title: res.data.rows[0].title, content: res.data.rows[0].content, imgurl: res.data.rows[0].image_location})
+                const res_tags = await axios.get('/api/get/tagsinpost', {params: {post_id: params.pid}})
+                setPost({
+                    title: res.data.rows[0].title, 
+                    content: res.data.rows[0].content, 
+                    imgurl: res.data.rows[0].image_location,
+                    tags: res_tags.data.map(value=>{return value.tid})})
             }
-                catch(error){
+            catch(error){
                 console.error("Error fetching post", error)
             }
         }
         fetchData()
     }, [params.pid])
         
+    /* 기본 relation 삭제 및 새로운 relation 추가 */
 
-    const handleSubmit = (data, tags)=>{
+    const handleSubmit = async (data, tags)=>{
         data.pid = params.pid
-        axios.post('/api/post/editpost', data)
-            .then(response =>{
-                console.log(response);
-                setTimeout(() => navigate('/blog'), 700)
-            })
-            .catch((err) => console.log(err))
+        try{
+            await axios.post('/api/post/editpost', data)
+            await axios.delete('/api/delete/resettagsinpost/' + params.pid)
+            await Promise.all(tags.map((value)=>{
+                return axios.post('/api/post/posttagrel', {pid: params.pid, tid: value})
+            }))
+            navigate('/blog')
+        }
+        catch(error){
+            console.log(error)
+        }
     }
     
     return(
@@ -46,6 +57,7 @@ function EditPost(){
             initialTitle={post.title}
             initialContent={post.content}
             initialRptimgUrl={post.imgurl}
+            initialTags={post.tags}
             onSubmit={handleSubmit}
         />
     )

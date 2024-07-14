@@ -14,12 +14,12 @@ import mdParser from '../../utils/mdparser'
 import MdEditor from 'react-markdown-editor-lite'
 
 
-function PostEditor({initialTitle, initialContent, initialRptimgUrl, onSubmit}){
+function PostEditor({initialTitle, initialContent, initialRptimgUrl, initialTags, onSubmit}){
     const [title, setTitle] = useState(initialTitle)
     const [content, setContent] = useState(initialContent)
     const [image, setImage] = useState(null)
     const [tag, setTag] = useState("")
-    const [tags, setTags] = useState([])
+    const [tags, setTags] = useState(initialTags)
     const [tagNames, setTagNames] = useState([])
 
     const imgfileName = image ? image.name : initialRptimgUrl;
@@ -27,7 +27,8 @@ function PostEditor({initialTitle, initialContent, initialRptimgUrl, onSubmit}){
     useEffect(() => {
         setTitle(initialTitle)
         setContent(initialContent)
-    }, [initialTitle, initialContent])
+        setTags(initialTags)
+    }, [initialTitle, initialContent, initialTags])
 
     useEffect(()=>{
         console.log("EFFECT", tags)

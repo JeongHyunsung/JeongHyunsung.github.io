@@ -58,15 +58,26 @@ router.get('/get/tag', async (req, res, next) => {
 
 })
 
-router.post('/post/addpost', (req, res, next)=>{
+router.get('/get/tagsinpost', async (req, res, next)=>{
+  const post_id = req.query.post_id
+  try{
+    const {rows} = await pool.query('SELECT tid FROM post_tag WHERE pid = $1', [post_id])
+    res.json(rows)
+  }
+  catch(error){
+    console.log(error)
+  }
+})
+
+router.post('/post/addpost', async (req, res, next)=>{
   const {title, content, imgurl} = req.body
-  pool.query('INSERT INTO "posts"("title", "content", "upload_date", "image_location", "is_blog") VALUES($1, $2, now()::timestamp, $3, \'\\000\');',
-    [ title, content, imgurl ], 
-    (q_err, q_res) => {
-      if (q_err) return next(q_err);
-      res.json(req.rows);
-    }
-  )
+  try{
+    const {rows} = await pool.query('INSERT INTO "posts"("title", "content", "upload_date", "image_location", "is_blog") VALUES($1, $2, now()::timestamp, $3, \'\\000\') RETURNING pid;', [ title, content, imgurl ])
+    const pid = rows[0].pid;
+    res.status(201).json({message: "Successfully added", pid})}
+  catch(error){
+    res.status(500).json({error: error})
+  }
 })
 
 router.post('/post/editpost', (req, res, next)=>{
@@ -105,6 +116,17 @@ router.post('/post/tag', async (req, res, next)=>{
   }
 })
 
+router.post('/post/posttagrel', async (req, res, next)=>{
+  const {pid, tid} = req.body;
+  try{
+    await pool.query('INSERT INTO post_tag(pid, tid) VALUES($1, $2)', [pid, tid])
+    return res.status(200).json({nessage: "Success"})
+  }
+  catch(error){
+    return res.status(500).json({error: error})
+  }
+})
+
 router.delete('/delete/post/:pid', (req, res, next)=>{
   const pid = req.params.pid;
   pool.query('DELETE FROM "posts" WHERE pid = $1', 
@@ -114,5 +136,16 @@ router.delete('/delete/post/:pid', (req, res, next)=>{
       res.json({message: "Post deleted successfully"});
     }
   )
+})
+
+router.delete('/delete/resettagsinpost/:pid', async (req, res, next)=>{
+  const pid = req.params.pid;
+  try{
+    await pool.query('DELETE FROM "post_tag" WHERE pid = $1', [pid])
+    res.status(200).json({ message: `Deleted tags for post with pid ${pid}`});
+  }
+  catch(error){
+    res.status(500).json({error: "Server Error"})
+  }
 })
 module.exports = router
