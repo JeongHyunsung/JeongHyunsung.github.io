@@ -20,13 +20,44 @@
     width: 5rem;
 }
 
-.tags-input{
+.tag{
+    width: auto;
     height: 1rem;
-    padding: 1rem;
+    padding: 0.2rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 0.6rem;
 }
 
 .input-placeholder{
     font-weight: 500;
+}
+
+.tag-input{
+    width: 4rem;
+}
+
+.tagname{
+    position: relative;
+    top: 0.1rem;
+}
+
+.tag-button{
+    position:relative;
+    left: 0.8rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 0.5rem;
+}
+
+.icon-editor{
+    width: 0.9rem;
+    height: 0.9rem;
+}
+
+.x{
+    width: 0.6rem;
+    height: 0.6rem;
 }
 
 .rc-md-editor.editor{

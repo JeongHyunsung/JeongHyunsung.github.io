@@ -14,7 +14,7 @@ import history from '../utils/history'
 function AddPost(){
     const navigate = useNavigate();
 
-    const handleSubmit = (data)=>{
+    const handleSubmit = (data, tags)=>{
         axios.post('/api/post/addpost', data)
             .then(response =>{
                 console.log(response);
@@ -26,6 +26,7 @@ function AddPost(){
         <PostEditor
             initialTitle=""
             initialContent=""
+            initialRptimgUrl=""
             onSubmit={handleSubmit}
         />
     )

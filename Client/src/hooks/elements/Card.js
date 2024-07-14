@@ -23,10 +23,9 @@ function Card({pid, title, content, imloc, rto}){
         }}
         onMouseOver={()=>{setIsover(true)}}
         onMouseLeave={()=>{setIsover(false)}}>
-        <div className= "card-content w-6px d-flex-c d-ac">
+        <div className= "card-content w-6px d-flex-c g-05r d-ac">
           <img className = "w-100 r-smooth-05" src={imloc}/>
           <h1>{title}</h1>
-          <p>{content}</p>
         </div>
         
       </Link>

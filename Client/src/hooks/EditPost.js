@@ -15,13 +15,13 @@ import PostEditor from './elements/PostEditor';
 function EditPost(){
     const navigate = useNavigate()
     const params = useParams()
-    const [post, setPost] = useState({title:"", content:""})
+    const [post, setPost] = useState({title:"", content:"", imgurl:""})
 
     useEffect(()=>{
         const fetchData = async () => {
             try{
                 const res = await axios.get('/api/get/post', {params: {post_id: params.pid}})
-                setPost({title: res.data.rows[0].title, content: res.data.rows[0].content})
+                setPost({title: res.data.rows[0].title, content: res.data.rows[0].content, imgurl: res.data.rows[0].image_location})
             }
                 catch(error){
                 console.error("Error fetching post", error)
@@ -31,7 +31,7 @@ function EditPost(){
     }, [params.pid])
         
 
-    const handleSubmit = (data)=>{
+    const handleSubmit = (data, tags)=>{
         data.pid = params.pid
         axios.post('/api/post/editpost', data)
             .then(response =>{
@@ -45,6 +45,7 @@ function EditPost(){
         <PostEditor
             initialTitle={post.title}
             initialContent={post.content}
+            initialRptimgUrl={post.imgurl}
             onSubmit={handleSubmit}
         />
     )

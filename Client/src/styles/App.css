@@ -142,6 +142,9 @@ hr{
 .g-1r{
   gap: 1rem;
 }
+.g-05r{
+  gap: 0.5rem;
+}
 
 /* position-section */
 .p-abs{
