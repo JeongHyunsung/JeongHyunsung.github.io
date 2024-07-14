@@ -3,7 +3,7 @@ import '../../styles/editor.css'
 import '../../styles/markdown.css'
 
 import 'react-markdown-editor-lite/lib/index.css'
-import 'highlight.js/styles/default.css'
+import '../../styles/dracula.css'
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'

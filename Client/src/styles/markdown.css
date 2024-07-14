@@ -11,8 +11,21 @@
 .markdown pre{
     width: 90%;
     align-self: center;
-    background-color: #1F2833;
     margin-top: 1rem;
     margin-bottom: 1rem;
     border-radius: 1rem;
+}
+
+.markdown ::-webkit-scrollbar {
+    width: 8px; 
+}
+
+.markdown ::-webkit-scrollbar-track {
+    background: #0B0C10;
+    border-radius: 0.4rem;
+}
+
+.markdown ::-webkit-scrollbar-thumb {
+    background-color: #1F2833;
+    border-radius: 0.4rem;
 }
