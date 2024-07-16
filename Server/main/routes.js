@@ -16,30 +16,46 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 
-router.get('/get/post', (req, res, next) => {
+router.get('/get/post', async (req, res, next) => {
     const post_id = req.query.post_id
+    try{
+      let q_res;
+      if(post_id >= 1){
+        const result = await pool.query(`SELECT * FROM "posts" WHERE pid=$1`, [ post_id ])
+        q_res = result
+      }
+      else{
+        const result = await pool.query(`SELECT * FROM posts`)
+        q_res = result
+      }
+      return res.json(q_res)
+    }
+    catch(error){
+      return res.status(500).json({error: 'Server error when get post from db', error})
+    }
+})
+
+router.get('/get/briefpost', async (req, res, next) => {
+  const post_id = req.query.post_id
+  try{
+    let q_res;
     if(post_id >= 1){
-      pool.query(`SELECT * FROM "posts"
-        WHERE pid=$1`, [ post_id ],
-        (q_err, q_res) => {
-          console.log(q_err, q_res);
-          res.json(q_res);
-        }
-      )
+      const result = await pool.query(`SELECT title, image_location FROM "posts" WHERE pid=$1`, [ post_id ])
+      q_res = result
     }
     else{
-      pool.query(`SELECT * FROM posts`,
-        (q_err, q_res) => {
-          console.log(q_err, q_res);
-          res.json(q_res);
-        }
-      )
+      const result = await pool.query(`SELECT title, image_location FROM posts`)
+      q_res = result
     }
+    return res.json(q_res)
+  }
+  catch(error){
+    return res.status(500).json({error: 'Server error when get post(brief) from db', error})
+  }
 })
 
 router.get('/get/tag', async (req, res, next) => {
   const tag_id = req.query.tid
-
   try{
     let q_res;
     if(tag_id >= 1){
@@ -50,23 +66,33 @@ router.get('/get/tag', async (req, res, next) => {
       const result = await pool.query('SELECT * FROM tags');
       q_res = result
     }
-    res.json(q_res);
+    return res.json(q_res);
   }
   catch(error){
-    res.status(500).json({error: 'Server error'})
+    return res.status(500).json({error: 'Server error when get tag from db', error})
   }
-
 })
 
 router.get('/get/tagsinpost', async (req, res, next)=>{
   const post_id = req.query.post_id
   try{
     const {rows} = await pool.query('SELECT tid FROM post_tag WHERE pid = $1', [post_id])
-    res.json(rows)
+    return res.json(rows)
   }
   catch(error){
-    console.log(error)
+    return res.status(500).json({error: 'Server error when get tags in post from db', error})
   }
+})
+
+router.get('/get/searchresult', async (req, res, next)=>{
+  const search_props = req.query.search;
+  const sort_props = req.query.sort; 
+  const query = 'SELECT pid FROM posts' 
+  if 여기부터 하면 댐
+  try{
+
+  }
+
 })
 
 router.post('/post/addpost', async (req, res, next)=>{
@@ -74,21 +100,21 @@ router.post('/post/addpost', async (req, res, next)=>{
   try{
     const {rows} = await pool.query('INSERT INTO "posts"("title", "content", "upload_date", "image_location", "is_blog") VALUES($1, $2, now()::timestamp, $3, \'\\000\') RETURNING pid;', [ title, content, imgurl ])
     const pid = rows[0].pid;
-    res.status(201).json({message: "Successfully added", pid})}
+    return res.status(201).json({message: 'Success add post', pid})}
   catch(error){
-    res.status(500).json({error: error})
+    return res.status(500).json({error: 'Server error when add post to db', error})
   }
 })
 
-router.post('/post/editpost', (req, res, next)=>{
+router.post('/post/editpost', async (req, res, next)=>{
   const {title, content, imgurl, pid} = req.body
-  pool.query('UPDATE "posts" SET "title" = $1, "content" = $2, "image_location" = $3 WHERE pid = $4;',
-    [ title, content, imgurl, pid ], 
-    (q_err, q_res) => {
-      if (q_err) return next(q_err);
-      res.json(req.rows);
-    }
-  )
+  try{
+    await pool.query('UPDATE "posts" SET "title" = $1, "content" = $2, "image_location" = $3 WHERE pid = $4;',[ title, content, imgurl, pid ])
+    return res.status(200).json({message: 'Success edit post'})
+  }
+  catch(error){
+    return res.status(500).json({error: 'Server error when edit post to db', error})
+  }
 })
 
 router.post('/post/image', upload.single('file'), (req, res, next)=>{
@@ -103,16 +129,15 @@ router.post('/post/tag', async (req, res, next)=>{
     if(rows.length === 0){
       result = await pool.query('INSERT INTO tags(tag_name) VALUES($1) RETURNING tid;', [tagname]);
       const tid = result.rows[0].tid;
-      return res.status(201).json({message: 'Successfully Added', tid})
+      return res.status(201).json({message: 'Success add tag', tid})
     }
     else{
       const tid = rows[0].tid;
-      return res.status(200).json({message: 'Aleady Exists', tid});
+      return res.status(200).json({message: 'Success : tag aleady exists', tid});
     }
-    
   }
   catch(error){
-    return res.status(500).json({error: "Error"});
+    return res.status(500).json({error: 'Server error when add tag to db', error});
   }
 })
 
@@ -120,32 +145,32 @@ router.post('/post/posttagrel', async (req, res, next)=>{
   const {pid, tid} = req.body;
   try{
     await pool.query('INSERT INTO post_tag(pid, tid) VALUES($1, $2)', [pid, tid])
-    return res.status(200).json({nessage: "Success"})
+    return res.status(201).json({message: 'Success add post-tag relation'})
   }
   catch(error){
-    return res.status(500).json({error: error})
+    return res.status(500).json({error: 'Server error when add post-tag relation to db'})
   }
 })
 
-router.delete('/delete/post/:pid', (req, res, next)=>{
+router.delete('/delete/post/:pid', async (req, res, next)=>{
   const pid = req.params.pid;
-  pool.query('DELETE FROM "posts" WHERE pid = $1', 
-    [pid],
-    (q_err, q_res) => {
-      if (q_err) return next(q_err);
-      res.json({message: "Post deleted successfully"});
-    }
-  )
+  try{
+    await pool.query('DELETE FROM "posts" WHERE pid = $1', [pid])
+    return res.status(200).json({message: 'Success delete post'})
+  }
+  catch(error){
+    return res.status(500).json({error: 'Server error when delete post from db', error})
+  }
 })
 
 router.delete('/delete/resettagsinpost/:pid', async (req, res, next)=>{
   const pid = req.params.pid;
   try{
     await pool.query('DELETE FROM "post_tag" WHERE pid = $1', [pid])
-    res.status(200).json({ message: `Deleted tags for post with pid ${pid}`});
+    return res.status(200).json({message: 'Success delete tags in post'});
   }
   catch(error){
-    res.status(500).json({error: "Server Error"})
+    return res.status(500).json({error: "Server Error when delete tags in post"})
   }
 })
 module.exports = router

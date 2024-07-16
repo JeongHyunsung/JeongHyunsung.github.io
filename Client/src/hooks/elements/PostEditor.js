@@ -31,7 +31,6 @@ function PostEditor({initialTitle, initialContent, initialRptimgUrl, initialTags
     }, [initialTitle, initialContent, initialTags])
 
     useEffect(()=>{
-        console.log("EFFECT", tags)
         const fetchTagNames = async()=>{
             try{
                 const res = await Promise.all(tags.map(value=>{
@@ -53,12 +52,17 @@ function PostEditor({initialTitle, initialContent, initialRptimgUrl, initialTags
     const uploadImage = async (file)=>{
         const formData = new FormData()
         formData.append('file', file)
-        const res = await axios.post('/api/post/image', formData)
-        return res.data.url
+        try{
+            const res = await axios.post('/api/post/image', formData)
+            return res.data.url
+        }
+        catch(error){
+            console.error("Failed to upload image")
+            return ""
+        }
     }
     const handleImageUpload = async (file)=>{
         const imgurl = await uploadImage(file)
-        console.log(imgurl)
         return imgurl
     }
     const handleContentChange = ({html, text}) =>{
@@ -78,11 +82,16 @@ function PostEditor({initialTitle, initialContent, initialRptimgUrl, initialTags
         setTags(prevTags => prevTags.filter(tag_id=> tag_id !== tid));
     }
     const handleTagSubmit = async ()=>{
-        const res = await axios.post('/api/post/tag', {tagname: tag})
-        if(!tags.includes(res.data.tid)){
-            setTags([...tags, res.data.tid])
+        try{
+            const res = await axios.post('/api/post/tag', {tagname: tag})
+            if(!tags.includes(res.data.tid)){
+                setTags([...tags, res.data.tid])
+            }
+            setTag("")
         }
-        setTag("")
+        catch(error){
+            console.error("Failed to add tag")
+        }   
     }
     
     const handleSubmit = async (event)=>{

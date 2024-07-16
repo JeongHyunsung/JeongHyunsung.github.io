@@ -22,11 +22,54 @@ function Post() {
     pid: undefined,
     title: '',
     content: '',
+    tags: [],
     upload_date: undefined,
     image_location: undefined,
     is_blog: undefined,
     fetched: false
   });
+  const [tagNames, setTagNames] = useState([])
+
+  useEffect(()=>{
+    const fetchTagNames = async()=>{
+      try{
+        const res = await Promise.all(post.tags.map(value=>{
+          return axios.get(`/api/get/tag`, {params: {tid: value}})
+        }))
+        const names = res.map(r=>[r.data.rows[0].tid, r.data.rows[0].tag_name])
+        setTagNames(names);
+      }
+      catch(error){console.error("Failed to fetch tag names")}}
+    if(post.tags.length > 0){
+      fetchTagNames()
+    }
+    else{
+      setTagNames([])
+    }
+  }, [post.tags])
+
+  useEffect(() => {
+    const fetchPost = async() =>{
+      try{
+        const res = await axios.get('/api/get/post', { params: { post_id: params.pid } })
+        const res_tags = await axios.get('/api/get/tagsinpost', {params: {post_id: params.pid}})
+        setPost({
+          pid: res.data.rows[0].pid,
+          title: (res.data.rows[0].title)?res.data.rows[0].title:"",
+          content: (res.data.rows[0].content)?res.data.rows[0].content:"",
+          tags: res_tags.data.map(value=>{return value.tid}),
+          upload_date: res.data.rows[0].upload_date,
+          image_location: res.data.rows[0].image_location,
+          is_blog: res.data.rows[0].is_blog,
+          fetched: true
+        });
+      }
+      catch(error){
+        console.log(error)
+      }
+    }
+    fetchPost()
+  }, [post.pid]);
 
   const handleEdit = ()=>{
     navigate('/editpost/'+post.pid)
@@ -41,26 +84,6 @@ function Post() {
       console.log(error)
     }
   }
-
-  useEffect(() => {
-    
-    axios.get('/api/get/post', { params: { post_id: params.pid } })
-      .then(res => {
-        setPost({
-          pid: res.data.rows[0].pid,
-          title: (res.data.rows[0].title)?res.data.rows[0].title:"",
-          content: (res.data.rows[0].content)?res.data.rows[0].content:"",
-          upload_date: res.data.rows[0].upload_date,
-          image_location: res.data.rows[0].image_location,
-          is_blog: res.data.rows[0].is_blog,
-          fetched: true
-        });
-        console.log(res.data.rows[0].image_location)
-      })    
-      .catch(err => console.log(err));
-      
-  }, []);
-
   return (
     <div>
       {post.fetched &&
@@ -68,6 +91,15 @@ function Post() {
           <div className="post d-flex-c">
             <hr className="c-bgr w-100"></hr>
             <h1>{post.title}</h1>
+            <div className="d-asfs d-flex-r d-flex-wrap g-05r">
+              {tagNames.map(([_, tagname], index)=>{
+                return(
+                  <div className="tag c-bdb d-flex-r d-jsb d-ac t-s t-reg" key={index.toString()}>
+                    <p className="tagname c-wh t-s t-spacing-small">{tagname}</p>
+                  </div>
+                )
+              })}
+            </div>
             <p>{post.upload_date.substring(0, 10)}</p>
             <div className="d-flex-r g-1r">
               <button className = "post-button c-bwh c-ddb" onClick={handleEdit}>Edit</button>
@@ -77,8 +109,6 @@ function Post() {
             <hr className="w-100"></hr>
             <div className="markdown" dangerouslySetInnerHTML={{ __html: mdParser.render(post.content) }} />
           </div>
-          
-        
         </React.Fragment>
       }
     </div>

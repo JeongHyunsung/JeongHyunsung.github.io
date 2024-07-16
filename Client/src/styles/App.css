@@ -1,6 +1,5 @@
 
 :root{
-  --col-ddb:
   --col-db:#1F2833;
   --col-gr:#C5C6C7;
   --col-lb:#66FCF1;
@@ -31,7 +30,7 @@
   color: var(--col-mb);
 }
 .c-wh{
-  color: var(--col-);
+  color: var(--col-wh);
 }
 .c-bddb{
   background-color: var(--col-ddb);
@@ -84,6 +83,9 @@ hr{
 .t-bb{
   font-size: 2rem;
 }
+.t-b{
+  font-size: 1.1rem;
+}
 .t-s{
   font-size: 0.9rem;
 }
@@ -92,6 +94,9 @@ hr{
 }
 .t-spacing{
   letter-spacing: 0.2rem;
+}
+.t-spacing-small{
+  letter-spacing: 2px;
 }
 .t-light{
   font-weight: 400;
@@ -133,6 +138,9 @@ hr{
 }
 .d-jc{
   justify-content: center;
+}
+.d-asfs{
+  align-self: flex-start;
 }
 
 /* Gap */
@@ -329,11 +337,14 @@ a{
   border-radius: 0.7rem;
 }
 
-.posteditor{
-  margin-top: 4rem;
+.tag{
+  width: auto;
+  height: 1rem;
+  padding: 0.2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-radius: 0.6rem;
 }
-
-
 
 
 

@@ -26,19 +26,25 @@ function Blog(){
     const columns = Array.from({length: num_columns}, () => 0)
     const [dbPost, setDbPost] = useState([])
     useEffect(() => {
-        console.log('yyyy')
-        axios.get('/api/get/post', {params: {post_id: -1}})
-          .then(res => {
-            let newData = res.data.rows.map(row=>({
-              pid: row.pid,
-              title: row.title,
-              content: row.content,
-              upload_date: row.upload_date,
-              image_location: row.image_location,
-              is_blog: row.is_blog
-            }))
-            setDbPost(newData)
-            }).catch((err) => console.log(err) )}, [])
+        const fetchBlogPosts = async()=>{
+            try{
+                const res = await axios.get('/api/get/post', {params: {post_id: -1}})
+                let newData = res.data.rows.map(row=>({
+                    pid: row.pid,
+                    title: row.title,
+                    content: row.content,
+                    upload_date: row.upload_date,
+                    image_location: row.image_location,
+                    is_blog: row.is_blog
+                }))
+                setDbPost(newData)
+            }
+            catch(error){
+                console.log(error)
+            }
+        }
+        fetchBlogPosts()
+    }, [])
     return (
         <div className="d-flex-c">
             <h1 className="t-bbb t-reg">BLOG</h1>

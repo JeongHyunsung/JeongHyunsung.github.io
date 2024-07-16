@@ -20,15 +20,6 @@
     width: 5rem;
 }
 
-.tag{
-    width: auto;
-    height: 1rem;
-    padding: 0.2rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    border-radius: 0.6rem;
-}
-
 .input-placeholder{
     font-weight: 500;
 }
@@ -40,6 +31,10 @@
 .tagname{
     position: relative;
     top: 0.1rem;
+}
+
+.posteditor{
+    margin-top: 4rem;
 }
 
 .tag-button{

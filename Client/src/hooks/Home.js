@@ -93,7 +93,7 @@ function Home(){
               {dbPost.filter((_, j)=>{
                 if(j % num_columns == i) return true
                 else return false
-              }).map((data, k)=>{return (<Card key={data.pid} pid={data.pid} title={data.title} content={data.content} imloc={data.image_location}/>)})}
+              }).map((data, k)=>{return (<Card key={data.pid} pid={data.pid}/>)})}
             </div>)
           })}
         </div>
