@@ -1,5 +1,6 @@
 
 :root{
+  --col-ddb:#0B0C10;
   --col-db:#1F2833;
   --col-gr:#C5C6C7;
   --col-lb:#66FCF1;
@@ -285,27 +286,8 @@ a{
   gap: 32px;
 }
 
-.container-card{
-  height: auto;
-  justify-content: space-between;
-  align-items: top;
-}
 
-.column-card{
-  width: 30%;
-  height: 100%;
-  gap: 16px;
-}
 
-.card{
-  transition: transform 0.3s cubic-bezier(0, 0.4, 0.6, 1);
-  gap: 10px;
-}
-
-.card-content{
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
 
 .Foot{
   margin-top: 100px;

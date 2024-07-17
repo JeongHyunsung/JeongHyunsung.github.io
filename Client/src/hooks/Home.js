@@ -9,7 +9,7 @@ import { useAuth0 } from "@auth0/auth0-react"
 
 import { useMediaQuery } from "react-responsive"
 
-import Card from "./elements/Card"
+import SearchResult from './elements/SearchResult'
 
 function Home(){
   console.log("Rendered")
@@ -26,7 +26,6 @@ function Home(){
 
   const columns = Array.from({length: num_columns}, () => 0)
 
-  const [dbPost, setDbPost] = useState([])
   const [isOver, setIsOver] = useState(false)
   const [effectBall, setEffectBall] = useState({x:0, y:0})
   const am_1 = "bigger 0.3s cubic-bezier(0, 0.4, 0.6, 1) forwards"
@@ -45,22 +44,6 @@ function Home(){
   const handleLeave = (e)=>{
     setIsOver(false)
   }
-
-  useEffect(() => {
-    console.log('yyyy')
-    axios.get('/api/get/post', {params: {post_id: -1}})
-      .then(res => {
-        let newData = res.data.rows.map(row=>({
-          pid: row.pid,
-          title: row.title,
-          content: row.content,
-          upload_date: row.upload_date,
-          image_location: row.image_location,
-          is_blog: row.is_blog
-        }))
-        setDbPost(newData)
-      }).catch((err) => console.log(err) )}, [])
-
   return(
     <div className="Home d-flex-c">
       <div className={topClassName}>
@@ -84,19 +67,10 @@ function Home(){
         </Link>
       </div>
       
-      <div className="recent-works d-flex-c text-spc">
-        <hr className="c-bgr w-100"></hr>
+      <div className="recent-works d-flex-c">
+        <hr className="c-bgr w-100"/>
         <h2 className="t-spacing c-wh t-bb t-light">Recent Posts</h2>
-        <div className="container-card d-flex-r">
-          {columns.map((_, i)=>{
-            return (<div key={i} className="column-card d-flex-c" style={{width: wdh}}>
-              {dbPost.filter((_, j)=>{
-                if(j % num_columns == i) return true
-                else return false
-              }).map((data, k)=>{return (<Card key={data.pid} pid={data.pid}/>)})}
-            </div>)
-          })}
-        </div>
+        <SearchResult condition={{search: {}, sort: {field: "upload_date", order: "desc"}}}/>
       </div>
     </div>
   )

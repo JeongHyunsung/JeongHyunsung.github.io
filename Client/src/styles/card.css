@@ -1,0 +1,31 @@
+:root{
+    --col-ddb:#0B0C10;
+    --col-db:#1F2833;
+    --col-gr:#C5C6C7;
+    --col-lb:#66FCF1;
+    --col-mb:#45A29E;
+    --col-wh:#FFFFFF;
+}
+
+.masonry-grid {
+    display: flex;
+    gap: 20px;
+    width: auto;
+}
+  
+.masonry-grid_column {
+    background-clip: padding-box;
+}
+
+.card{
+    flex: 1 1 250px;
+    margin-bottom: 20px;
+    transition: transform 0.3s cubic-bezier(0, 0.4, 0.6, 1);
+    gap: 10px;
+    overflow: hidden;
+}
+  
+.card-content{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

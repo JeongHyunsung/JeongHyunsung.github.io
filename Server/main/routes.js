@@ -85,14 +85,37 @@ router.get('/get/tagsinpost', async (req, res, next)=>{
 })
 
 router.get('/get/searchresult', async (req, res, next)=>{
-  const search_props = req.query.search;
-  const sort_props = req.query.sort; 
-  const query = 'SELECT pid FROM posts' 
-  if 여기부터 하면 댐
-  try{
-
+  /* SQL injection 취약 */
+  console.log(req.query)
+  const search = req.query.search;
+  const sort = req.query.sort; 
+  console.log(search, sort)
+  let query = 'SELECT pid FROM posts' 
+  if(search){
+    query += ' WHERE'
+    if(search.startdate && search.enddate){
+      query += ` upload_date >= '${search.startdate}' AND upload_date <= '${search.enddate}'`
+    }
+    if(search.title){
+      if(search.startdate && search.enddate){
+        query += ' AND'
+      }
+      query += ` title ILIKE '%${search.title}%'`
+    }
   }
-
+  if(sort && sort.field && sort.order){
+    query += ` ORDER BY ${sort.field} ${sort.order.toUpperCase()}`
+  }
+  else{
+    query += ' ORDER BY pid'
+  }
+  try{
+    const {rows} = await pool.query(query)
+    return res.json(rows)
+  }
+  catch(error){
+    return res.status(500).json({error: 'Server error when get post search result from db', error})
+  }
 })
 
 router.post('/post/addpost', async (req, res, next)=>{
