@@ -29,7 +29,8 @@ function SearchResult({condition}){
     /* db 전체 가져올 필요 없고, 특정 조건에 해당하는 포스트의 pid 만 http request 로 가져오면 됨 */
     /* condition 은 {search: {startdate: enddate: title: tag:[]}, sort{field: order: }} 형태임 */
     useEffect(()=>{
-        /* pids, tags update */
+        /* pids, tags update selectedTags initialization*/
+        setSelectedTags([])
         const getSearchResultPids = async ()=>{
             try{
                 const res = await axios.get('/api/get/searchresult', { params: condition });
@@ -48,10 +49,17 @@ function SearchResult({condition}){
         const getVisualPids = async ()=>{
             try{
                 if(selectedTags.length){
-                    const res = await axios.get('/api/get/tidstopids', { params: {tids: tags}})
-
-                    교집합 구하는거 여기서부터 하면댐 
-                    setVisualPids(res.data.map(value=>{return value.pid}))
+                    const res = await axios.get('/api/get/tidstopids', { params: {tids: selectedTags}})
+                    const pidsetfromtid = new Set(res.data.map(value=>{return value.pid}))
+                    const pidsetfromcdt = new Set(pids)
+                    console.log(pidsetfromcdt, pidsetfromtid)
+                    const result = []
+                    for(let elem of pidsetfromtid){
+                        if(pidsetfromcdt.has(elem)){
+                            result.push(elem)
+                        }
+                    }
+                    setVisualPids(result)
                 }
                 else{
                     setVisualPids(pids)
@@ -80,13 +88,28 @@ function SearchResult({condition}){
         }
     }, [tags])
 
+    const handleTagClicked = (tid)=>{
+        if(selectedTags.includes(tid)){
+            const updatedArray = selectedTags.filter(element => element !== tid);
+            setSelectedTags(updatedArray);
+        }
+        else{
+            setSelectedTags([...selectedTags, tid])
+        }
+        
+    }
 
     return(
         <React.Fragment>
             <div className="searchresult-tags-container w-100 d-asfs d-flex-r d-flex-wrap g-05r">
-                {tagNames.map(([_, tagname], index)=>{
+                {tagNames.map(([tid, tagname], index)=>{
                 return(
-                    <div className="tag c-bdb d-flex-r d-ac t-s t-reg" key={index.toString()}>
+                    <div
+                        className="tag cur-pt c-bdb d-flex-r d-ac t-s t-reg"
+                        key={index.toString()}
+                        
+                        style={{backgroundColor: (selectedTags.includes(tid))?"var(--col-mb)":"var(--col-db)"}}
+                        onClick={()=>{handleTagClicked(tid)}}>
                         <p className="tagname c-wh t-s t-spacing-small">{tagname}</p>
                     </div>
                     )
@@ -95,8 +118,7 @@ function SearchResult({condition}){
             <Masonry
                 breakpointCols={breakpointColumnsObj}
                 className="masonry-grid"
-                columnClassName="masonry-grid_column"
-            >
+                columnClassName="masonry-grid_column">
                 {visualPids.map((value)=>{
                     return(<Card key = {value} pid = {value}/>)
                 })}
