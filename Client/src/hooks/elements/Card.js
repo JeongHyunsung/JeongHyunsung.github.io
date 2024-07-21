@@ -36,47 +36,44 @@ function Card({pid}){
       }
     }, [post.tags])
     
-    useEffect(()=>{
-      const fetchData = async () => {
-        try{
-          const res = await axios.get('/api/get/briefpost', {params: {post_id: pid}})
-          const res_tags = await axios.get('/api/get/tagsinpost', {params: {post_id: pid}})
-          setPost({
-            title: res.data.rows[0].title,
-            imgurl: res.data.rows[0].image_location,
-            tags: res_tags.data.map(value=>{return value.tid})})
-          }
-          catch(error){console.error("Error fetching post in Card", error)}
-      }
-      fetchData()
-    }, [pid])
-
-    
-    
-    return(
-      <Link
-        to = {"/post/"+pid}
-        className="card d-flex-c d-ac p-rel r-smooth-05 c-bdb c-wh cur-pt" 
-        style={{animation: (isover)?am_1:am_2,
-                transform: (isover)?"translateY(-5px)":"none",
-        }}
-        onMouseOver={()=>{setIsover(true)}}
-        onMouseLeave={()=>{setIsover(false)}}>
-        <div className= "card-content w-6px d-flex-c g-05r d-ac">
-          <img className = "w-100 r-smooth-05" src={post.imgurl}/>
-          <h1 className = "t-heavy">{post.title}</h1>
-          <div className="d-asfs d-flex-r d-flex-wrap g-05r">
-            {tagNames.map(([_, tagname], index)=>{
-              return(
-                <div className="tag c-bddb d-flex-r d-ac t-s t-reg" key={index.toString()}>
-                  <p className="tagname c-wh t-s t-spacing-small">{tagname}</p>
-                </div>
-              )
-            })}
-          </div>
+  useEffect(()=>{
+    const fetchData = async () => {
+      try{
+        const res = await axios.get('/api/get/briefpost', {params: {post_id: pid}})
+        const res_tags = await axios.get('/api/get/tagsinpost', {params: {post_id: pid}})
+        setPost({
+          title: res.data.rows[0].title,
+          imgurl: res.data.rows[0].image_location,
+          tags: res_tags.data.map(value=>{return value.tid})})
+        }
+        catch(error){console.error("Error fetching post in Card", error)}
+    }
+    fetchData()
+  }, [pid])
+  return(
+    <Link
+      to = {"/post/"+pid}
+      className="card d-flex-c d-ac p-rel r-smooth-05 c-bdb c-wh cur-pt" 
+      style={{animation: (isover)?am_1:am_2,
+              transform: (isover)?"translateY(-5px)":"none",
+      }}
+      onMouseOver={()=>{setIsover(true)}}
+      onMouseLeave={()=>{setIsover(false)}}>
+      <div className= "card-content w-6px d-flex-c g-05r d-ac">
+        <img className = "w-100 r-smooth-05" src={post.imgurl}/>
+        <h1 className = "t-heavy">{post.title}</h1>
+        <div className="d-asfs d-flex-r d-flex-wrap g-05r">
+          {tagNames.map(([_, tagname], index)=>{
+            return(
+              <div className="tag c-bddb d-flex-r d-ac t-s t-reg" key={index.toString()}>
+                <p className="tagname c-wh t-s t-spacing-small">{tagname}</p>
+              </div>
+            )
+          })}
         </div>
-      </Link>
-    )
+      </div>
+    </Link>
+  )
 }
 
 export default Card

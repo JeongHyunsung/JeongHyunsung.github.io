@@ -1,0 +1,50 @@
+.condition-selector{
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+  
+.search-title-input{
+    background-color: var(--col-db);
+    color: var(--col-wh);
+    width: 14rem;
+    height: 1.2rem;
+    border-radius: 0.6rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+  
+.search-date-input{
+    background-color: var(--col-db);
+    color: var(--col-wh); 
+    width: 14rem;
+}
+  
+.search-date-input::-webkit-calendar-picker-indicator{
+    filter: invert(1);
+}
+
+.sort-field-input{
+    background-color: var(--col-db);
+    color: var(--col-wh);
+
+}
+
+.sort-container{
+    width: 14rem;
+    
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+  
+.sort-icon{
+    width: 0.9rem;
+    height: 0.9rem;
+}
+
+.search-box-rect{
+    width: 2px;
+    height: 8rem;
+    border-radius: 1px;
+    background-color: var(--col-wh);
+    opacity: 0.3;
+}

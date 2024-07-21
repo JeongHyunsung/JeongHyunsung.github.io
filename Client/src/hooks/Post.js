@@ -77,8 +77,11 @@ function Post() {
 
   const handleDelete = async ()=>{
     try{
-      await axios.delete('/api/delete/post/'+params.pid)
-      navigate('/blog')
+      const confirmed = window.confirm("정말로 이 포스트를 삭제하시겠습니까?");
+      if (confirmed) {
+        await axios.delete('/api/delete/post/' + params.pid);
+        navigate('/blog');
+      }
     }
     catch(error){
       console.log(error)

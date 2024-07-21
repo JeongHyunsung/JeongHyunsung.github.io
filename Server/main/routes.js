@@ -84,23 +84,47 @@ router.get('/get/tagsinpost', async (req, res, next)=>{
   }
 })
 
+router.get('/get/pidstotids', async (req, res, next)=>{
+  const pids = req.query.pids
+  try{
+    const {rows} = await pool.query(`SELECT DISTINCT tid FROM post_tag WHERE pid = ANY($1)`, [pids])
+    console.log(rows)
+    return res.json(rows)
+  }
+  catch(error){
+    return res.status(500).json({error: 'Server error when get tids from db', error})
+  }
+})
+
+router.get('/get/tidstopids', async (req, res, next)=>{
+  const tids = req.query.tids
+  try{
+    const {rows} = await pool.query(`SELECT DISTINCT pid FROM post_tag WHERE tid = ANY($1)`, [tids])
+    return res.json(rows)
+  }
+  catch(error){
+    return res.status(500).json({error: 'Server error when get pids from db', error})
+  }
+})
+
 router.get('/get/searchresult', async (req, res, next)=>{
   /* SQL injection 취약 */
-  console.log(req.query)
   const search = req.query.search;
-  const sort = req.query.sort; 
-  console.log(search, sort)
+  const sort = req.query.sort;
+  const queryParams = [];
   let query = 'SELECT pid FROM posts' 
   if(search){
-    query += ' WHERE'
+    const conditions = [];
     if(search.startdate && search.enddate){
-      query += ` upload_date >= '${search.startdate}' AND upload_date <= '${search.enddate}'`
+      conditions.push(`upload_date >= TO_TIMESTAMP($${queryParams.length + 1}, 'YYYY-MM-DD') AND upload_date <= TO_TIMESTAMP($${queryParams.length + 2}, 'YYYY-MM-DD HH:MI:SS PM')`);
+      queryParams.push(search.startdate, search.enddate + ' 11:59:59 PM')
     }
     if(search.title){
-      if(search.startdate && search.enddate){
-        query += ' AND'
-      }
-      query += ` title ILIKE '%${search.title}%'`
+      conditions.push(`title ILIKE $${queryParams.length + 1}`);
+      queryParams.push(`%${search.title}%`);
+    }
+    if (conditions.length > 0) {
+      query += ' WHERE ' + conditions.join(' AND ');
     }
   }
   if(sort && sort.field && sort.order){
@@ -110,7 +134,8 @@ router.get('/get/searchresult', async (req, res, next)=>{
     query += ' ORDER BY pid'
   }
   try{
-    const {rows} = await pool.query(query)
+    console.log(query, queryParams)
+    const {rows} = await pool.query(query, queryParams)
     return res.json(rows)
   }
   catch(error){

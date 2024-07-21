@@ -143,7 +143,6 @@ hr{
 .d-asfs{
   align-self: flex-start;
 }
-
 /* Gap */
 .g-2r{
   gap: 2rem;
@@ -174,7 +173,7 @@ hr{
 .App{
   height: 100vh;
   overflow-y: scroll;
-  min-width: 400px;
+  min-width: 450px;
 }
 
 .Head{
@@ -328,14 +327,10 @@ a{
   border-radius: 0.6rem;
 }
 
-
-
-
-
-
-
-
-
+.searchresult-tags-container{
+  overflow: hidden;
+  transition: height 0.3s ease;
+}
 
 
 

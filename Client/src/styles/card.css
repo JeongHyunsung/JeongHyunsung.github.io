@@ -10,7 +10,7 @@
 .masonry-grid {
     display: flex;
     gap: 20px;
-    width: auto;
+    width: 100%;
 }
   
 .masonry-grid_column {

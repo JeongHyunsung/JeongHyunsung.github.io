@@ -16,15 +16,7 @@ function Home(){
   const isMobile = useMediaQuery({
     query : "(max-width:767px)"
   })
-  const isPc = useMediaQuery({
-    query : "(min-width:1024px)"
-  });
-
-  const num_columns = isMobile?1:(isPc?3:2)
-  const wdh = ((102-(num_columns * 2))/num_columns).toString() + "%"
   const topClassName = isMobile?"w-100 d-flex-c d-ac":"w-100 d-flex-r d-ac d-jsb"
-
-  const columns = Array.from({length: num_columns}, () => 0)
 
   const [isOver, setIsOver] = useState(false)
   const [effectBall, setEffectBall] = useState({x:0, y:0})
