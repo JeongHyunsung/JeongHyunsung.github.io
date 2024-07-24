@@ -1,6 +1,7 @@
 import '../../styles/App.css';
 import '../../styles/card.css';
-import React, { useContext, useState, useEffect } from 'react';
+import '../../styles/editor.css';
+import React, { useContext, useRef, useState, useEffect } from 'react';
 import axios from 'axios'
 
 import Context from '../../utils/context'
@@ -18,8 +19,11 @@ function SearchResult({condition}){
     const [pids, setPids] = useState([])
     const [visualPids, setVisualPids] = useState([])
     const [tags, setTags] = useState([])
-    const [tagNames, setTagNames] = useState([])
     const [selectedTags, setSelectedTags] = useState([])
+    
+    const [containerHeight, setContainerHeight] = useState(0)
+    const containerRef = useRef(null);
+    
     const breakpointColumnsObj = {
         default: 3,
         1100: 2,
@@ -37,7 +41,7 @@ function SearchResult({condition}){
                 setPids(res.data.map(value=>{return value.pid}))
                 
                 const res_tags = await axios.get('/api/get/pidstotids', { params: {pids: res.data.map(value=>{return value.pid})}})
-                setTags(res_tags.data.map(value=>{return value.tid}))
+                setTags(res_tags.data.map(value=>{return [value.tid, value.tag_name, value.tag_count]}))
             }
             catch(error){console.log(error)}
         }
@@ -51,11 +55,9 @@ function SearchResult({condition}){
                 if(selectedTags.length){
                     const res = await axios.get('/api/get/tidstopids', { params: {tids: selectedTags}})
                     const pidsetfromtid = new Set(res.data.map(value=>{return value.pid}))
-                    const pidsetfromcdt = new Set(pids)
-                    console.log(pidsetfromcdt, pidsetfromtid)
                     const result = []
-                    for(let elem of pidsetfromtid){
-                        if(pidsetfromcdt.has(elem)){
+                    for(let elem of pids){
+                        if(pidsetfromtid.has(elem)){
                             result.push(elem)
                         }
                     }
@@ -71,20 +73,29 @@ function SearchResult({condition}){
     }, [tags, selectedTags, pids])
 
     useEffect(()=>{
-        const fetchTagNames = async()=>{
-            try{
-                const res = await Promise.all(tags.map(value=>{
-                    return axios.get(`/api/get/tag`, {params: {tid: value}})
-                }))
-                const names = res.map(r=>[r.data.rows[0].tid, r.data.rows[0].tag_name])
-                setTagNames(names);
+        const updateContainerHeight = ()=>{
+            if(containerRef.current){
+                let totalHeight = 0;
+                let currentLineHeight = 0;
+                let currentLineTop = 0;
+
+                containerRef.current.childNodes.forEach(node => {
+                    const rect = node.getBoundingClientRect();
+                    if (rect.top !== currentLineTop) { // element 의 top 속성을 비교하여 같은 줄인지 판별
+                        totalHeight += currentLineHeight; 
+                        currentLineHeight = 0; 
+                        currentLineTop = rect.top; 
+                    }
+                    currentLineHeight = Math.max(currentLineHeight, rect.height); // 현재 줄 element 의 최대 height 저장
+                });
+                totalHeight += currentLineHeight;
+                setContainerHeight(totalHeight)
             }
-            catch(error){console.error("Failed to fetch tag names")}}
-        if(tags.length > 0){
-            fetchTagNames()
         }
-        else{
-            setTagNames([])
+        updateContainerHeight()
+        window.addEventListener('resize', updateContainerHeight);
+        return ()=>{
+            window.removeEventListener('resize', updateContainerHeight)
         }
     }, [tags])
 
@@ -96,21 +107,22 @@ function SearchResult({condition}){
         else{
             setSelectedTags([...selectedTags, tid])
         }
-        
     }
+
+    
 
     return(
         <React.Fragment>
-            <div className="searchresult-tags-container w-100 d-asfs d-flex-r d-flex-wrap g-05r">
-                {tagNames.map(([tid, tagname], index)=>{
+            <div className="searchresult-tags-container w-100 d-asfs d-flex-r d-flex-wrap g-05r" ref={containerRef} style={{height: containerHeight}}>
+                {tags.map(([tid, tagname, tagcount], index)=>{
                 return(
                     <div
-                        className="tag cur-pt c-bdb d-flex-r d-ac t-s t-reg"
+                        className="tag cur-pt c-bdb d-flex-r d-ac t-s t-reg g-05r"
                         key={index.toString()}
-                        
                         style={{backgroundColor: (selectedTags.includes(tid))?"var(--col-mb)":"var(--col-db)"}}
                         onClick={()=>{handleTagClicked(tid)}}>
                         <p className="tagname c-wh t-s t-spacing-small">{tagname}</p>
+                        <p className="tagname c-wh t-s">{"("+tagcount+")"}</p>
                     </div>
                     )
                 })}

@@ -20,7 +20,8 @@
 .card{
     flex: 1 1 250px;
     margin-bottom: 20px;
-    transition: transform 0.3s cubic-bezier(0, 0.4, 0.6, 1);
+    transition: transform 0.3s cubic-bezier(0, 0.4, 0.6, 1), height 0.5s cubic-bezier(0, 0.3, 0.7, 1);
+    height: 50px;
     gap: 10px;
     overflow: hidden;
 }

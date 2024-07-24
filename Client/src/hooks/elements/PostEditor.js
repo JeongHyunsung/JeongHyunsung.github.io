@@ -20,7 +20,6 @@ function PostEditor({initialTitle, initialContent, initialRptimgUrl, initialTags
     const [image, setImage] = useState(null)
     const [tag, setTag] = useState("")
     const [tags, setTags] = useState(initialTags)
-    const [tagNames, setTagNames] = useState([])
 
     const imgfileName = image ? image.name : initialRptimgUrl;
     
@@ -29,25 +28,6 @@ function PostEditor({initialTitle, initialContent, initialRptimgUrl, initialTags
         setContent(initialContent)
         setTags(initialTags)
     }, [initialTitle, initialContent, initialTags])
-
-    useEffect(()=>{
-        const fetchTagNames = async()=>{
-            try{
-                const res = await Promise.all(tags.map(value=>{
-                    return axios.get(`/api/get/tag`, {params: {tid: value}})
-                }))
-                const names = res.map(r=>[r.data.rows[0].tid, r.data.rows[0].tag_name])
-                setTagNames(names);
-            }
-            catch(error){console.error("Failed to fetch tag names")}
-        }
-        if(tags.length > 0){
-            fetchTagNames()
-        }
-        else{
-            setTagNames([])
-        }
-    }, [tags])
 
     const uploadImage = async (file)=>{
         const formData = new FormData()
@@ -79,13 +59,13 @@ function PostEditor({initialTitle, initialContent, initialRptimgUrl, initialTags
         setTag(e.target.value)
     }
     const handleTagDelete = (tid)=>{
-        setTags(prevTags => prevTags.filter(tag_id=> tag_id !== tid));
+        setTags(prevTags => prevTags.filter(tag_id=> tag_id[0] !== tid));
     }
     const handleTagSubmit = async ()=>{
         try{
             const res = await axios.post('/api/post/tag', {tagname: tag})
-            if(!tags.includes(res.data.tid)){
-                setTags([...tags, res.data.tid])
+            if(!tags.some(t => t[0] === res.data.tid)){
+                setTags([...tags, [res.data.tid, tag]])
             }
             setTag("")
         }
@@ -135,7 +115,7 @@ function PostEditor({initialTitle, initialContent, initialRptimgUrl, initialTags
                     onImageUpload={handleImageUpload}/>
             </div>
             <div className="tags-section d-flex-r d-flex-wrap g-05r">
-                {tagNames.map(([tid, tagname], index)=>{
+                {tags.map(([tid, tagname], index)=>{
                     return(
                         <div className="tag c-bdb c-wh d-flex-r d-jsb d-ac t-s t-reg" key={index.toString()}>
                             <p className="tagname">{tagname}</p>

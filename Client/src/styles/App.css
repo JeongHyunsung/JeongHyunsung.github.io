@@ -245,7 +245,6 @@ a{
   margin-top: 40px;
   margin-right: 16px;
   border-radius: 50%;
-  border: 3px solid var(--col-wh);
   overflow: hidden;
 }
 
@@ -328,7 +327,6 @@ a{
 }
 
 .searchresult-tags-container{
-  overflow: hidden;
   transition: height 0.3s ease;
 }
 

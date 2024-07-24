@@ -11,7 +11,6 @@ import { useMediaQuery } from "react-responsive"
 
 import PostEditor from './elements/PostEditor';
 
-
 function EditPost(){
     const navigate = useNavigate()
     const params = useParams()
@@ -26,7 +25,7 @@ function EditPost(){
                     title: res.data.rows[0].title, 
                     content: res.data.rows[0].content, 
                     imgurl: res.data.rows[0].image_location,
-                    tags: res_tags.data.map(value=>{return value.tid})})
+                    tags: res_tags.data.map(value=>{return [value.tid, value.tag_name]})})
             }
             catch(error){
                 console.error("Error fetching post", error)
@@ -42,7 +41,7 @@ function EditPost(){
         try{
             await axios.post('/api/post/editpost', data)
             await axios.delete('/api/delete/resettagsinpost/' + params.pid)
-            await Promise.all(tags.map((value)=>{
+            await Promise.all(tags.map(([value, _])=>{
                 return axios.post('/api/post/posttagrel', {pid: params.pid, tid: value})
             }))
             navigate('/blog')

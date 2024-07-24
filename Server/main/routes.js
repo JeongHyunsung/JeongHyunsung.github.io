@@ -76,7 +76,7 @@ router.get('/get/tag', async (req, res, next) => {
 router.get('/get/tagsinpost', async (req, res, next)=>{
   const post_id = req.query.post_id
   try{
-    const {rows} = await pool.query('SELECT tid FROM post_tag WHERE pid = $1', [post_id])
+    const {rows} = await pool.query(`SELECT DISTINCT tg.tid, tg.tag_name FROM post_tag pt JOIN tags tg ON pt.tid = tg.tid WHERE pt.pid = $1 ORDER BY tg.tag_name`, [post_id])
     return res.json(rows)
   }
   catch(error){
@@ -87,7 +87,7 @@ router.get('/get/tagsinpost', async (req, res, next)=>{
 router.get('/get/pidstotids', async (req, res, next)=>{
   const pids = req.query.pids
   try{
-    const {rows} = await pool.query(`SELECT DISTINCT tid FROM post_tag WHERE pid = ANY($1)`, [pids])
+    const {rows} = await pool.query(`SELECT tg.tid, tg.tag_name, COUNT(*) AS tag_count FROM post_tag pt JOIN tags tg ON pt.tid = tg.tid WHERE pid = ANY($1) GROUP BY tg.tid ORDER BY tag_count DESC, tg.tag_name ASC`, [pids])
     console.log(rows)
     return res.json(rows)
   }

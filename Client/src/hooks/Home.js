@@ -48,8 +48,7 @@ function Home(){
         <Link className="contact-button c-wh" 
               to="/contact"
               onMouseOver={handleOver}
-              onMouseLeave={handleLeave}
-              style={{border:(isOver)?"3px solid var(--col-mb)":"3px solid var(--col-wh)"}}>
+              onMouseLeave={handleLeave}>
           <img className="icon" src="/email.svg" alt=""/>
           {isOver && 
             <div 

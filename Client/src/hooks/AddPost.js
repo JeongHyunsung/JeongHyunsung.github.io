@@ -19,7 +19,7 @@ function AddPost(){
             console.log(data)
             const res = await axios.post('/api/post/addpost', data);
 
-            await Promise.all(tags.map((value)=>{
+            await Promise.all(tags.map(([value, _])=>{
                 axios.post('/api/post/posttagrel', {pid: res.data.pid, tid: value})
             }))
             navigate('/blog')

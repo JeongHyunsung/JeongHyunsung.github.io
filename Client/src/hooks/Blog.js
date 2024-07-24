@@ -23,9 +23,10 @@ function Blog(){
     const [sort, setSort] = useState({field:'title', order:'desc'})
     /* sort 요소 field -> 선택지 중 선택, order -> 2개 중 선택 */
     const [condition, setCondition] = useState({})
-    const containerClassName= (isMobile)?"condition-selector w-100 d-flex-c d-jc g-1r r-smooth-05 c-bdb":"condition-selector w-100 d-flex-r d-jsa g-1r r-smooth-05 c-bdb"
+    const [advancedSearch, setAdvancedSearch] = useState(false)
+    const containerClassName= (isMobile)?"condition-units w-100 d-flex-c d-ac d-jc g-1r":"condition-units w-100 d-flex-r d-jsa g-1r"
 
-
+    const [conditionSelectorHeight, setConditionSelectorHeight] = useState(3) // rem based
 
     useEffect(()=>{
         const srch = {}
@@ -42,6 +43,21 @@ function Blog(){
             sort: srt
         })
     }, [search, sort])
+
+    useEffect(()=>{
+        if(advancedSearch){
+            if(isMobile){
+                setConditionSelectorHeight(10)
+            }
+            else{
+                setConditionSelectorHeight(7.5)
+            }
+        }
+        else{
+            setConditionSelectorHeight(3)
+        }
+        
+    }, [advancedSearch, isMobile])
     const handleTitleChange = (e)=>{
         setSearch(prevsearch=>({...prevsearch, title: e.target.value}))
     }
@@ -57,32 +73,54 @@ function Blog(){
     const setOrder = (text) =>{
         setSort(prevsort=>({...prevsort, order: text}))
     }
+    const handleAdvancedButtonClicked = ()=>{
+        if(advancedSearch){
+            setSearch({startdate:'', enddate:'', tags:[], title:''})
+        }
+        setAdvancedSearch(prev=>(!prev))
+        
+    }
 
     return (
         <div className="d-flex-c">
             <h1 className="t-bbb t-reg">BLOG</h1>
             <Link to="/addpost" className="addpost-button c-bwh"></Link>
             <div className="recent-works d-flex-c">
-                <div className={containerClassName}>
-                    <div className="g-05r d-flex-c d-ac">
-                        <h2>Search For</h2>
+
+                <div 
+                    className="condition-selector d-flex-c d-jsb w-100 c-bdb"
+                    style={{height: `${conditionSelectorHeight}rem`}}>
+                    <div className="d-flex-r d-jsb">
                         <input className = "search-title-input" type="text" placeholder='제목으로 검색' value={search.title} onChange={handleTitleChange}/>
-                        <input className = "search-date-input" type="date" placeholder="YYYY-MM-DD" value={search.startdate} onChange={handleStartdateChange}/>
-                        <input className = "search-date-input" type="date" value={search.enddate} onChange={handleEnddateChange}/>
+                        <button className="c-bdb" onClick={handleAdvancedButtonClicked}><img className="search-icon" src="/+.svg" alt=""/></button>
                     </div>
-                    {!(isMobile) && <div className = "search-box-rect d-asfs"></div>}
-                    <div className="g-05r d-flex-c d-ac">
-                        <h2>Sort By</h2>
-                        <div className="sort-container d-flex-r d-jsb d-ac">
-                            <select className = "sort-field-input" value={sort.field} onChange={handleFieldChange}>
-                                <option value="none">None</option>
-                                <option value="title">Title</option>
-                                <option value="upload_date">Upload date</option>
-                            </select>
-                            {sort.order == "asc" && (<button className="c-bdb cur-pt" onClick={()=>{setOrder("desc")}}><img className="sort-icon" src="/triangle.svg" alt=""/></button>)}
-                            {sort.order == "desc" && (<button className="c-bdb cur-pt" onClick={()=>{setOrder("asc")}}><img className="sort-icon" src="/reversetriangle.svg" alt=""/></button>)}
+                    { advancedSearch &&
+                    <div className={containerClassName}>
+                        <div className="g-05r d-flex-c d-ac">
+                            <div className="condition-unit d-flex-r">
+                                <p>From</p>
+                                <input className = "search-date-input" type="date" value={search.startdate} onChange={handleStartdateChange}/>
+                            </div>
+                            <div className="condition-unit d-flex-r">
+                                <p>Until</p>
+                                <input className = "search-date-input" type="date" value={search.enddate} onChange={handleEnddateChange}/>
+                            </div>
                         </div>
-                    </div>
+                        <div className="g-05r d-flex-c d-ac">
+                            <div className="condition-unit d-flex-r">
+                                <p>Order</p>
+                                <div className="sort-container d-flex-r d-jsb d-ac">
+                                    <select className = "sort-field-input" value={sort.field} onChange={handleFieldChange}>
+                                        <option value="none">None</option>
+                                        <option value="title">Title</option>
+                                        <option value="upload_date">Upload date</option>
+                                    </select>
+                                    {sort.order == "asc" && (<button className="c-bdb cur-pt" onClick={()=>{setOrder("desc")}}><img className="sort-icon" src="/triangle.svg" alt=""/></button>)}
+                                    {sort.order == "desc" && (<button className="c-bdb cur-pt" onClick={()=>{setOrder("asc")}}><img className="sort-icon" src="/reversetriangle.svg" alt=""/></button>)}
+                                </div>
+                            </div>
+                        </div>
+                    </div>}
                 </div>
                 <SearchResult condition={condition}/>
             </div>
