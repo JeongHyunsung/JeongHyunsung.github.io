@@ -13,6 +13,8 @@ import { useMediaQuery } from "react-responsive"
 import mdParser from '../utils/mdparser'
 import 'highlight.js/styles/default.css'
 
+import LocalMenu from './elements/LocalMenu'
+
 import history from '../utils/history'
 
 function Post() {
@@ -71,9 +73,6 @@ function Post() {
     fetchPost()
   }, [post.pid]);
 
-  const handleEdit = ()=>{
-    navigate('/editpost/'+post.pid)
-  }
 
   const handleDelete = async ()=>{
     try{
@@ -92,7 +91,6 @@ function Post() {
       {post.fetched &&
         <React.Fragment>
           <div className="post d-flex-c">
-            <hr className="c-bgr w-100"></hr>
             <h1>{post.title}</h1>
             <div className="d-asfs d-flex-r d-flex-wrap g-05r">
               {tagNames.map(([_, tagname], index)=>{
@@ -103,12 +101,12 @@ function Post() {
                 )
               })}
             </div>
-            <p>{post.upload_date.substring(0, 10)}</p>
-            <div className="d-flex-r g-1r">
-              <button className = "post-button c-bwh c-ddb" onClick={handleEdit}>Edit</button>
-              <button className = "post-button c-bwh c-ddb" onClick={handleDelete}>Delete</button>
+            <div className="d-flex-r d-jsb d-ac">
+              <p className="t-heavy t-s">{"Upload at "+post.upload_date.substring(0, 10)}</p>
+              <LocalMenu menuArray={[{text: "Edit Post", img:"/edit.svg", route:'/editpost/'+post.pid}, {text: "Delete Post", img:"/delete.svg", onclick:handleDelete}]}/>
             </div>
-            <img src={post.image_location} alt="Post Image" />
+            <img className="r-smooth-05" src={post.image_location} alt="Post Image" />
+            
             <hr className="w-100"></hr>
             <div className="markdown" dangerouslySetInnerHTML={{ __html: mdParser.render(post.content) }} />
           </div>

@@ -1,6 +1,7 @@
 import '../styles/App.css';
 import '../styles/searchsortbox.css'
 
+
 import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios'
 
@@ -12,6 +13,9 @@ import { useAuth0 } from "@auth0/auth0-react"
 import { useMediaQuery } from "react-responsive"
 
 import SearchResult from './elements/SearchResult'
+import LocalMenu from './elements/LocalMenu'
+
+
 
 
 function Blog(){
@@ -26,6 +30,7 @@ function Blog(){
     const [advancedSearch, setAdvancedSearch] = useState(false)
     const containerClassName= (isMobile)?"condition-units w-100 d-flex-c d-ac d-jc g-1r":"condition-units w-100 d-flex-r d-jsa g-1r"
 
+    
     const [conditionSelectorHeight, setConditionSelectorHeight] = useState(3) // rem based
 
     useEffect(()=>{
@@ -78,20 +83,22 @@ function Blog(){
             setSearch({startdate:'', enddate:'', tags:[], title:''})
         }
         setAdvancedSearch(prev=>(!prev))
-        
     }
-
+    
     return (
-        <div className="d-flex-c">
-            <h1 className="t-bbb t-reg">BLOG</h1>
-            <Link to="/addpost" className="addpost-button c-bwh"></Link>
+        <div className="blog d-flex-c">
+            <div className="d-flex-r d-jsb d-ac">
+                <h1 className="t-bbb t-reg">BLOG</h1>
+                <LocalMenu menuArray={[{text: "New Post", img:"/+.svg", route:"/addpost"}]}/>
+                
+            </div>
             <div className="recent-works d-flex-c">
 
                 <div 
                     className="condition-selector d-flex-c d-jsb w-100 c-bdb"
                     style={{height: `${conditionSelectorHeight}rem`}}>
                     <div className="d-flex-r d-jsb">
-                        <input className = "search-title-input" type="text" placeholder='제목으로 검색' value={search.title} onChange={handleTitleChange}/>
+                        <input className = "search-title-input" type="text" placeholder='제목으로 검색하기' value={search.title} onChange={handleTitleChange}/>
                         <button className="c-bdb" onClick={handleAdvancedButtonClicked}><img className="search-icon" src="/+.svg" alt=""/></button>
                     </div>
                     { advancedSearch &&

@@ -229,7 +229,6 @@ a{
 .Home{
   justify-content: center;
   align-items: center;
-  animation: blur 2s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 .Home .Intro{
@@ -303,13 +302,10 @@ a{
 }
 
 .post{
+  margin-top: 2rem;
   gap: 10px;
 }
 
-.addpost-button{
-  width: 2rem;
-  height: 2rem;
-}
 
 .post-button{
   width: 5rem;
@@ -357,22 +353,6 @@ a{
 @keyframes narrower{
   from{width: 100%;margin-left:auto;}
   to{width: 0%;margin-left:auto;}
-}
-@keyframes blur{
-  from{
-    -webkit-filter: blur(2rem);
-    -moz-filter: blur(2rem);
-    -o-filter: blur(2rem);
-    -ms-filter: blur(2rem);
-    opacity: 0%;
-  }
-  to{
-    -webkit-filter: blur(0px);
-    -moz-filter: blur(0px);
-    -o-filter: blur(0px);
-    -ms-filter: blur(0px);
-    opacity: 100%;
-  }
 }
 
 

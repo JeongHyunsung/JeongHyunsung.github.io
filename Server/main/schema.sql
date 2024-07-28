@@ -14,7 +14,7 @@ CREATE TABLE "tags" (
 
 CREATE TABLE "post_tag" (
   "tid" integer REFERENCES posts(pid),
-  "pid" integer REFERENCES tags(pid)
+  "pid" integer REFERENCES tags(tid)
   PRIMARY KEY(tid, pid)
 );
 
