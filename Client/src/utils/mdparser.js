@@ -4,7 +4,6 @@ import mdHighlight from 'markdown-it-highlightjs';
 import hljs from 'highlight.js'
 
 const mdParser = new MarkdownIt();
-
 // 플러그인 적용
 mdParser.use(mdUnderline);
 mdParser.use(mdHighlight, {hljs});

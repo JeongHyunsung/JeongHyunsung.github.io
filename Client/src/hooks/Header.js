@@ -5,11 +5,13 @@ import axios from 'axios'
 
 import { Link } from 'react-router-dom';
 import Context from '../utils/context'
+
 import { useAuth0 } from "@auth0/auth0-react"
 
 import { useMediaQuery } from "react-responsive"
 
 function Header(){
+  const {loginWithRedirect} = useAuth0();
   const isMobile = useMediaQuery({
     query : "(max-width:767px)"
   })
@@ -31,6 +33,7 @@ function Header(){
         <NavButton nm="Project" cur="project"/>
         <NavButton nm="About Me" cur="aboutme"/>
       </div>
+      <button onClick={()=>{loginWithRedirect()}}>Log IN</button>
     </div>
   )
 }

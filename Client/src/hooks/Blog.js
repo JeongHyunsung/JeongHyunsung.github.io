@@ -42,7 +42,6 @@ function Blog(){
         search.title && (srch.title = search.title)
         sort.field!='none' && (srt.field = sort.field)
         sort.field!='none' && (srt.order = sort.order)
-        console.log(search, sort)
         setCondition({
             search: srch,
             sort: srt

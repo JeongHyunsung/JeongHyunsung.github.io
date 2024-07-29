@@ -32,7 +32,6 @@ function Card({pid}){
           title: res.data.rows[0].title,
           imgurl: res.data.rows[0].image_location,
           tags: res_tags.data.map(value=>{return value.tid})})
-        console.log(res_tags.data.map(value=>{return value.tag_name}))
         setTagNames(res_tags.data.map(value=>{return value.tag_name}))
         setIsLoading(false)
       }
@@ -49,7 +48,6 @@ function Card({pid}){
       if(cardRef.current){
         let totalHeight = 0
         cardRef.current.childNodes.forEach(node => {
-          console.log(node, node.offsetHeight)
           totalHeight += node.offsetHeight;
         })
         totalHeight += 20
