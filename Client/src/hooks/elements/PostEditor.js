@@ -11,6 +11,7 @@ import axios from 'axios'
 import { useMediaQuery } from "react-responsive"
 
 import mdParser from '../../utils/mdparser'
+import 'highlight.js/styles/default.css'
 import MdEditor from 'react-markdown-editor-lite'
 
 

@@ -288,8 +288,9 @@ a{
 
 .Foot{
   margin-top: 100px;
-  min-height: 128px;
-  gap: 10px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  gap: 20px;
 }
 
 .Foot .icon{
@@ -326,6 +327,9 @@ a{
   transition: height 0.3s ease;
 }
 
+.policy{
+  font-size: 1.2rem;
+}
 
 
 

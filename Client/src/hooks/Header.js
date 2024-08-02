@@ -33,7 +33,6 @@ function Header(){
         <NavButton nm="Project" cur="project"/>
         <NavButton nm="About Me" cur="aboutme"/>
       </div>
-      <button onClick={()=>{loginWithRedirect()}}>Log IN</button>
     </div>
   )
 }

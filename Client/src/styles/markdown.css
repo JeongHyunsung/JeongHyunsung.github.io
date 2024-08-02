@@ -8,6 +8,30 @@
     height: auto;
 }
 
+.markdown h2{
+    margin-top: 0.6rem;
+    margin-bottom: 0.1rem;
+}
+
+.markdown h3{
+    margin-top: 0.3rem;
+    margin-bottom: 0.1rem;
+}
+
+.markdown a{
+    color: var(--col-wh);
+    font-weight: 500;
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+    border-radius: 0.4rem;
+}
+
+.markdown a:hover{
+    background-color: var(--col-db);
+}
+
 .markdown pre{
     width: 90%;
     align-self: center;

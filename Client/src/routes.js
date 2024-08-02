@@ -11,6 +11,8 @@ import Post from './hooks/Post'
 import Blog from './hooks/Blog'
 import AddPost from './hooks/AddPost'
 import EditPost from './hooks/EditPost'
+import Policy from './hooks/Policy'
+
 
 import history from './utils/history'
 
@@ -28,6 +30,7 @@ function RoutePage(){
                         <Route path="/blog" element={<Blog/>}/>
                         <Route path="/addpost" element={<AddPost/>}/>
                         <Route path="/editpost/:pid" element={<EditPost/>}/>
+                        <Route path="/privacy-policy" element={<Policy/>}/>
                     </Routes>
                     </div>
                     <Footer/>
