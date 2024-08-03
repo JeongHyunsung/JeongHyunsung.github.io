@@ -14,6 +14,7 @@ import mdParser from '../utils/mdparser'
 import 'highlight.js/styles/default.css'
 
 import LocalMenu from './elements/LocalMenu'
+import CommentSection from './elements/CommentSection'
 
 import history from '../utils/history'
 
@@ -109,6 +110,7 @@ function Post() {
             
             <hr className="w-100"></hr>
             <div className="markdown" dangerouslySetInnerHTML={{ __html: mdParser.render(post.content) }} />
+            <CommentSection pid={params.pid}/>
           </div>
         </React.Fragment>
       }

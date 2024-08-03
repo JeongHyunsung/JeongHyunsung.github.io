@@ -108,7 +108,6 @@ router.get('/get/tidstopids', async (req, res, next)=>{
 })
 
 router.get('/get/searchresult', async (req, res, next)=>{
-  /* SQL injection 취약 */
   const search = req.query.search;
   const sort = req.query.sort;
   const queryParams = [];
@@ -140,6 +139,16 @@ router.get('/get/searchresult', async (req, res, next)=>{
   }
   catch(error){
     return res.status(500).json({error: 'Server error when get post search result from db', error})
+  }
+})
+
+router.get('/get/commentsinpost', async (req, res, next)=>{
+  const pid = req.query.pid
+  try{
+    const {rows} = await pool.query(`SELECT 여기부터 하자.`)
+  }
+  catch(error){
+    return res.status(500).json({error: 'server error when get comment in post from DB'})
   }
 })
 

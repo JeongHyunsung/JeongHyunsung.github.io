@@ -18,6 +18,22 @@ CREATE TABLE "post_tag" (
   PRIMARY KEY(tid, pid)
 );
 
+CREATE TABLE "comments" (
+   "cid" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+   "parent_cid" integer DEFAULT NULL,
+   "nickname" varchar(255) NOT NULL,
+   "hashed_password" varchar(60) NOT NULL,
+   "content" text NOT NULL,
+   "created_at" timestamp,
+   "is_approved" boolean DEFAULT FALSE,
+   FOREIGN KEY (parent_cid) REFERENCES comments(cid)
+);
+
+CREATE TAble "post_comment"(
+  "pid" integer REFERENCES posts(pid),
+  "cid" integer REFERENCES comments(cid)
+);
+
 INSERT INTO "posts"("title", "content", "upload_date", "image_location", "is_blog") VALUES('sample_title', 'sample_content', now()::timestamp, '/images/sample_image.jpg', '\000');
 
 
