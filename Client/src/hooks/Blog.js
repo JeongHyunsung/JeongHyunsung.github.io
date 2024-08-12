@@ -88,7 +88,6 @@ function Blog(){
         <div className="blog d-flex-c">
             <div className="d-flex-r d-jsb d-ac">
                 <h1 className="t-bbb t-reg">BLOG</h1>
-                <LocalMenu menuArray={[{text: "New Post", img:"/+.svg", route:"/addpost"}]}/>
                 
             </div>
             <div className="recent-works d-flex-c">

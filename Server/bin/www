@@ -8,17 +8,28 @@ var app = require('../main/app.js');
 var debug = require('debug')('server:server');
 var http = require('http');
 
+var https = require('https');
+var fs = require('fs');
+var path = require('path');
+
 var port = normalizePort(process.env.PORT || '5000');
 app.set('port', port);
 
-var server = http.createServer(app);
+const sslOptions = {
+  key : fs.readFileSync('/usr/app/server.key'),
+  cert : fs.readFileSync(path.join('/usr/app/server.cert'))
+}
+
+
+var server = https.createServer(sslOptions, app);
 
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
+
 function normalizePort(val) {
-  var port = parseInt(val, 10);
+  var port = parseInt(val, 10)
 
   if (isNaN(port)) {
     // named pipe

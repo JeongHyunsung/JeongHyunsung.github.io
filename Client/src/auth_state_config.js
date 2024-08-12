@@ -1,20 +1,16 @@
 import React from 'react';
-import { Auth0Provider } from '@auth0/auth0-react';
+
 import RoutePage from './routes'
+
+import {GoogleOAuthProvider} from '@react-oauth/google'
 
 function AuthState(){
     return(
-        <div>
-            <Auth0Provider
-                domain="dev-fe08mjqzeio0l00y.us.auth0.com"
-                clientId="SnWTdCeqXyGxwbaW5WRzJHRPZVS8xF9X"
-                authorizationParams={{
-                    redirect_uri: "https://localhost:3000/"
-                }}
-            >
-                <RoutePage/>
-            </Auth0Provider>
-        </div>
+        <GoogleOAuthProvider
+            clientId="722561384306-jki305r2olugm2a2v0cq3prvs3eh7lc1.apps.googleusercontent.com"
+        >
+            <RoutePage/>
+        </GoogleOAuthProvider>
     )
 }
 

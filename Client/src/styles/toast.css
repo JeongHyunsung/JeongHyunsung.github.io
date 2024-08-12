@@ -1,0 +1,15 @@
+.Toastify__toast--success {
+    background-color: #45A29E !important;
+}
+
+.Toastify__toast--error {
+    background-color: #dc3545 !important; 
+}
+
+.Toastify__toast--warning {
+    background-color: #ff9307 !important; 
+}
+
+.Toastify__toast-body {
+    color: white; 
+}

@@ -39,12 +39,14 @@ function Home(){
   return(
     <div className="Home d-flex-c">
       <div className={topClassName}>
-        <div className="Intro d-flex-c d-al d-jc">
+        <div className="Intro d-flex-c g-05r d-al d-jc">
           <h1>Hello, I'm Hyunsung Jeong</h1>
-          <p>I am a student majoring in electronic engineering</p>
-          <p>with interests in <span className="c-lb">App/Web Development</span>,</p>
-          <p><span className="c-lb">deep learning</span>, and <span className="c-lb">electronic circuits</span>. </p>
-        </div>
+          <div d-flex-c d-al d-jc>
+            <p>I am a student majoring in electronic engineering</p>
+            <p>with interests in <span className="c-lb">App/Web Development</span>,</p>
+            <p><span className="c-lb">deep learning</span>, and <span className="c-lb">electronic circuits</span>. </p>
+          </div>
+          </div>
         <Link className="contact-button c-wh" 
               to="/contact"
               onMouseOver={handleOver}

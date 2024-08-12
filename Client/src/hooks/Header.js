@@ -1,4 +1,5 @@
 import '../styles/App.css';
+import '../styles/googlebutton.css';
 
 import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios'
@@ -6,25 +7,37 @@ import axios from 'axios'
 import { Link } from 'react-router-dom';
 import Context from '../utils/context'
 
-import { useAuth0 } from "@auth0/auth0-react"
+import {GoogleLogin} from '@react-oauth/google'
+
+import {toast} from 'react-toastify'
 
 import { useMediaQuery } from "react-responsive"
 
 function Header(){
-  const {loginWithRedirect} = useAuth0();
-  const isMobile = useMediaQuery({
-    query : "(max-width:767px)"
-  })
-  const isPc = useMediaQuery({
-    query : "(min-width:1024px)"
-  });
-  const isTablet = useMediaQuery({
-    query : "(min-width:768px) and (max-width:1023px)"
-  });
+  const [isLogin, setIsLogin] = useState(false)
+  const [isLoginDisplay, setIsLoginDisplay] = useState(false)
+
+  const handleLoginButtonClicked = ()=>{
+    setIsLoginDisplay(true)
+  }
+  const handleReturnButtonClicked = ()=>{
+    setIsLoginDisplay(false)
+  }
+
+  const handleGoogleLogin = async (credentialRes) =>{
+    try{
+      const res = await axios.post('/api/post/GoogleLogin', {token: credentialRes.credential})
+      console.log(res.data)
+    }
+    
+    catch(error){
+      console.log(error)
+    }
+  }
   
 
   return(
-    <div className="Head w-100 d-flex-r">
+    <div className="Head d-ac w-100 d-flex-r">
       <Link to = "/" className ="button d-flex-r">
         <img className="icon" src="/favicon.svg" alt=""/>
       </Link>
@@ -33,6 +46,29 @@ function Header(){
         <NavButton nm="Project" cur="project"/>
         <NavButton nm="About Me" cur="aboutme"/>
       </div>
+      {isLogin? 
+      <button 
+        className="login-button c-bwh c-ddb cur-pt t-heavy"
+        onClick={handleLogoutButtonClicked}>Logout</button>:
+      <button 
+        className="login-button c-bwh c-ddb cur-pt t-heavy"
+        onClick={handleLoginButtonClicked}>Log In</button>
+      }
+      <img className="empty-profile cur-pt" src="/empty_profile.svg" alt=""/>
+      
+      {isLoginDisplay && 
+      <div className="modal-overlay">
+        <div className="modal-content c-bwh d-flex-c d-ac g-1r c-ddb">
+          <GoogleLogin
+            onSuccess={credentialResponse =>{ handleGoogleLogin(credentialResponse) }}
+            onError={()=>{toast.error("FAIL")}}/>
+          <button 
+            className="return-button c-bwh c-ddb cur-pt t-heavy"
+            onClick={handleReturnButtonClicked}>돌아가기</button>
+        </div>
+      </div>
+      }
+
     </div>
   )
 }

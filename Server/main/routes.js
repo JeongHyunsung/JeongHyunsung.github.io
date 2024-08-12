@@ -5,6 +5,9 @@ var pool = require("./db")
 var multer = require('multer');
 var path = require('path');
 
+const bcrypt = require('bcrypt');
+const { Pool } = require('pg');
+
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
       cb(null, path.join(__dirname, '../public/images/')); 
@@ -145,7 +148,9 @@ router.get('/get/searchresult', async (req, res, next)=>{
 router.get('/get/commentsinpost', async (req, res, next)=>{
   const pid = req.query.pid
   try{
-    const {rows} = await pool.query(`SELECT 여기부터 하자.`)
+    const {rows} = await pool.query(`SELECT cm.cid, cm.nickname, cm.content, cm.created_at FROM comments AS cm JOIN post_comment AS pc ON cm.cid = pc.cid WHERE pc.pid = $1 AND cm.is_approved = TRUE`, [pid])
+    console.log(pid)
+    return res.json(rows)
   }
   catch(error){
     return res.status(500).json({error: 'server error when get comment in post from DB'})
@@ -201,11 +206,37 @@ router.post('/post/tag', async (req, res, next)=>{
 router.post('/post/posttagrel', async (req, res, next)=>{
   const {pid, tid} = req.body;
   try{
-    await pool.query('INSERT INTO post_tag(pid, tid) VALUES($1, $2)', [pid, tid])
+    await pool.query(`INSERT INTO post_tag(pid, tid) VALUES($1, $2)`, [pid, tid])
     return res.status(201).json({message: 'Success add post-tag relation'})
   }
   catch(error){
     return res.status(500).json({error: 'Server error when add post-tag relation to db'})
+  }
+})
+
+router.post('/post/comment', async (req, res, next)=>{
+  const {nickname, password, content} = req.body
+  console.log(nickname, password, content)
+  
+  try{
+    const hashed_pw = await bcrypt.hash(password, 10) 
+    const result = await pool.query(`INSERT INTO comments(nickname, content, hashed_password, created_at, is_approved) VALUES($1, $2, $3, now()::timestamp, TRUE) RETURNING cid`, [nickname, content, hashed_pw])
+    const cid = result.rows[0].cid
+    return res.status(201).json({message: 'Success add comment', cid})
+  }
+  catch(error){
+    return res.status(500).json({error: 'Server error when add comment'})
+  }
+})
+
+router.post('/post/postcommentrel', async(req, res, next)=>{
+  const {pid, cid} = req.body;
+  try{
+    await pool.query(`INSERT INTO post_comment(pid, cid) VALUES($1, $2)`, [pid, cid])
+    return res.status(201).json({message: "Success add post-comment relation"})
+  }
+  catch(error){
+    return res.status(500).json({error: 'Server error when add post-comment relation to db'})
   }
 })
 

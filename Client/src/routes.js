@@ -16,6 +16,10 @@ import Policy from './hooks/Policy'
 
 import history from './utils/history'
 
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import './styles/toast.css'
+
 function RoutePage(){
     const context = useContext(Context)
     return(
@@ -35,7 +39,15 @@ function RoutePage(){
                     </div>
                     <Footer/>
                 </div>
-                
+                <ToastContainer 
+                    position="top-right" 
+                    autoClose={4000} 
+                    hideProgressBar={false} 
+                    closeOnClick={true} 
+                    pauseOnHover={false}
+                    draggable={false}
+                    theme="colored" 
+                />
             </BrowserRouter>
         </div>
     )

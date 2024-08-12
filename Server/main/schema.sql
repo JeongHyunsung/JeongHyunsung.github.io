@@ -13,8 +13,8 @@ CREATE TABLE "tags" (
 );
 
 CREATE TABLE "post_tag" (
-  "tid" integer REFERENCES posts(pid),
-  "pid" integer REFERENCES tags(tid)
+  "tid" integer REFERENCES tags(tid),
+  "pid" integer REFERENCES posts(pid)
   PRIMARY KEY(tid, pid)
 );
 
@@ -29,10 +29,12 @@ CREATE TABLE "comments" (
    FOREIGN KEY (parent_cid) REFERENCES comments(cid)
 );
 
-CREATE TAble "post_comment"(
+CREATE TABLE "post_comment"(
   "pid" integer REFERENCES posts(pid),
   "cid" integer REFERENCES comments(cid)
 );
+
+/* 관계테이블에는 pid 에 ON DELETE CASCADE 속성 따로 추가해야함 */
 
 INSERT INTO "posts"("title", "content", "upload_date", "image_location", "is_blog") VALUES('sample_title', 'sample_content', now()::timestamp, '/images/sample_image.jpg', '\000');
 

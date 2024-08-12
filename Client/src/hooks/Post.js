@@ -109,7 +109,7 @@ function Post() {
             <img className="r-smooth-05" src={post.image_location} alt="Post Image" />
             
             <hr className="w-100"></hr>
-            <div className="markdown" dangerouslySetInnerHTML={{ __html: mdParser.render(post.content) }} />
+            <div className="markdown bigger" dangerouslySetInnerHTML={{ __html: mdParser.render(post.content) }} />
             <CommentSection pid={params.pid}/>
           </div>
         </React.Fragment>

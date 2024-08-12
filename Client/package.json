@@ -2,9 +2,10 @@
   "name": "my-page",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://server:5000",
+  "proxy": "https://server:5000",
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",
+    "@react-oauth/google": "^0.12.1",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -28,10 +29,11 @@
     "react-router-dom": "^6.23.1",
     "react-scripts": "^5.0.1",
     "react-syntax-highlighter": "^15.5.0",
+    "react-toastify": "^10.0.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "https=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

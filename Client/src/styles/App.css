@@ -177,11 +177,9 @@ hr{
 }
 
 .Head{
+  width: 80%;
   box-sizing: border-box;
-  padding-left: 30px;
-  padding-right: 45px;
-  min-height: 80px;
-  align-items: center;
+  min-height: 100px;
 }
 
 .Head .button{
@@ -222,6 +220,25 @@ a{
 .navigation-button .underline{
   height: 2px;
   border-radius: 1px;
+}
+
+.empty-profile{
+  box-sizing: content-box;
+  width: 1.8rem;
+  height: 1.8rem;
+  margin-left: 1rem;
+}
+
+.empty-profile:hover{
+  outline: 2px solid white;
+  border-radius: 50%;
+}
+
+.login-button{
+  height: 1.8rem;
+  padding: 0.3rem;
+  border-radius: 0.2rem;
+  margin-left: 2.5rem;
 }
 
 
@@ -327,9 +344,6 @@ a{
   transition: height 0.3s ease;
 }
 
-.policy{
-  font-size: 1.2rem;
-}
 
 
 
