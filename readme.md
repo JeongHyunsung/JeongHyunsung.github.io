@@ -6,6 +6,6 @@ This project is ongoing, so feel free to give me advice or recommendation! 😄
 
 ## Features 
 - Considering UX as important, I applied responsive design throughout the site
-- Auth0 was used to implement login
+- googla oauth was used to implement login
 - All development steps are carried out in Codespace environment
 

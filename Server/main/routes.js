@@ -1,12 +1,20 @@
-var express = require('express')
-var router = express.Router()
-var pool = require("./db")
+require('dotenv').config();
+const express = require('express')
+const router = express.Router()
+const pool = require("./db")
 
-var multer = require('multer');
-var path = require('path');
+const multer = require('multer');
+const path = require('path');
 
 const bcrypt = require('bcrypt');
 const { Pool } = require('pg');
+
+const axios = require('axios');
+const qs = require('qs');
+
+const { OAuth2Client } = require('google-auth-library')
+
+const client = new OAuth2Client(process.env.CLIENT_ID)
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -157,6 +165,19 @@ router.get('/get/commentsinpost', async (req, res, next)=>{
   }
 })
 
+router.get('/post/checklogin', async(req, res, next)=>{
+  if(req.session.userId){
+    const userId = req.session.userId
+    const userEmail = req.session.userEmail
+    const userName = req.session.userName
+    const userPic = req.session.userPic
+    res.json({isLoggedIn: true, userInfo: {userId, userEmail, userName, userPic}})
+  }
+  else{
+    res.json({isLoggedIn: false})
+  }
+})
+
 router.post('/post/addpost', async (req, res, next)=>{
   const {title, content, imgurl} = req.body
   try{
@@ -239,6 +260,41 @@ router.post('/post/postcommentrel', async(req, res, next)=>{
     return res.status(500).json({error: 'Server error when add post-comment relation to db'})
   }
 })
+
+router.post('/post/googlelogin', async(req, res, next)=>{
+  const {credential, redirect_url} = req.body
+  try{
+    const ticket = await client.verifyIdToken({
+      idToken: credential,
+      audience: process.env.CLIENT_ID
+    })
+    const payload = ticket.getPayload();
+    const userId = payload['sub'];
+    const userEmail = payload['email']
+    const userName = payload['name']
+    const userPic = payload['picture']
+
+    req.session.userId = userId
+    req.session.userEmail = userEmail
+    req.session.userName = userName
+    req.session.userPic = userPic
+    res.json({userInfo: {userId, userEmail, userName, userPic}});
+  }
+  catch(error){
+    console.log(error)
+    res.status(401).json({error: 'Invalid ID token'})
+  }
+})
+
+router.post('/post/googlelogout', async(req, res, next)=>{
+  req.session.destroy(err=>{
+    if(err){return res.status(500).json({error: 'Failed to logout'})}
+    res.clearCookie('connect.sid')
+    res.json({message: 'Logged out'})
+  })
+})
+
+
 
 router.delete('/delete/post/:pid', async (req, res, next)=>{
   const pid = req.params.pid;

@@ -222,23 +222,37 @@ a{
   border-radius: 1px;
 }
 
-.empty-profile{
-  box-sizing: content-box;
+.profile-container{
   width: 1.8rem;
   height: 1.8rem;
+  border-radius: 50%;
+  overflow: hidden;
   margin-left: 1rem;
 }
 
-.empty-profile:hover{
-  outline: 2px solid white;
+.profile-container:hover{
+  outline: 2px solid rgba(255, 255, 255, 0.8)
+}
+
+.profile{
+  box-sizing: content-box;
+  width: 1.8rem;
+  height: 1.8rem;
   border-radius: 50%;
 }
 
-.login-button{
+
+.login-button-container{
+  width: 4rem;
   height: 1.8rem;
   padding: 0.3rem;
-  border-radius: 0.2rem;
   margin-left: 2.5rem;
+}
+
+.login-button{
+  width: 4rem;
+  height: 1.8rem;
+  border-radius: 0.2rem;
 }
 
 

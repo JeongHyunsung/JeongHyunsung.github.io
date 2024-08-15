@@ -10,12 +10,39 @@ import Context from '../utils/context'
 import {GoogleLogin} from '@react-oauth/google'
 
 import {toast} from 'react-toastify'
+import { setUserFetched, setUserInfo } from '../store/actions/actions';
 
+import { useDispatch, useSelector } from 'react-redux';
+ 
 import { useMediaQuery } from "react-responsive"
 
 function Header(){
-  const [isLogin, setIsLogin] = useState(false)
+  const dispatch = useDispatch()
+  const isFetched = useSelector((state)=>state.auth.isFetched)
+  const userInfo = useSelector((state)=>state.auth.userInfo)
   const [isLoginDisplay, setIsLoginDisplay] = useState(false)
+  
+
+  useEffect(()=>{
+    const checkLoginStatus = async()=>{
+      try{
+        const response = await axios.get('/api/post/checklogin')
+        console.log(response)
+        if(response.data.isLoggedIn){
+          dispatch(setUserFetched(true))
+          dispatch(setUserInfo(response.data.userInfo))
+        }
+        else{
+          dispatch(setUserFetched(true))
+          dispatch(setUserInfo({}))
+        }
+      }
+      catch(error){
+        console.log(error)
+      }
+    }
+    checkLoginStatus()
+  }, [])
 
   const handleLoginButtonClicked = ()=>{
     setIsLoginDisplay(true)
@@ -23,17 +50,35 @@ function Header(){
   const handleReturnButtonClicked = ()=>{
     setIsLoginDisplay(false)
   }
-
-  const handleGoogleLogin = async (credentialRes) =>{
+  const handleLogoutButtonClicked = async ()=>{
+    dispatch(setUserFetched(false))
     try{
-      const res = await axios.post('/api/post/GoogleLogin', {token: credentialRes.credential})
-      console.log(res.data)
+      await axios.post('/api/post/googlelogout')
+      toast.success("Logout Success")
+      dispatch(setUserInfo({}))
+      dispatch(setUserFetched(true))
     }
-    
     catch(error){
-      console.log(error)
+      toast.error("Logout fail")
+      dispatch(setUserFetched(true))
     }
   }
+
+  const handleGoogleLogin = async (credentialRes) =>{
+    dispatch(setUserFetched(false))
+    try{
+      const res = await axios.post('/api/post/googlelogin', {credential: credentialRes.credential, redirect_url:"https://refactored-space-barnacle-q5v997wpr5xh5xv-3000.app.github.dev"})
+      dispatch(setUserInfo(res.data.userInfo))
+      dispatch(setUserFetched(true))
+      setIsLoginDisplay(false)
+      toast.success("Login Success")
+    }
+    catch(error){
+      toast.error("Login Fail")
+      dispatch(setUserFetched(true))
+    }
+  }
+
   
 
   return(
@@ -46,22 +91,27 @@ function Header(){
         <NavButton nm="Project" cur="project"/>
         <NavButton nm="About Me" cur="aboutme"/>
       </div>
-      {isLogin? 
-      <button 
-        className="login-button c-bwh c-ddb cur-pt t-heavy"
-        onClick={handleLogoutButtonClicked}>Logout</button>:
-      <button 
-        className="login-button c-bwh c-ddb cur-pt t-heavy"
-        onClick={handleLoginButtonClicked}>Log In</button>
-      }
-      <img className="empty-profile cur-pt" src="/empty_profile.svg" alt=""/>
-      
+      <div className="login-button-container">
+        {isFetched && (userInfo.userName? 
+        <button 
+          className="login-button c-bwh c-ddb cur-pt t-heavy"
+          onClick={handleLogoutButtonClicked}>Logout</button>:
+        <button 
+          className="login-button c-bwh c-ddb cur-pt t-heavy"
+          onClick={handleLoginButtonClicked}>Log In</button>
+        )}
+      </div>
+      <div className="profile-container d-flex-r d-ac d-jc">
+        {(isFetched && userInfo.userPic) ? 
+          <img className="profile cur-pt"src={userInfo.userPic}/>:
+          <img className="profile cur-pt" src="/empty_profile.svg" alt=""/>}
+      </div>
       {isLoginDisplay && 
       <div className="modal-overlay">
         <div className="modal-content c-bwh d-flex-c d-ac g-1r c-ddb">
           <GoogleLogin
             onSuccess={credentialResponse =>{ handleGoogleLogin(credentialResponse) }}
-            onError={()=>{toast.error("FAIL")}}/>
+            onError={()=>{toast.error("Login Fail")}}/>
           <button 
             className="return-button c-bwh c-ddb cur-pt t-heavy"
             onClick={handleReturnButtonClicked}>돌아가기</button>

@@ -1,0 +1,6 @@
+export const SET_GLOBAL_STATE = "SET_GLOBAL_STATE"
+
+export const SET_USER_FETCHED = "SET_USER_FETCHED"
+
+export const SET_USER_INFO = "SET_USER_INFO"
+

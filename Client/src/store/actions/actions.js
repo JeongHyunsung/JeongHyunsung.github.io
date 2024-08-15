@@ -1,48 +1,22 @@
-import * as ACTION_TYPES from './action_types'
+import { SET_GLOBAL_STATE, SET_USER_FETCHED, SET_USER_INFO } from './actionTypes';
 
-export const user_input_change = (text) => {
+export const setGlobalState = (state) => {
   return {
-    type: ACTION_TYPES.USER_INPUT_CHANGE,
-    payload: text
+    type: SET_GLOBAL_STATE,
+    payload: state
   }
 }
 
-export const user_input_submit = (text) => {
+export const setUserFetched = (isFetched)=>{
   return {
-    type: ACTION_TYPES.USER_INPUT_SUBMIT,
-    payload: text
+    type: SET_USER_FETCHED,
+    payload: isFetched
   }
 }
 
-export const set_db_profile = (profile) => {
+export const setUserInfo = (userInfo)=>{
   return {
-    type: ACTION_TYPES.SET_DB_PROFILE,
-    payload: profile
-  }
-}
-
-export const remove_db_profile = () => {
-  return {
-    type: ACTION_TYPES.REMOVE_DB_PROFILE
-  }
-}
-
-export const set_db_posts = (posts) => {
-  return {
-    type: ACTION_TYPES.FETCH_DB_POSTS,
-    payload: posts
-  }
-}
-
-export const remove_db_posts = () => {
-  return {
-    type: ACTION_TYPES.REMOVE_DB_POSTS
-  }
-}
-
-export const set_global_state = (gs) => {
-  return {
-    type: ACTION_TYPES.SET_GLOBAL_STATE,
-    payload: gs
+    type: SET_USER_INFO,
+    payload: userInfo
   }
 }
