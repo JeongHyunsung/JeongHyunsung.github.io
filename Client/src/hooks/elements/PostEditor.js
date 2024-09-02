@@ -34,7 +34,7 @@ function PostEditor({initialTitle, initialContent, initialRptimgUrl, initialTags
         const formData = new FormData()
         formData.append('file', file)
         try{
-            const res = await axios.post('/api/post/image', formData)
+            const res = await axios.post('/post/post/image', formData)
             return res.data.url
         }
         catch(error){
@@ -64,7 +64,7 @@ function PostEditor({initialTitle, initialContent, initialRptimgUrl, initialTags
     }
     const handleTagSubmit = async ()=>{
         try{
-            const res = await axios.post('/api/post/tag', {tagname: tag})
+            const res = await axios.post('/tag/post/tag', {tagname: tag})
             if(!tags.some(t => t[0] === res.data.tid)){
                 setTags([...tags, [res.data.tid, tag]])
             }

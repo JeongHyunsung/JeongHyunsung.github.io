@@ -4,7 +4,6 @@ import '../../styles/editor.css';
 import React, { useContext, useRef, useState, useEffect } from 'react';
 import axios from 'axios'
 
-import Context from '../../utils/context'
 import { Link } from 'react-router-dom'
 
 import { useAuth0 } from "@auth0/auth0-react"
@@ -37,10 +36,10 @@ function SearchResult({condition}){
         setSelectedTags([])
         const getSearchResultPids = async ()=>{
             try{
-                const res = await axios.get('/api/get/searchresult', { params: condition });
+                const res = await axios.get('/post/get/searchresult', { params: condition });
                 setPids(res.data.map(value=>{return value.pid}))
                 
-                const res_tags = await axios.get('/api/get/pidstotids', { params: {pids: res.data.map(value=>{return value.pid})}})
+                const res_tags = await axios.get('/rel/get/pidstotids', { params: {pids: res.data.map(value=>{return value.pid})}})
                 setTags(res_tags.data.map(value=>{return [value.tid, value.tag_name, value.tag_count]}))
             }
             catch(error){console.log(error)}
@@ -53,7 +52,7 @@ function SearchResult({condition}){
         const getVisualPids = async ()=>{
             try{
                 if(selectedTags.length){
-                    const res = await axios.get('/api/get/tidstopids', { params: {tids: selectedTags}})
+                    const res = await axios.get('/rel/get/tidstopids', { params: {tids: selectedTags}})
                     const pidsetfromtid = new Set(res.data.map(value=>{return value.pid}))
                     const result = []
                     for(let elem of pids){

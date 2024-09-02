@@ -1,3 +1,7 @@
+.add-comment-section, .comment{
+    box-sizing: border-box;
+}
+
 .comment-section{
     margin-top: 4rem;
 }
@@ -62,3 +66,35 @@
 .comment-submit-button:hover{
     background-color: var(--col-lb);
 }
+
+.comment-profile-icon-container{
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.comment-profile-icon{
+    width: 2rem;
+    height: 2rem;
+}
+
+.comment-hr{
+    opacity: 0.3;
+}
+
+.comment-date{
+    margin-right: auto;
+}
+.comment-control-button{
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.comment-control-icon{
+    width: 1.2rem;
+    height: 1.2rem;
+}
+

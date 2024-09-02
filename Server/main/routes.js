@@ -1,3 +1,5 @@
+/* 지금은 사용하지 않음 */
+
 require('dotenv').config();
 const express = require('express')
 const router = express.Router()
@@ -6,11 +8,6 @@ const pool = require("./db")
 const multer = require('multer');
 const path = require('path');
 
-const bcrypt = require('bcrypt');
-const { Pool } = require('pg');
-
-const axios = require('axios');
-const qs = require('qs');
 
 const { OAuth2Client } = require('google-auth-library')
 
@@ -154,13 +151,14 @@ router.get('/get/searchresult', async (req, res, next)=>{
 })
 
 router.get('/get/commentsinpost', async (req, res, next)=>{
-  const pid = req.query.pid
+  const pid = req.query.pid 
+  
   try{
-    const {rows} = await pool.query(`SELECT cm.cid, cm.nickname, cm.content, cm.created_at FROM comments AS cm JOIN post_comment AS pc ON cm.cid = pc.cid WHERE pc.pid = $1 AND cm.is_approved = TRUE`, [pid])
-    console.log(pid)
+    const {rows} = await pool.query(`SELECT c.cid, c.content, c.created_at, c.parent_cid, u.name, u.pic, u.uid FROM comments AS c JOIN users AS u ON c.uid = u.uid WHERE c.pid = $1 ORDER BY c.created_at ASC`, [pid])
     return res.json(rows)
   }
   catch(error){
+    console.log(error)
     return res.status(500).json({error: 'server error when get comment in post from DB'})
   }
 })
@@ -171,7 +169,8 @@ router.get('/post/checklogin', async(req, res, next)=>{
     const userEmail = req.session.userEmail
     const userName = req.session.userName
     const userPic = req.session.userPic
-    res.json({isLoggedIn: true, userInfo: {userId, userEmail, userName, userPic}})
+    const userIsAdmin = req.session.userIsAdmin
+    res.json({isLoggedIn: true, userInfo: {userId, userEmail, userName, userPic, userIsAdmin}})
   }
   else{
     res.json({isLoggedIn: false})
@@ -181,7 +180,7 @@ router.get('/post/checklogin', async(req, res, next)=>{
 router.post('/post/addpost', async (req, res, next)=>{
   const {title, content, imgurl} = req.body
   try{
-    const {rows} = await pool.query('INSERT INTO "posts"("title", "content", "upload_date", "image_location", "is_blog") VALUES($1, $2, now()::timestamp, $3, \'\\000\') RETURNING pid;', [ title, content, imgurl ])
+    const {rows} = await pool.query(`INSERT INTO "posts"("title", "content", "upload_date", "image_location", "is_blog") VALUES($1, $2, now()::timestamp, $3, \'\\000\') RETURNING pid;`, [ title, content, imgurl ])
     const pid = rows[0].pid;
     return res.status(201).json({message: 'Success add post', pid})}
   catch(error){
@@ -192,7 +191,7 @@ router.post('/post/addpost', async (req, res, next)=>{
 router.post('/post/editpost', async (req, res, next)=>{
   const {title, content, imgurl, pid} = req.body
   try{
-    await pool.query('UPDATE "posts" SET "title" = $1, "content" = $2, "image_location" = $3 WHERE pid = $4;',[ title, content, imgurl, pid ])
+    await pool.query(`UPDATE "posts" SET "title" = $1, "content" = $2, "image_location" = $3 WHERE pid = $4;`,[ title, content, imgurl, pid ])
     return res.status(200).json({message: 'Success edit post'})
   }
   catch(error){
@@ -236,28 +235,17 @@ router.post('/post/posttagrel', async (req, res, next)=>{
 })
 
 router.post('/post/comment', async (req, res, next)=>{
-  const {nickname, password, content} = req.body
-  console.log(nickname, password, content)
-  
+  const {content, pid, parentcid} = req.body
+  if(!req.session.userId){
+    return res.status(403).json({message: 'Unauthorized'})
+  }
   try{
-    const hashed_pw = await bcrypt.hash(password, 10) 
-    const result = await pool.query(`INSERT INTO comments(nickname, content, hashed_password, created_at, is_approved) VALUES($1, $2, $3, now()::timestamp, TRUE) RETURNING cid`, [nickname, content, hashed_pw])
+    const result = await pool.query(`INSERT INTO comments(uid, pid, parent_cid, content, created_at) VALUES($1, $2, $3, $4, now()::timestamp) RETURNING cid`, [req.session.userId, pid, parentcid, content])
     const cid = result.rows[0].cid
     return res.status(201).json({message: 'Success add comment', cid})
   }
   catch(error){
     return res.status(500).json({error: 'Server error when add comment'})
-  }
-})
-
-router.post('/post/postcommentrel', async(req, res, next)=>{
-  const {pid, cid} = req.body;
-  try{
-    await pool.query(`INSERT INTO post_comment(pid, cid) VALUES($1, $2)`, [pid, cid])
-    return res.status(201).json({message: "Success add post-comment relation"})
-  }
-  catch(error){
-    return res.status(500).json({error: 'Server error when add post-comment relation to db'})
   }
 })
 
@@ -269,16 +257,26 @@ router.post('/post/googlelogin', async(req, res, next)=>{
       audience: process.env.CLIENT_ID
     })
     const payload = ticket.getPayload();
-    const userId = payload['sub'];
+    const userSub = payload['sub'];
     const userEmail = payload['email']
     const userName = payload['name']
     const userPic = payload['picture']
+    let result
 
-    req.session.userId = userId
+    const { rows } = await pool.query(`SELECT uid FROM users WHERE sub = $1;`, [userSub]);
+    if(rows.length === 0){
+      result = await pool.query(`INSERT INTO users (sub, name, email, pic) VALUES($1, $2, $3, $4) RETURNING uid, is_admin`, [userSub, userName, userEmail, userPic])
+    }
+    else{result = await pool.query(`UPDATE users SET name = $1, email = $2, pic = $4 WHERE sub = $3 RETURNING uid, is_admin`, [userName, userEmail, userSub, userPic])}
+    const userId = result.rows[0].uid
+    const userIsAdmin = result.rows[0].is_admin
+    req.session.userSub = userSub
     req.session.userEmail = userEmail
     req.session.userName = userName
     req.session.userPic = userPic
-    res.json({userInfo: {userId, userEmail, userName, userPic}});
+    req.session.userId = userId
+    req.session.userIsAdmin = userIsAdmin
+    res.json({userInfo: {userId, userEmail, userName, userPic, userIsAdmin}});
   }
   catch(error){
     console.log(error)
@@ -294,12 +292,28 @@ router.post('/post/googlelogout', async(req, res, next)=>{
   })
 })
 
+router.post('/post/googlelogoutwithdeletion', async(req, res, next)=>{
+  try{
+    const result = await pool.query('DELETE FROM users WHERE uid = $1', [req.session.userId])
+    console.log(result)
+    req.session.destroy(err=>{
+      if(err){return res.status(500).json({error: 'Failed to account deletion'})}
+      res.clearCookie('connect.sid')
+      res.json({message: 'Account deleted successfully'})
+    })
+  }
+  catch(error){
+    console.log(error)
+    res.status(500).json({error: 'Failed to account deletion'})
+  }
+})
+
 
 
 router.delete('/delete/post/:pid', async (req, res, next)=>{
   const pid = req.params.pid;
   try{
-    await pool.query('DELETE FROM "posts" WHERE pid = $1', [pid])
+    await pool.query('DELETE FROM posts WHERE pid = $1', [pid])
     return res.status(200).json({message: 'Success delete post'})
   }
   catch(error){
@@ -317,4 +331,26 @@ router.delete('/delete/resettagsinpost/:pid', async (req, res, next)=>{
     return res.status(500).json({error: "Server Error when delete tags in post"})
   }
 })
+
+router.delete('/delete/comment/:cid/:uid', async(req, res, next)=>{
+  const {cid, uid} = req.params
+  const userId = req.session.userId
+  if(!userId){
+    return res.status(401).json({message: "Login required"})
+  }
+  try{
+    const result = await pool.query(`SELECT uid FROM comments WHERE cid = $1`, [cid])
+    if(userId !== result.rows[0].uid){
+      return res.status(403).json({message: "Unauthorized"})
+    }
+    await pool.query(`DELETE FROM comments WHERE cid = $1 AND uid = $2`, [cid, userId])
+    return res.status(204).send()
+  }
+  catch(error){
+    console.log(error)
+    return res.status(500).json({error: "Server Error when delete comment in post"})
+  }
+})
+
+
 module.exports = router

@@ -4,7 +4,6 @@ import '../styles/markdown.css'
 import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios'
 
-import Context from '../utils/context'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { useAuth0 } from "@auth0/auth0-react"
@@ -13,14 +12,20 @@ import { useMediaQuery } from "react-responsive"
 import mdParser from '../utils/mdparser'
 import 'highlight.js/styles/default.css'
 
-import LocalMenu from './elements/LocalMenu'
+import AdminMenu from './elements/AdminMenu'
 import CommentSection from './elements/CommentSection'
 
 import history from '../utils/history'
+import dateConversion from '../utils/dateConversion'
+
+import { useSelector } from 'react-redux';
+
+
 
 function Post() {
   const params = useParams()
   const navigate = useNavigate()
+  const isAdmin = useSelector((state)=>state.auth.userInfo.userIsAdmin)
   const [post, setPost] = useState({
     pid: undefined,
     title: '',
@@ -34,10 +39,11 @@ function Post() {
   const [tagNames, setTagNames] = useState([])
 
   useEffect(()=>{
+    console.log(isAdmin)
     const fetchTagNames = async()=>{
       try{
         const res = await Promise.all(post.tags.map(value=>{
-          return axios.get(`/api/get/tag`, {params: {tid: value}})
+          return axios.get(`/tag/get/tag`, {params: {tid: value}})
         }))
         const names = res.map(r=>[r.data.rows[0].tid, r.data.rows[0].tag_name])
         setTagNames(names);
@@ -54,8 +60,8 @@ function Post() {
   useEffect(() => {
     const fetchPost = async() =>{
       try{
-        const res = await axios.get('/api/get/post', { params: { post_id: params.pid } })
-        const res_tags = await axios.get('/api/get/tagsinpost', {params: {post_id: params.pid}})
+        const res = await axios.get('/post/get/post', { params: { post_id: params.pid } })
+        const res_tags = await axios.get('/rel/get/tagsinpost', {params: {post_id: params.pid}})
         setPost({
           pid: res.data.rows[0].pid,
           title: (res.data.rows[0].title)?res.data.rows[0].title:"",
@@ -79,7 +85,7 @@ function Post() {
     try{
       const confirmed = window.confirm("정말로 이 포스트를 삭제하시겠습니까?");
       if (confirmed) {
-        await axios.delete('/api/delete/post/' + params.pid);
+        await axios.delete('/post/delete/post/' + params.pid);
         navigate('/blog');
       }
     }
@@ -103,8 +109,8 @@ function Post() {
               })}
             </div>
             <div className="d-flex-r d-jsb d-ac">
-              <p className="t-heavy t-s">{"Upload at "+post.upload_date.substring(0, 10)}</p>
-              <LocalMenu menuArray={[{text: "Edit Post", img:"/edit.svg", route:'/editpost/'+post.pid}, {text: "Delete Post", img:"/delete.svg", onclick:handleDelete}]}/>
+              <p className="t-heavy t-s">{dateConversion(post.upload_date)}</p>
+              {isAdmin && <AdminMenu menuArray={[{text: "Edit Post", img:"/edit.svg", route:'/editpost/'+post.pid}, {text: "Delete Post", img:"/delete.svg", onclick:handleDelete}]}/>}
             </div>
             <img className="r-smooth-05" src={post.image_location} alt="Post Image" />
             

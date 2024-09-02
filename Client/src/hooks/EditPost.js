@@ -12,6 +12,7 @@ import { useMediaQuery } from "react-responsive"
 import PostEditor from './elements/PostEditor';
 
 function EditPost(){
+
     const navigate = useNavigate()
     const params = useParams()
     const [post, setPost] = useState({title:"", content:"", imgurl:"", tags:[]})
@@ -19,8 +20,8 @@ function EditPost(){
     useEffect(()=>{
         const fetchData = async () => {
             try{
-                const res = await axios.get('/api/get/post', {params: {post_id: params.pid}})
-                const res_tags = await axios.get('/api/get/tagsinpost', {params: {post_id: params.pid}})
+                const res = await axios.get('/post/get/post', {params: {post_id: params.pid}})
+                const res_tags = await axios.get('/rel/get/tagsinpost', {params: {post_id: params.pid}})
                 setPost({
                     title: res.data.rows[0].title, 
                     content: res.data.rows[0].content, 
@@ -39,10 +40,10 @@ function EditPost(){
     const handleSubmit = async (data, tags)=>{
         data.pid = params.pid
         try{
-            await axios.post('/api/post/editpost', data)
-            await axios.delete('/api/delete/resettagsinpost/' + params.pid)
+            await axios.post('/post/post/editpost', data)
+            await axios.delete('/rel/delete/resettagsinpost/' + params.pid)
             await Promise.all(tags.map(([value, _])=>{
-                return axios.post('/api/post/posttagrel', {pid: params.pid, tid: value})
+                return axios.post('/rel/post/posttagrel', {pid: params.pid, tid: value})
             }))
             navigate('/blog')
         }

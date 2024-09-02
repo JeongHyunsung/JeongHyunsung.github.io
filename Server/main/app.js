@@ -10,7 +10,11 @@ const cors = require('cors');
 
 const session = require('express-session')
 
-const indexRouter = require('./routes')
+const postRouter = require('./routes/postRoutes')
+const authRouter = require('./routes/authRoutes')
+const commentRouter = require('./routes/commentRoutes')
+const relationRouter = require('./routes/relationRoutes')
+const tagRouter = require('./routes/tagRoutes')
 
 const app = express();
 
@@ -31,7 +35,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use('/api', indexRouter);
+
+app.use('/post', postRouter);
+app.use('/auth', authRouter);
+app.use('/comment', commentRouter);
+app.use('/rel', relationRouter);
+app.use('/tag', tagRouter);
+
 app.use(express.static('public'));
 
 

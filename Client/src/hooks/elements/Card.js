@@ -3,7 +3,6 @@ import '../../styles/card.css';
 import React, { useContext, useRef, useState, useEffect } from 'react';
 import axios from 'axios'
 
-import Context from '../../utils/context'
 import { Link } from 'react-router-dom'
 
 import { useAuth0 } from "@auth0/auth0-react"
@@ -26,8 +25,8 @@ function Card({pid}){
   useEffect(()=>{
     const fetchData = async () => {
       try{
-        const res = await axios.get('/api/get/briefpost', {params: {post_id: pid}})
-        const res_tags = await axios.get('/api/get/tagsinpost', {params: {post_id: pid}})
+        const res = await axios.get('/post/get/briefpost', {params: {post_id: pid}})
+        const res_tags = await axios.get('/rel/get/tagsinpost', {params: {post_id: pid}})
         setPost({
           title: res.data.rows[0].title,
           imgurl: res.data.rows[0].image_location,
@@ -70,7 +69,7 @@ function Card({pid}){
   return(
     <Link
       to = {"/post/"+pid}
-      className="card d-flex-c d-ac p-rel r-smooth-05 c-bdb c-wh cur-pt" 
+      className="card d-ac d-flex-c p-rel r-smooth-05 c-bdb c-wh cur-pt" 
       style={{animation: (isover)?am_1:am_2,
               transform: (isover)?"translateY(-5px)":"none",
               height: `${cardHeight}px`
@@ -83,7 +82,7 @@ function Card({pid}){
       ):(
         <div className= "card-content w-6px d-flex-c g-05r d-ac">
           <img className = "w-100 r-smooth-05" src={post.imgurl}/>
-          <h1 className = "t-heavy">{post.title}</h1>
+          <h2 className = "t-heavy">{post.title}</h2>
           <div className="d-asfs d-flex-r d-flex-wrap g-05r">
             {tagNames.map((tagname, index)=>{
               return(

@@ -2,8 +2,6 @@ import React, { useContext } from 'react'
 import { BrowserRouter , Route, Routes, Redirect } from 'react-router-dom'
 
 
-import Context from './utils/context'
-
 import Header from './hooks/Header'
 import Footer from './hooks/Footer'
 import Home from './hooks/Home'
@@ -12,6 +10,9 @@ import Blog from './hooks/Blog'
 import AddPost from './hooks/AddPost'
 import EditPost from './hooks/EditPost'
 import Policy from './hooks/Policy'
+import Profile from './hooks/Profile'
+
+import ProtectedRoute from './utils/ProtectedRoute'
 
 
 import history from './utils/history'
@@ -20,10 +21,13 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import './styles/toast.css'
 
+import { useSelector } from 'react-redux';
+
 function RoutePage(){
-    const context = useContext(Context)
+    const userInfo = useSelector((state)=>state.auth.userInfo)
+
     return(
-        <div>
+        <>
             <BrowserRouter history = {history}>
                 <div className="App w-100 c-bddb d-flex-c d-ac">
                     <Header/>
@@ -32,9 +36,10 @@ function RoutePage(){
                         <Route exact path="/" element={<Home/>}/>
                         <Route path="/post/:pid" element={<Post/>}/>
                         <Route path="/blog" element={<Blog/>}/>
-                        <Route path="/addpost" element={<AddPost/>}/>
-                        <Route path="/editpost/:pid" element={<EditPost/>}/>
                         <Route path="/privacy-policy" element={<Policy/>}/>
+                        <Route path="/profile" element={<ProtectedRoute level={1} element={<Profile/>}/>}/>
+                        <Route path="/addpost" element={<ProtectedRoute level={0} element={<AddPost/>}/>}/>
+                        <Route path="/editpost/:pid" element={<ProtectedRoute level={0} element={<EditPost/>}/>}/>
                     </Routes>
                     </div>
                     <Footer/>
@@ -49,7 +54,7 @@ function RoutePage(){
                     theme="colored" 
                 />
             </BrowserRouter>
-        </div>
+        </>
     )
 }
 

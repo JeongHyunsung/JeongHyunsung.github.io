@@ -4,8 +4,7 @@ import '../styles/googlebutton.css';
 import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios'
 
-import { Link } from 'react-router-dom';
-import Context from '../utils/context'
+import { useNavigate, Link } from 'react-router-dom';
 
 import {GoogleLogin} from '@react-oauth/google'
 
@@ -17,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useMediaQuery } from "react-responsive"
 
 function Header(){
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const isFetched = useSelector((state)=>state.auth.isFetched)
   const userInfo = useSelector((state)=>state.auth.userInfo)
@@ -26,8 +26,7 @@ function Header(){
   useEffect(()=>{
     const checkLoginStatus = async()=>{
       try{
-        const response = await axios.get('/api/post/checklogin')
-        console.log(response)
+        const response = await axios.get('/auth/post/checklogin')
         if(response.data.isLoggedIn){
           dispatch(setUserFetched(true))
           dispatch(setUserInfo(response.data.userInfo))
@@ -38,11 +37,11 @@ function Header(){
         }
       }
       catch(error){
-        console.log(error)
+        toast.error("Fetch error")
       }
     }
     checkLoginStatus()
-  }, [])
+  }, [dispatch])
 
   const handleLoginButtonClicked = ()=>{
     setIsLoginDisplay(true)
@@ -53,8 +52,9 @@ function Header(){
   const handleLogoutButtonClicked = async ()=>{
     dispatch(setUserFetched(false))
     try{
-      await axios.post('/api/post/googlelogout')
+      await axios.post('/auth/post/googlelogout')
       toast.success("Logout Success")
+      navigate('/')
       dispatch(setUserInfo({}))
       dispatch(setUserFetched(true))
     }
@@ -67,7 +67,7 @@ function Header(){
   const handleGoogleLogin = async (credentialRes) =>{
     dispatch(setUserFetched(false))
     try{
-      const res = await axios.post('/api/post/googlelogin', {credential: credentialRes.credential, redirect_url:"https://refactored-space-barnacle-q5v997wpr5xh5xv-3000.app.github.dev"})
+      const res = await axios.post('/auth/post/googlelogin', {credential: credentialRes.credential, redirect_url:"https://refactored-space-barnacle-q5v997wpr5xh5xv-3000.app.github.dev"})
       dispatch(setUserInfo(res.data.userInfo))
       dispatch(setUserFetched(true))
       setIsLoginDisplay(false)
@@ -76,6 +76,15 @@ function Header(){
     catch(error){
       toast.error("Login Fail")
       dispatch(setUserFetched(true))
+    }
+  }
+
+  const handleProfileIconClicked = ()=>{
+    if(userInfo.userName){
+      navigate('/profile')
+    }
+    else{
+      toast.error('Invalid route')
     }
   }
 
@@ -103,8 +112,8 @@ function Header(){
       </div>
       <div className="profile-container d-flex-r d-ac d-jc">
         {(isFetched && userInfo.userPic) ? 
-          <img className="profile cur-pt"src={userInfo.userPic}/>:
-          <img className="profile cur-pt" src="/empty_profile.svg" alt=""/>}
+          <img className="profile-icon cur-pt"src={userInfo.userPic} onClick={handleProfileIconClicked}/>:
+          <img className="profile-icon cur-pt" src="/empty_profile.svg" alt=""/>}
       </div>
       {isLoginDisplay && 
       <div className="modal-overlay">

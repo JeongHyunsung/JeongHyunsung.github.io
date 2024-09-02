@@ -4,7 +4,7 @@ import '../../styles/localmenu.css'
 import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
 
-function LocalMenu({menuArray}){
+function AdminMenu({menuArray}){
     const [isActive, setIsActive] = useState(false)
     const handleMenuEnter = (e)=>{
         console.log(e)
@@ -48,4 +48,4 @@ function LocalMenu({menuArray}){
     )
 }
 
-export default LocalMenu
+export default AdminMenu

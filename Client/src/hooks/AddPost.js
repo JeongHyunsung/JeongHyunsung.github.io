@@ -13,14 +13,14 @@ import history from '../utils/history'
 
 function AddPost(){
     const navigate = useNavigate();
-    /* tags 이용하여 tags-posts 테이블 업데이트 POST" */
+
     const handleSubmit = async (data, tags)=>{
         try{
             console.log(data)
-            const res = await axios.post('/api/post/addpost', data);
+            const res = await axios.post('/post/post/addpost', data);
 
             await Promise.all(tags.map(([value, _])=>{
-                axios.post('/api/post/posttagrel', {pid: res.data.pid, tid: value})
+                axios.post('/rel/post/posttagrel', {pid: res.data.pid, tid: value})
             }))
             navigate('/blog')
         }

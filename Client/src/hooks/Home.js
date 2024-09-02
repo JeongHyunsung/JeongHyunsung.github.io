@@ -1,8 +1,6 @@
 import '../styles/App.css';
 import React, { useContext, useState, useEffect } from 'react';
-import axios from 'axios'
 
-import Context from '../utils/context'
 import { Link } from 'react-router-dom'
 
 import { useAuth0 } from "@auth0/auth0-react"
@@ -12,7 +10,6 @@ import { useMediaQuery } from "react-responsive"
 import SearchResult from './elements/SearchResult'
 
 function Home(){
-  console.log("Rendered")
   const isMobile = useMediaQuery({
     query : "(max-width:767px)"
   })

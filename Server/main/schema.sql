@@ -12,29 +12,46 @@ CREATE TABLE "tags" (
   "tag_name" text
 );
 
-CREATE TABLE "post_tag" (
-  "tid" integer REFERENCES tags(tid),
-  "pid" integer REFERENCES posts(pid)
-  PRIMARY KEY(tid, pid)
-);
-
 CREATE TABLE "comments" (
    "cid" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+   "uid" integer NOT NULL,
+   "pid" integer NOT NULL,
    "parent_cid" integer DEFAULT NULL,
-   "nickname" varchar(255) NOT NULL,
-   "hashed_password" varchar(60) NOT NULL,
    "content" text NOT NULL,
    "created_at" timestamp,
-   "is_approved" boolean DEFAULT FALSE,
+   
+   FOREIGN KEY (uid) REFERENCES users(uid) ON DELETE CASCADE 
+   FOREIGN KEY (pid) REFERENCES posts(pid) ON DELETE CASCADE 
    FOREIGN KEY (parent_cid) REFERENCES comments(cid)
 );
 
-CREATE TABLE "post_comment"(
-  "pid" integer REFERENCES posts(pid),
-  "cid" integer REFERENCES comments(cid)
+comments_parent_cid_fkey
+
+CREATE TABLE "users" (
+  "uid" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  "is_admin" boolean DEFAULT FALSE,
+  "sub" text NOT NULL UNIQUE,
+  "name" text NOT NULL,
+  "email" text NOT NULL UNIQUE,
+  "pic" text NOT NULL
 );
 
+CREATE TABLE "post_tag" (
+  "tid" integer,
+  "pid" integer
+
+  FOREIGN KEY (tid) REFERENCES tags(tid)
+  FOREIGN KEY (pid) REFERENCES posts(pid) ON DELETE CASCADE 
+  PRIMARY KEY(tid, pid)
+);
+
+
+
+
+
 /* 관계테이블에는 pid 에 ON DELETE CASCADE 속성 따로 추가해야함 */
+/* uid 에도 추가해야 함 */
+
 
 INSERT INTO "posts"("title", "content", "upload_date", "image_location", "is_blog") VALUES('sample_title', 'sample_content', now()::timestamp, '/images/sample_image.jpg', '\000');
 

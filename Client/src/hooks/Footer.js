@@ -1,10 +1,8 @@
 import '../styles/App.css';
 
 import React, { useContext, useState, useEffect } from 'react';
-import axios from 'axios'
 
 import { Link } from 'react-router-dom';
-import Context from '../utils/context'
 import { useAuth0 } from "@auth0/auth0-react"
 
 import { useMediaQuery } from "react-responsive"

@@ -143,6 +143,9 @@ hr{
 .d-asfs{
   align-self: flex-start;
 }
+.d-asfe{
+  align-self: flex-end;
+}
 /* Gap */
 .g-2r{
   gap: 2rem;
@@ -234,7 +237,7 @@ a{
   outline: 2px solid rgba(255, 255, 255, 0.8)
 }
 
-.profile{
+.profile-icon{
   box-sizing: content-box;
   width: 1.8rem;
   height: 1.8rem;
@@ -358,7 +361,26 @@ a{
   transition: height 0.3s ease;
 }
 
+/* Profile Section */
 
+.my-record{
+  min-height: 200px;
+}
+
+.profile-title{
+  margin-bottom: 1rem;
+}
+
+.profile-button{
+  box-sizing: border-box;
+  height: 2.2rem;
+  padding: 0.3rem;
+  border-radius: 0.5rem;
+}
+.profile-button:hover{
+  background-color: var(--col-db);
+  color: var(--col-wh);
+}
 
 
 /* Animation */
