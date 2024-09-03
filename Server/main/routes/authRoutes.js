@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express')
 const router = express.Router()
 const pool = require("../db")
+const checkAuthority = require('./utils/checkAuthority')
 
 
 const { OAuth2Client } = require('google-auth-library')
@@ -57,7 +58,7 @@ router.post('/post/googlelogin', async(req, res, next)=>{
   }
 })
 
-router.post('/post/googlelogout', async(req, res, next)=>{
+router.post('/post/googlelogout', checkAuthority(1), async(req, res, next)=>{
   req.session.destroy(err=>{
     if(err){return res.status(500).json({error: 'Failed to logout'})}
     res.clearCookie('connect.sid')
@@ -65,7 +66,7 @@ router.post('/post/googlelogout', async(req, res, next)=>{
   })
 })
 
-router.post('/post/googlelogoutwithdeletion', async(req, res, next)=>{
+router.post('/post/googlelogoutwithdeletion', checkAuthority(1), async(req, res, next)=>{
   try{
     const result = await pool.query('DELETE FROM users WHERE uid = $1', [req.session.userId])
     console.log(result)

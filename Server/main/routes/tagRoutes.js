@@ -2,9 +2,7 @@ require('dotenv').config();
 const express = require('express')
 const router = express.Router()
 const pool = require("../db")
-
-const multer = require('multer');
-const path = require('path');
+const checkAuthority = require('./utils/checkAuthority')
 
 
 router.get('/get/tag', async (req, res, next) => {
@@ -26,7 +24,7 @@ router.get('/get/tag', async (req, res, next) => {
   }
 })
 
-router.post('/post/tag', async (req, res, next)=>{
+router.post('/post/tag', checkAuthority(2), async (req, res, next)=>{
   const tagname = req.body.tagname;
   try{
     const { rows } = await pool.query('SELECT * FROM tags WHERE tag_name = $1;', [tagname]);

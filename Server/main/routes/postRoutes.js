@@ -2,13 +2,14 @@ require('dotenv').config();
 const express = require('express')
 const router = express.Router()
 const pool = require("../db")
+const checkAuthority = require('./utils/checkAuthority')
 
 const multer = require('multer');
 const path = require('path');
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-      cb(null, path.join(__dirname, '../public/images/')); 
+      cb(null, path.join(__dirname, '../../public/images/')); 
   },
   filename: function (req, file, cb) {
       cb(null, Date.now() + path.extname(file.originalname)); // 파일명에 타임스탬프 추가
@@ -55,17 +56,6 @@ router.get('/get/briefpost', async (req, res, next) => {
   }
 })
 
-router.get('/get/tidstopids', async (req, res, next)=>{
-  const tids = req.query.tids
-  try{
-    const {rows} = await pool.query(`SELECT DISTINCT pid FROM post_tag WHERE tid = ANY($1)`, [tids])
-    return res.json(rows)
-  }
-  catch(error){
-    return res.status(500).json({error: 'Server error when get pids from db', error})
-  }
-})
-
 router.get('/get/searchresult', async (req, res, next)=>{
   const search = req.query.search;
   const sort = req.query.sort;
@@ -101,7 +91,7 @@ router.get('/get/searchresult', async (req, res, next)=>{
   }
 })
 
-router.post('/post/addpost', async (req, res, next)=>{
+router.post('/post/addpost', checkAuthority(2), async (req, res, next)=>{
   const {title, content, imgurl} = req.body
   try{
     const {rows} = await pool.query(`INSERT INTO "posts"("title", "content", "upload_date", "image_location", "is_blog") VALUES($1, $2, now()::timestamp, $3, \'\\000\') RETURNING pid;`, [ title, content, imgurl ])
@@ -112,7 +102,7 @@ router.post('/post/addpost', async (req, res, next)=>{
   }
 })
 
-router.post('/post/editpost', async (req, res, next)=>{
+router.post('/post/editpost', checkAuthority(2), async (req, res, next)=>{
   const {title, content, imgurl, pid} = req.body
   try{
     await pool.query(`UPDATE "posts" SET "title" = $1, "content" = $2, "image_location" = $3 WHERE pid = $4;`,[ title, content, imgurl, pid ])
@@ -123,12 +113,12 @@ router.post('/post/editpost', async (req, res, next)=>{
   }
 })
 
-router.post('/post/image', upload.single('file'), (req, res, next)=>{
-  const fileUrl = `/images/${req.file.filename}`;
+router.post('/post/image', checkAuthority(2), upload.single('file'), (req, res, next)=>{
+  const fileUrl = `../images/${req.file.filename}`;
   res.json({url: fileUrl})
 })
 
-router.delete('/delete/post/:pid', async (req, res, next)=>{
+router.delete('/delete/post/:pid', checkAuthority(2), async (req, res, next)=>{
   const pid = req.params.pid;
   try{
     await pool.query('DELETE FROM posts WHERE pid = $1', [pid])

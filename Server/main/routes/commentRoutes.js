@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express')
 const router = express.Router()
 const pool = require("../db")
+const checkAuthority = require('./utils/checkAuthority')
 
 router.get('/get/commentsinpost', async (req, res, next)=>{
   const pid = req.query.pid 
@@ -15,7 +16,7 @@ router.get('/get/commentsinpost', async (req, res, next)=>{
   }
 })
 
-router.post('/post/comment', async (req, res, next)=>{
+router.post('/post/comment', checkAuthority(1), async (req, res, next)=>{
   const {content, pid, parentcid} = req.body
   if(!req.session.userId){
     return res.status(403).json({message: 'Unauthorized'})
@@ -30,7 +31,7 @@ router.post('/post/comment', async (req, res, next)=>{
   }
 })
 
-router.delete('/delete/comment/:cid/:uid', async(req, res, next)=>{
+router.delete('/delete/comment/:cid/:uid', checkAuthority(1), async(req, res, next)=>{
   const {cid, uid} = req.params
   const userId = req.session.userId
   if(!userId){

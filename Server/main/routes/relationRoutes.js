@@ -2,9 +2,7 @@ require('dotenv').config();
 const express = require('express')
 const router = express.Router()
 const pool = require("../db")
-
-const multer = require('multer');
-const path = require('path');
+const checkAuthority = require('./utils/checkAuthority')
 
 
 router.get('/get/tidstopids', async (req, res, next)=>{
@@ -52,7 +50,7 @@ router.post('/post/posttagrel', async (req, res, next)=>{
   }
 })
 
-router.delete('/delete/resettagsinpost/:pid', async (req, res, next)=>{
+router.delete('/delete/resettagsinpost/:pid', checkAuthority(2), async (req, res, next)=>{
   const pid = req.params.pid;
   try{
     await pool.query('DELETE FROM "post_tag" WHERE pid = $1', [pid])
