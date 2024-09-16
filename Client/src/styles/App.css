@@ -177,6 +177,7 @@ hr{
   height: 100vh;
   overflow-y: scroll;
   min-width: 450px;
+  color: var(--col-wh);
 }
 
 .Head{
@@ -249,13 +250,21 @@ a{
   width: 4rem;
   height: 1.8rem;
   padding: 0.3rem;
-  margin-left: 2.5rem;
+  margin-left: 1rem;
 }
 
 .login-button{
   width: 4rem;
   height: 1.8rem;
   border-radius: 0.2rem;
+}
+
+.color-mode-button-container{
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-left: 2rem;
 }
 
 
@@ -362,11 +371,6 @@ a{
 }
 
 /* Profile Section */
-
-.my-record{
-  min-height: 200px;
-}
-
 .profile-title{
   margin-bottom: 1rem;
 }

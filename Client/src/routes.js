@@ -11,6 +11,7 @@ import AddPost from './hooks/AddPost'
 import EditPost from './hooks/EditPost'
 import Policy from './hooks/Policy'
 import Profile from './hooks/Profile'
+import Contact from './hooks/Contact'
 
 import ProtectedRoute from './utils/ProtectedRoute'
 
@@ -26,6 +27,7 @@ import { useSelector } from 'react-redux';
 function RoutePage(){
     const userInfo = useSelector((state)=>state.auth.userInfo)
 
+
     return(
         <>
             <BrowserRouter history = {history}>
@@ -40,6 +42,7 @@ function RoutePage(){
                         <Route path="/profile" element={<ProtectedRoute level={1} element={<Profile/>}/>}/>
                         <Route path="/addpost" element={<ProtectedRoute level={0} element={<AddPost/>}/>}/>
                         <Route path="/editpost/:pid" element={<ProtectedRoute level={0} element={<EditPost/>}/>}/>
+                        <Route path="/contact" element={<ProtectedRoute level={1} element={<Contact/>}/>}/>
                     </Routes>
                     </div>
                     <Footer/>

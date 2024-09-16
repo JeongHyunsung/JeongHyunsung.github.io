@@ -98,3 +98,12 @@
     height: 1.2rem;
 }
 
+.comment-in-profile{
+    padding: 0.5rem;
+}
+
+.comment-in-profile:hover{
+    background-color: var(--col-mb);
+    color: var(--col-db);
+    
+}

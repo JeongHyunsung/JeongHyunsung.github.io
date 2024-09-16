@@ -7,10 +7,11 @@
 var app = require('../main/app.js');
 var debug = require('debug')('server:server');
 var http = require('http');
-
 var https = require('https');
 var fs = require('fs');
 var path = require('path');
+
+const setupSocketIO = require('./socket')
 
 var port = normalizePort(process.env.PORT || '5000');
 app.set('port', port);
@@ -22,6 +23,8 @@ const sslOptions = {
 
 
 var server = https.createServer(sslOptions, app);
+
+setupSocketIO(server)
 
 server.listen(port);
 server.on('error', onError);

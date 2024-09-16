@@ -2,7 +2,8 @@ require('dotenv').config();
 const express = require('express')
 const router = express.Router()
 const pool = require("../db")
-const checkAuthority = require('./utils/checkAuthority')
+const checkAuthority = require('./utils/checkAuthority');
+const { Pool } = require('pg');
 
 router.get('/get/commentsinpost', async (req, res, next)=>{
   const pid = req.query.pid 
@@ -13,6 +14,30 @@ router.get('/get/commentsinpost', async (req, res, next)=>{
   catch(error){
     console.log(error)
     return res.status(500).json({error: 'server error when get comment in post from DB'})
+  }
+})
+
+router.get('/get/commentsuser', checkAuthority(1), async (req, res, next)=>{
+  const uid = req.query.uid
+  try{
+    const {rows} = await pool.query(`SELECT c.cid, c.content, c.created_at, c.parent_cid, p.pid, p.title FROM comments AS c JOIN posts AS p ON c.pid = p.pid WHERE c.uid = $1 ORDER BY c.created_at ASC`, [uid])
+    return res.json(rows)
+  }
+  catch(error){
+    console.log(error)
+    return res.status(500).json({error: 'server error when get comment of user from DB'})
+  }
+})
+
+router.get('/get/usernamefromcid', checkAuthority(1), async (req, res, next)=>{
+  const cid = req.query.cid
+  try{
+    const {rows} = await pool.query(`SELECT u.name FROM comments AS c JOIN users AS u ON c.uid = u.uid WHERE c.cid = $1`, [cid])
+    return res.json(rows)
+  }
+  catch(error){
+    console.log(error)
+    return res.status(500).json({error: 'server error when get username from cid'})
   }
 })
 

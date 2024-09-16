@@ -18,11 +18,14 @@ import { useMediaQuery } from "react-responsive"
 function Header(){
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  
   const isFetched = useSelector((state)=>state.auth.isFetched)
   const userInfo = useSelector((state)=>state.auth.userInfo)
   const [isLoginDisplay, setIsLoginDisplay] = useState(false)
-  
+  const [isDarkMode, setIsDarkMode] = useState(true)
 
+
+  console.log(userInfo)
   useEffect(()=>{
     const checkLoginStatus = async()=>{
       try{
@@ -88,6 +91,25 @@ function Header(){
     }
   }
 
+  const handleColorModeChanged = ()=>{
+    setIsDarkMode(!isDarkMode)
+    if(isDarkMode) {
+      root.style.setProperty('--col-ddb', '#0B0C10');
+      root.style.setProperty('--col-db', '#1F2833');
+      root.style.setProperty('--col-gr', '#C5C6C7');
+      root.style.setProperty('--col-lb', '#66FCF1');
+      root.style.setProperty('--col-mb', '#45A29E');
+      root.style.setProperty('--col-wh', '#FFFFFF');
+    } else {
+      root.style.setProperty('--col-ddb', '#D1D1D1');
+      root.style.setProperty('--col-db', '#FFFFFF');
+      root.style.setProperty('--col-gr', '#424242');
+      root.style.setProperty('--col-lb', '#48CFCB');
+      root.style.setProperty('--col-mb', '#229799');
+      root.style.setProperty('--col-wh', '#424242');
+    }
+  }
+
   
 
   return(
@@ -100,8 +122,12 @@ function Header(){
         <NavButton nm="Project" cur="project"/>
         <NavButton nm="About Me" cur="aboutme"/>
       </div>
+      <div 
+        className = "color-mode-button-container c-bwh d-flex-r d-ac d-jc"
+        onClick={handleColorModeChanged}>
+      </div>
       <div className="login-button-container">
-        {isFetched && (userInfo.userName? 
+        {isFetched && (userInfo.userId? 
         <button 
           className="login-button c-bwh c-ddb cur-pt t-heavy"
           onClick={handleLogoutButtonClicked}>Logout</button>:
@@ -110,6 +136,7 @@ function Header(){
           onClick={handleLoginButtonClicked}>Log In</button>
         )}
       </div>
+      
       <div className="profile-container d-flex-r d-ac d-jc">
         {(isFetched && userInfo.userPic) ? 
           <img className="profile-icon cur-pt"src={userInfo.userPic} onClick={handleProfileIconClicked}/>:

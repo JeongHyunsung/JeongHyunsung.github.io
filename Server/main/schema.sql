@@ -22,10 +22,8 @@ CREATE TABLE "comments" (
    
    FOREIGN KEY (uid) REFERENCES users(uid) ON DELETE CASCADE 
    FOREIGN KEY (pid) REFERENCES posts(pid) ON DELETE CASCADE 
-   FOREIGN KEY (parent_cid) REFERENCES comments(cid)
+   FOREIGN KEY (parent_cid) REFERENCES comments(cid) ON DELETE CASCADE
 );
-
-comments_parent_cid_fkey
 
 CREATE TABLE "users" (
   "uid" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -40,11 +38,32 @@ CREATE TABLE "post_tag" (
   "tid" integer,
   "pid" integer
 
-  FOREIGN KEY (tid) REFERENCES tags(tid)
-  FOREIGN KEY (pid) REFERENCES posts(pid) ON DELETE CASCADE 
+  FOREIGN KEY (tid) REFERENCES tags(tid),
+  FOREIGN KEY (pid) REFERENCES posts(pid) ON DELETE CASCADE,
   PRIMARY KEY(tid, pid)
 );
 
+CREATE TABLE "messages" (
+  "mid" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  "uid_sender" integer NOT NULL,
+  "uid_recipient" integer NOT NULL,
+  "content" text NOT NULL,
+  "created_at" timestamp,
+
+  FOREIGN KEY (uid_sender) REFERENCES users(uid) ON DELETE CASCADE,
+  FOREIGN KEY (uid_recipient) REFERENCES users(uid) ON DELETE CASCADE
+);
+
+CREATE TABLE "proposals" (
+  "ppid" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  "uid" integer NOT NULL,
+  "title" text NOT NULL,
+  "description" text NOT NULL,
+  "contact_email" text NOT NULL,
+  "created_at" timestamp,
+
+  FOREIGN KEY (uid) REFERENCES users(uid) ON DELETE CASCADE
+);
 
 
 

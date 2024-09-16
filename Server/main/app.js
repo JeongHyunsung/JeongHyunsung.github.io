@@ -19,6 +19,13 @@ const tagRouter = require('./routes/tagRoutes')
 const app = express();
 
 const secretKey = crypto.randomBytes(32).toString('hex')
+
+app.use(cors({
+    origin: 'https://refactored-space-barnacle-q5v997wpr5xh5xv-3000.app.github.dev/',
+    methods: ['GET', 'POST'],
+    credentials: true
+}));
+
 app.use(session({
     secret: secretKey,
     resave: false,
@@ -26,12 +33,12 @@ app.use(session({
     cookie: {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
         maxAge: 1000 * 60 * 60
     }
 }))
 
 app.use(logger('dev'));
-app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

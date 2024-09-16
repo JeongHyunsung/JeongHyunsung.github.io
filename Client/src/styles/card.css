@@ -1,12 +1,3 @@
-:root{
-    --col-ddb:#0B0C10;
-    --col-db:#1F2833;
-    --col-gr:#C5C6C7;
-    --col-lb:#66FCF1;
-    --col-mb:#45A29E;
-    --col-wh:#FFFFFF;
-}
-
 .masonry-grid {
     display: flex;
     gap: 20px;
