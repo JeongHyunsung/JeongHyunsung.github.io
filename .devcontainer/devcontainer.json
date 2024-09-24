@@ -1,12 +1,16 @@
 {
+    "name": "Codespace",
+    "forwardPorts": [
+      3000,
+      5000
+    ],
     "customizations": {
-        "vscode": {
-            "extensions": [
-                "ms-azuretools.vscode-docker",
-                "GitHub.codespaces",
-                "ms-ossdata.vscode-postgresql"
-            ]
-        }
+      "vscode": {
+        "extensions": [
+          "ms-azuretools.vscode-docker",
+          "GitHub.codespaces",
+          "ms-ossdata.vscode-postgresql"
+        ]
+      }
     }
-    
-}
+  }

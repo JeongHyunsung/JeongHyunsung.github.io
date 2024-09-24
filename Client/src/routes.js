@@ -12,6 +12,7 @@ import EditPost from './hooks/EditPost'
 import Policy from './hooks/Policy'
 import Profile from './hooks/Profile'
 import Contact from './hooks/Contact'
+import ContactAdmin from './hooks/ContactAdmin'
 
 import ProtectedRoute from './utils/ProtectedRoute'
 
@@ -21,6 +22,7 @@ import history from './utils/history'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import './styles/toast.css'
+import './styles/webkit.css'
 
 import { useSelector } from 'react-redux';
 
@@ -43,6 +45,7 @@ function RoutePage(){
                         <Route path="/addpost" element={<ProtectedRoute level={0} element={<AddPost/>}/>}/>
                         <Route path="/editpost/:pid" element={<ProtectedRoute level={0} element={<EditPost/>}/>}/>
                         <Route path="/contact" element={<ProtectedRoute level={1} element={<Contact/>}/>}/>
+                        <Route path="/contactadmin" element={<ProtectedRoute level={0} element={<ContactAdmin/>}/>}/>
                     </Routes>
                     </div>
                     <Footer/>

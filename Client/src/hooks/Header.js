@@ -15,6 +15,8 @@ import { useDispatch, useSelector } from 'react-redux';
  
 import { useMediaQuery } from "react-responsive"
 
+import { disconnectSocket } from '../utils/socket';
+
 function Header(){
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -55,6 +57,7 @@ function Header(){
   const handleLogoutButtonClicked = async ()=>{
     dispatch(setUserFetched(false))
     try{
+      disconnectSocket()
       await axios.post('/auth/post/googlelogout')
       toast.success("Logout Success")
       navigate('/')
@@ -117,11 +120,7 @@ function Header(){
       <Link to = "/" className ="button d-flex-r">
         <img className="icon" src="/favicon.svg" alt=""/>
       </Link>
-      <div className="global-nav d-flex-r">
-        <NavButton nm="Blog" cur="blog"/>
-        <NavButton nm="Project" cur="project"/>
-        <NavButton nm="About Me" cur="aboutme"/>
-      </div>
+      
       <div 
         className = "color-mode-button-container c-bwh d-flex-r d-ac d-jc"
         onClick={handleColorModeChanged}>

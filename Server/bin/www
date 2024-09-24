@@ -24,7 +24,7 @@ const sslOptions = {
 
 var server = https.createServer(sslOptions, app);
 
-setupSocketIO(server)
+setupSocketIO(server, app.get('sessionMiddleware'))
 
 server.listen(port);
 server.on('error', onError);

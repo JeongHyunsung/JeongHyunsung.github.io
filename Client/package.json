@@ -1,8 +1,8 @@
 {
   "name": "my-page",
   "version": "0.1.0",
-  "private": true,
   "proxy": "https://server:5000",
+  "private": true,
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",
     "@react-oauth/google": "^0.12.1",

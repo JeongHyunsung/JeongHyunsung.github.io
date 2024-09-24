@@ -4,25 +4,17 @@ const router = express.Router()
 const pool = require("../db")
 const checkAuthority = require('./utils/checkAuthority')
 
-router.get('/get/messagewithuser', checkAuthority(1), async (req, res, next)=>{
-  const uid = req.session.userId
+
+router.post('/post/proposal', checkAuthority(1), async (req, res, next)=>{
+  const {email, title, description} = req.body;
   try{
-    const {rows} = await pool.query(`SELECT mid, uid_sender, uid_recipient, content, created_at FROM messages WHERE uid_recipient = $1 OR uid_sender = $1 ORDER BY created_at ASC`, [uid])
-    return res.json(rows)
+    await pool.query(`INSERT INTO proposals(uid, title, description, contact_email, created_at) VALUES($1, $2, $3, $4, now()::timestamp)`, [req.session.userId, title, description, email])
+    return res.status(201).json({message: 'Success add proposal'})
   }
   catch(error){
     console.log(error)
-    return res.status(500).json({error: 'server error when get message from DB'})
+    return res.status(500).json({error: 'Server error when add proposal to db'})
   }
 })
 
-router.post('/post/message', checkAuthority(1), async (req, res, next)=>{
-  const {sender, recipient, content} = req.body;
-  try{
-    await pool.query(`INSERT INTO messages(uid_sender, uid_recipient, content, created_at) VALUES($1, $2, $3, now()::timestamp)`, [sender, recipient, content])
-    return res.status(201).json({message: 'Success add message'})
-  }
-  catch(error){
-    return res.status(500).json({error: 'Server error when add message to db'})
-  }
-})
+module.exports = router

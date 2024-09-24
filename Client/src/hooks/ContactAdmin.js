@@ -7,16 +7,18 @@ import { Link } from 'react-router-dom'
 
 import { useMediaQuery } from "react-responsive"
 
-import ChatBox from './elements/ChatBox'
-import Proposal from './elements/Proposal'
+import ChatBoxAdmin from './elements/ChatBoxAdmin'
+import ProposalAdmin from './elements/ProposalAdmin'
 
-function Contact({}){
+
+
+function ContactAdmin({}){
     return(
         <div className="contact d-flex-r d-flex-wrap g-1r">
-            <ChatBox />
-            <Proposal />
+            <ChatBoxAdmin/>
+            <ProposalAdmin/>
         </div>
     )
 }
 
-export default Contact
+export default ContactAdmin

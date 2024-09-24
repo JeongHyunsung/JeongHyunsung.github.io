@@ -7,9 +7,12 @@ import { useAuth0 } from "@auth0/auth0-react"
 
 import { useMediaQuery } from "react-responsive"
 
+import { useSelector } from 'react-redux';
+
 import SearchResult from './elements/SearchResult'
 
 function Home(){
+  const userIsAdmin = useSelector((state)=>state.auth.userInfo.userIsAdmin)
   const isMobile = useMediaQuery({
     query : "(max-width:767px)"
   })
@@ -45,7 +48,7 @@ function Home(){
           </div>
           </div>
         <Link className="contact-button c-wh" 
-              to="/contact"
+              to={userIsAdmin?"/contactadmin":"/contact"}
               onMouseOver={handleOver}
               onMouseLeave={handleLeave}>
           <img className="icon" src="/email.svg" alt=""/>

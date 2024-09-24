@@ -167,6 +167,10 @@ hr{
   cursor: pointer;
 }
 
+textarea {
+  font-family: inherit; 
+}
+
 /* size, position -> color -> display -> etc */
 *{
   margin: 0;
@@ -264,7 +268,7 @@ a{
   height: 2rem;
   border-radius: 50%;
   overflow: hidden;
-  margin-left: 2rem;
+  margin-left: auto;
 }
 
 

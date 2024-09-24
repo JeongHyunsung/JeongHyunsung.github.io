@@ -82,4 +82,18 @@ router.post('/post/googlelogoutwithdeletion', checkAuthority(1), async(req, res,
   }
 })
 
+router.get('/get/otherusername', checkAuthority(1), async(req, res, next)=>{
+  let otherId = req.query.otherId
+  try{
+    if(otherId === "0"){
+      otherId = parseInt(process.env.ADMIN_UID, 10);
+    }
+    const {rows} = await pool.query(`SELECT name FROM users WHERE uid = $1`, [otherId])
+    res.json(rows)
+  }catch(error){
+    console.log(error)
+    res.status(500).json({error: 'Failed to get username from DB', error})
+  }
+})
+
 module.exports = router

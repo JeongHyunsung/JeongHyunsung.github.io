@@ -15,6 +15,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import dateConversion from '../utils/dateConversion'
 
+import { disconnectSocket } from '../utils/socket';
+
 
 function CommentInProfile({cid, content, createdAt, pid, parentCid, title}){
     const [info, setInfo] = useState("")
@@ -68,6 +70,7 @@ function Profile({}){
     const handleLogoutButtonClicked = async ()=>{
         dispatch(setUserFetched(false))
         try{
+            disconnectSocket()
             await axios.post('/auth/post/googlelogout')
             toast.success("Logout Success")
             navigate('/')
@@ -87,6 +90,7 @@ function Profile({}){
             return
         }
         try{
+            disconnectSocket()
             await axios.post('/auth/post/googlelogoutwithdeletion')
             toast.success("Account Deletion Success")
             navigate('/')
