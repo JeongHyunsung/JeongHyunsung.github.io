@@ -33,7 +33,9 @@ function Proposal({}){
             return
         }
         try{
+            
             await axios.post('/proposal/post/proposal', proposal)
+            toast.success("제안이 성공적으로 제출되었습니다. 빠른 시일 내에 연락드리겠습니다.")
             setProposal({title:"", email:"", description:""})
         }catch(error){
             toast.error("Proposal Post Fail")
@@ -56,7 +58,7 @@ function Proposal({}){
                 <div className="proposal-content d-flex-c g-1r">
                     <input className="proposal-text-input" type="text" placeholder="이메일 (추후 연락 용도)" value={proposal.email} onChange={handleEmailChange}/>
                     <input className="proposal-text-input" type="text" placeholder="프로젝트나 아이디어의 한줄 설명" value={proposal.title} onChange={handleTitleChange}/>
-                    <textarea className="proposal-text-input big" placeholder="간략한 설명" value={proposal.description} onChange={handleDescriptionChange}/>
+                    <textarea className="proposal-text-input big" placeholder="자세한 내용" value={proposal.description} onChange={handleDescriptionChange}/>
                     <button className="proposal-submit-button c-bwh" onClick={handleProposalSubmit}>제출</button>
                 </div>
                 

@@ -82,7 +82,7 @@ function Card({pid}){
       ):(
         <div className= "card-content w-6px d-flex-c g-05r d-ac">
           <img className = "w-100 r-smooth-05" src={post.imgurl}/>
-          <h2 className = "t-heavy">{post.title}</h2>
+          <h3>{post.title}</h3>
           <div className="d-asfs d-flex-r d-flex-wrap g-05r">
             {tagNames.map((tagname, index)=>{
               return(

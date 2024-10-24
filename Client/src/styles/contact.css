@@ -117,8 +117,20 @@
 }
 
 .proposal-submit-button{
-    width: 5rem;
-    height: 1.5rem;
-    align-self: flex-end;
+    height: 2rem;
     border-radius: 5px;
+}
+
+.proposal-submit-button:hover{
+    background-color: var(--col-lb);
+}
+
+.proposal{
+    padding: 0.3rem;
+}
+
+.proposal-details{
+    padding: 0.2rem;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }

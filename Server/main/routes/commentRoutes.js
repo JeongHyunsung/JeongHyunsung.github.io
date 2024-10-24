@@ -18,7 +18,7 @@ router.get('/get/commentsinpost', async (req, res, next)=>{
 })
 
 router.get('/get/commentsuser', checkAuthority(1), async (req, res, next)=>{
-  const uid = req.query.uid
+  const uid = req.session.userId
   try{
     const {rows} = await pool.query(`SELECT c.cid, c.content, c.created_at, c.parent_cid, p.pid, p.title FROM comments AS c JOIN posts AS p ON c.pid = p.pid WHERE c.uid = $1 ORDER BY c.created_at ASC`, [uid])
     return res.json(rows)
@@ -56,12 +56,9 @@ router.post('/post/comment', checkAuthority(1), async (req, res, next)=>{
   }
 })
 
-router.delete('/delete/comment/:cid/:uid', checkAuthority(1), async(req, res, next)=>{
-  const {cid, uid} = req.params
+router.delete('/delete/comment/:cid', checkAuthority(1), async(req, res, next)=>{
+  const cid = req.params.cid
   const userId = req.session.userId
-  if(!userId){
-    return res.status(401).json({message: "Login required"})
-  }
   try{
     const result = await pool.query(`SELECT uid FROM comments WHERE cid = $1`, [cid])
     if(userId !== result.rows[0].uid){

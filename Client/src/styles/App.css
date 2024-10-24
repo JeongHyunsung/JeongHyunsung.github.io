@@ -157,6 +157,10 @@ hr{
   gap: 0.5rem;
 }
 
+.m-la{
+  margin-left: auto;
+}
+
 /* position-section */
 .p-abs{
   position: absolute;
@@ -388,6 +392,19 @@ a{
 .profile-button:hover{
   background-color: var(--col-db);
   color: var(--col-wh);
+}
+
+.proposal-in-profile{
+  padding: 0.2rem;
+}
+
+.proposal-delete-button{
+  background-color: transparent;
+}
+
+.proposal-delete-icon{
+  width: 1rem;
+  height: 1rem;
 }
 
 

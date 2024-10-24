@@ -18,7 +18,7 @@ function Comment({pid, cmt, toggle, curSubmit, setCurSubmit, level}){
         try{
             const confirmed = window.confirm("정말로 이 댓글을 삭제하시겠습니까?");
             if (confirmed) {
-                await axios.delete('/comment/delete/comment/'+ cmt.cid + '/' + cmt.uid)
+                await axios.delete('/comment/delete/comment/'+ cmt.cid)
                 toggle()
             }  
         }catch(error){

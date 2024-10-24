@@ -51,21 +51,63 @@ function CommentInProfile({cid, content, createdAt, pid, parentCid, title}){
         </Link>
     )
 }
+
+function ProposalInProfile({ppid, title, createdAt, description, toggle}){
+
+    const handleProposalDelete = async()=>{
+        try{
+            const confirmed = window.confirm("정말로 이 제안을 삭제하시겠습니까?");
+            if(confirmed){
+                await axios.delete('/proposal/delete/proposal/'+ ppid )
+                toggle()
+            }
+        }catch(error){
+            toast.error("Error delete proposal")
+        }
+    }
+    return(
+        <div 
+            className="proposal-in-profile d-flex-c c-bdb r-smooth-05">
+            <div className="d-flex-r d-ac">
+                <p>{title}</p>
+                <p className="m-la">{dateConversion(createdAt)}</p>
+                <button className="proposal-delete-button" onClick={handleProposalDelete}>
+                    <img className="proposal-delete-icon" src="/x.svg" alt="delete"/> 
+                </button>
+                </div>
+            <p>{description}</p>
+        </div>
+    )
+}
+
 function Profile({}){
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const isFetched = useSelector((state)=>state.auth.isFetched)
+    const [proposalToggle, setProposalToggle] = useState(false)
     const userInfo = useSelector((state)=>state.auth.userInfo)
+    const [myProposal, setMyProposal] = useState([])
     const [myComment, setMyComment] = useState([])
 
     useEffect(()=>{
         const fetchMyComment = async ()=>{
-            const res = await axios.get('/comment/get/commentsuser', {params: {uid: userInfo.userId}})
+            const res = await axios.get('/comment/get/commentsuser')
             setMyComment(res.data)
-            console.log(res.data)
         }
         fetchMyComment()
-    }, userInfo.userId)
+    }, [userInfo.userId])
+
+    useEffect(()=>{
+        const fetchMyProposal = async ()=>{
+            const res = await axios.get('/proposal/get/proposaluser')
+            setMyProposal(res.data)
+            console.log(res.data)
+        }
+        fetchMyProposal()
+    }, [userInfo.userId, proposalToggle])
+
+    const toggle = ()=>{
+        setProposalToggle(!proposalToggle)
+    }
 
     const handleLogoutButtonClicked = async ()=>{
         dispatch(setUserFetched(false))
@@ -104,6 +146,8 @@ function Profile({}){
         return
     }
 
+    
+
     return(
         <div className="profile d-flex-c g-05r">
             <h1 className="profile-title t-bbb t-reg">Profile</h1>
@@ -122,7 +166,21 @@ function Profile({}){
                 }
             </div>
             <h2>내 문의 기록</h2>
-            <div className="d-flex-c"></div>
+            <div className="d-flex-c g-05r">
+                {myProposal.map((prop, index)=>{
+                    return (
+                        <ProposalInProfile 
+                            key={prop.ppid}
+                            ppid={prop.ppid}
+                            title={prop.title}
+                            description={prop.description}
+                            createdAt={prop.created_at}
+                            toggle={toggle}/>
+                    )
+                })}
+
+
+            </div>
 
             <button className="profile-button cur-pt c-bwh t-heavy" onClick={handleLogoutButtonClicked}>{userInfo.userName} 계정 로그아웃</button>
             <button className="profile-button cur-pt c-brd t-heavy" onClick={handleRemoveButtonClicked}>{userInfo.userName} 계정 회원 탈퇴</button>
