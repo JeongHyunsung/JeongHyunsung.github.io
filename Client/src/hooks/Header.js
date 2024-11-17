@@ -117,15 +117,7 @@ function Header(){
 
   return(
     <div className="Head d-ac w-100 d-flex-r">
-      <Link to = "/" className ="button d-flex-r">
-        <img className="icon" src="/favicon.svg" alt=""/>
-      </Link>
-      
-      <div 
-        className = "color-mode-button-container c-bwh d-flex-r d-ac d-jc"
-        onClick={handleColorModeChanged}>
-      </div>
-      <div className="login-button-container">
+      <div className="login-button-container m-la">
         {isFetched && (userInfo.userId? 
         <button 
           className="login-button c-bwh c-ddb cur-pt t-heavy"
@@ -153,33 +145,7 @@ function Header(){
         </div>
       </div>
       }
-
     </div>
-  )
-}
-  
-
-function NavButton({nm, cur}){
-  const [isover, setIsover] = useState(false)
-  const [isInit, setIsInit] = useState(true)
-  const am_1 = "wider 0.1s cubic-bezier(0, 0.4, 0.6, 1)"
-  const am_2 = "narrower 0.1s cubic-bezier(0, 0.4, 0.6, 1)"
-  return(
-    <Link 
-      to={'/'+cur}
-      className="navigation-button"
-      onMouseOver={()=>{setIsover(true);setIsInit(false)}}
-      onMouseLeave={()=>{setIsover(false)}}
-      style={{top: (isover)?"-3px":"0px"}}>
-      <p style={{color: (isover)?"var(--col-mb)":"var(--col-wh)",
-                 fontWeight: (isover)?"600":"500"}}>
-        {nm}
-      </p>
-      <div 
-        className="underline c-bmb"
-        style={{animation:(!(isInit) && isover)?am_1:(!isInit)?am_2:"none",
-                width:(isover)?"100%":"0%"}}></div>
-    </Link>
   )
 }
 

@@ -175,6 +175,11 @@ textarea {
   font-family: inherit; 
 }
 
+.global-body{
+  position: relative;
+  padding-bottom: 100px;
+}
+
 /* size, position -> color -> display -> etc */
 *{
   margin: 0;
@@ -183,7 +188,7 @@ textarea {
 
 .App{
   height: 100vh;
-  overflow-y: scroll;
+  overflow-y: auto;
   min-width: 450px;
   color: var(--col-wh);
 }
@@ -199,39 +204,8 @@ textarea {
   cursor: pointer;
 }
 
-.Head .icon{
-  width: 32px;
-  height: 32px;
-  margin-right: 16px;
-}
-
-.global-nav{
-  width: max(200px, 28%);
-  margin-left: auto;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 1.1rem;
-  font-weight: 500;
-}
-
-.global-nav p{
-  transition: top 0.1s cubic-bezier(0, 0.4, 0.6, 1);
-}
-
 a{
   text-decoration: none;
-}
-
-.navigation-button{
-  position: relative;
-  top: 0px;
-  cursor: pointer;
-  user-select: none;
-}
-
-.navigation-button .underline{
-  height: 2px;
-  border-radius: 1px;
 }
 
 .profile-container{
@@ -258,7 +232,6 @@ a{
   width: 4rem;
   height: 1.8rem;
   padding: 0.3rem;
-  margin-left: 1rem;
 }
 
 .login-button{
@@ -266,15 +239,6 @@ a{
   height: 1.8rem;
   border-radius: 0.2rem;
 }
-
-.color-mode-button-container{
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-left: auto;
-}
-
 
 /*Home content*/
 .Home{
@@ -329,7 +293,6 @@ a{
 .recent-works{
   width: 100%;
   height: auto;
-  margin-top: 32px;
   align-items: center;
   gap: 32px;
 }
@@ -338,7 +301,7 @@ a{
 
 
 .Foot{
-  margin-top: 100px;
+  margin-top: auto;
   padding-top: 30px;
   padding-bottom: 30px;
   gap: 20px;

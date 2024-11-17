@@ -5,6 +5,7 @@ html{
   line-height: 1.5;
   font-size: max(16px, 1vw);
   font-weight: 400;
+  min-height: 100vh;
 }
 
 .bigger{

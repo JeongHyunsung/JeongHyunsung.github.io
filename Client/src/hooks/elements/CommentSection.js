@@ -8,7 +8,6 @@ import CommentEditor from './CommentEditor'
 import Comment from './Comment'
 
 const buildCommentTree = (comments)=>{
-    /* n-level 제대로 작동? */
     const tree = []
     const lookup = {}
     comments.forEach(comment =>{
