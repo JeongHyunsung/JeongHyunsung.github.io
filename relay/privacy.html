@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relay — Privacy policy</title>
+<style>
+  body { font: 16px/1.6 'Segoe UI Variable Text', 'Segoe UI', system-ui, sans-serif; color: #172033; background: #EEF1F6; margin: 0; }
+  main { max-width: 680px; margin: 0 auto; padding: 56px 24px 80px; }
+  h1 { font-size: 30px; line-height: 1.2; margin: 0 0 6px; }
+  h2 { font-size: 18px; margin: 34px 0 8px; }
+  p, li { color: #3B4558; }
+  .muted { color: #6A7387; font-size: 14px; }
+  code { font: 14px Consolas, monospace; background: #fff; padding: 1px 5px; border-radius: 4px; }
+  @media (prefers-color-scheme: dark) { body { background: #1C2230; color: #E9EDF5; } p, li { color: #B9C1D2; } code { background: #252D3E; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Relay privacy policy</h1>
+  <p class="muted">Effective 1 November 2026 · Applies to Relay 1.x for Windows</p>
+
+  <p>Relay keeps short notes about the work you have in progress on your PC. It has no account, no server and no analytics. Nothing you put into Relay leaves your computer.</p>
+
+  <h2>What Relay stores</h2>
+  <ul>
+    <li>The contexts you create: a one-line memo, an optional note and link, the kind of work and tool you picked, and timestamps.</li>
+    <li>Where each context came from: the program name, its window title, a window handle and, for coding agents, the working folder.</li>
+    <li>Your settings, and a random access token for the local agent connection described below.</li>
+  </ul>
+  <p>This is saved as JSON files in Relay's own app-data folder on your PC. You can open that folder or export everything from Settings › Your data. Uninstalling the Microsoft Store version removes it.</p>
+
+  <h2>What Relay reads, and when</h2>
+  <ul>
+    <li><strong>When you capture a context</strong> (shortcut or the + button), Relay reads the title and program name of the window in front. If that window is a web browser, it also reads the address bar so it can reopen the same page later.</li>
+    <li><strong>When you click a context</strong>, Relay looks up that window again to bring it to the front.</li>
+  </ul>
+  <p>Relay never records your screen, keystrokes, clipboard, files or the contents of your conversations with AI tools.</p>
+
+  <h2>Connecting coding agents</h2>
+  <p>If you choose Connect for Claude Code or Codex in Settings, Relay adds one entry to that tool's configuration file on your PC (<code>.claude\settings.json</code> or <code>.codex\config.toml</code>) and saves a backup copy first. The entry makes the agent tell Relay when it starts or finishes a turn. Disconnect removes only Relay's entry.</p>
+  <p>Those notifications go to a port that only programs on your own PC can reach (<code>127.0.0.1</code>) and must carry Relay's access token. Relay ignores requests from web pages. The agent sends its session id, working folder and, when a prompt is submitted, the first line of that prompt, which Relay uses as the memo.</p>
+
+  <h2>Sharing</h2>
+  <p>Relay does not send data to the developer or to anyone else. It contains no advertising, tracking or third-party analytics. If you use Microsoft Store, Microsoft may collect installation and crash data under its own privacy statement.</p>
+
+  <h2>Children</h2>
+  <p>Relay is a productivity tool and is not directed at children.</p>
+
+  <h2>Changes and contact</h2>
+  <p>If this policy changes, the new version will be published at this address with a new effective date. Questions: <a href="mailto:gogo7mm7@gmail.com">gogo7mm7@gmail.com</a>.</p>
+</main>
+</body>
+</html>
